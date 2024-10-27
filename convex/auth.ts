@@ -4,20 +4,34 @@ import { DataModel } from "./_generated/dataModel";
 import { convexAuth } from "@convex-dev/auth/server";
 import { Password } from "@convex-dev/auth/providers/Password";
 
+/**
+ * Custom Password Authentication Configuration
+ * Extends the base Password provider with custom profile fields
+ * 
+ * @param params - Authentication parameters including email and name
+ * @returns User profile object with default values
+ */
 const CustomPassword = Password<DataModel>({
   profile(params) {
     return {
       email: params.email as string,
       name: params.name as string,
-      selectedTemplate: "",  
-      hasPurchasedPremium: false,  
-      hasPurchasedStarter: false, 
+      selectedTemplate: "",  // Template selection for starter kit
+      hasPurchasedPremium: false,  // Premium kit purchase status
+      hasPurchasedStarter: false,  // Starter kit purchase status
     }
   }
 })
 
-// TODO: You can add more providers here, but the popular ones are (Github, Google, and CustomPassword)
-// Go checkout they provide a detailed guide: https://labs.convex.dev/auth-example
+/**
+ * Authentication Configuration
+ * Supports multiple authentication providers:
+ * - GitHub OAuth
+ * - Google OAuth
+ * - Custom Password Authentication
+ * 
+ * For additional providers, see: https://labs.convex.dev/auth-example
+ */
 export const { auth, signIn, signOut, store } = convexAuth({
   providers: [GitHub, Google, CustomPassword],
 });
