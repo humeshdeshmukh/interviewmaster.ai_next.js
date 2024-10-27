@@ -21,7 +21,7 @@ const tasks = [
     { name: "Configuring analytics and monitoring", scratch: "4 hours", kit: "10 minutes" },
 ]
 
-export const TimeComparisonTable = () => {
+const TimeComparisonTable = () => {
     const controls = useAnimation()
     const ref = useRef(null)
     const inView = useInView(ref, { once: true })
@@ -111,6 +111,8 @@ export const TimeComparisonTable = () => {
         </section>
     )
 }
+
+export default TimeComparisonTable;
 
 // Instructions
 /*

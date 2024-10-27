@@ -2,142 +2,201 @@
 
 import Link from "next/link";
 import Image from 'next/image';
-import { useState, useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useState, useRef, memo } from 'react';
+import { motion, useInView } from 'framer-motion';
 
 import {
     Star,
     Play,
-    Smile,
     Pause,
-    Rocket,
     Volume2,
     VolumeX,
-    Sparkles,
+    Quote,
 } from 'lucide-react';
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from "@/components/ui/card";
 import { ChipBanner } from "@/components/ChipBanner";
-import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
+import { MaxWidthWrapper } from "@/components/MaxWidthWrapper";
 
+// Memoized components for better performance
+const StarRating = memo(({ rating }: { rating: number }) => (
+    <div className="flex gap-1">
+        {[...Array(rating)].map((_, i) => (
+            <Star key={i} className="h-4 w-4 text-[#FF652F]" fill="currentColor" />
+        ))}
+    </div>
+));
+StarRating.displayName = 'StarRating';
 
-interface TestimonialData {
-    name: string;
-    review: string;
-    rating: number;
-}
+const TestimonialCard = memo(({ testimonial }: { testimonial: typeof testimonialData[0] }) => (
+    <Card className="h-full bg-foreground/5 hover:bg-foreground/10 transition-colors duration-300 backdrop-blur-sm border-none shadow-lg">
+        <CardContent className="p-6 flex flex-col h-full">
+            <Quote className="w-8 h-8 text-[#fcba28] mb-4" />
+            <StarRating rating={testimonial.rating} />
+            <blockquote className="my-4 text-lg italic text-foreground/90">
+                &quot;{testimonial.review}&quot;
+            </blockquote>
+            <div className="flex items-center mt-auto pt-4 border-t border-foreground/10">
+                <Image
+                    width={40}
+                    height={40}
+                    alt={testimonial.name}
+                    src={testimonial.image}
+                    className="rounded-full"
+                />
+                <div className="ml-3">
+                    <p className="font-medium text-foreground">{testimonial.name}</p>
+                    <p className="text-sm text-foreground/70">{testimonial.role}</p>
+                </div>
+            </div>
+        </CardContent>
+    </Card>
+));
+TestimonialCard.displayName = 'TestimonialCard';
 
-export const Testimonials = () => {
-    const [isPlaying, setIsPlaying] = useState(false)
-    const [isMuted, setIsMuted] = useState(false)
-    const videoRef = useRef<HTMLVideoElement>(null)
-    const sectionRef = useRef(null)
-    const isInView = useInView(sectionRef, { once: true })
-    const [testimonials, setTestimonials] = useState<TestimonialData[]>(
-        Array(3).fill({ name: '', review: '', rating: 0 })
-    )
-
-    const handleInputChange = (index: number, field: keyof TestimonialData, value: string | number) => {
-        const newTestimonials = [...testimonials]
-        newTestimonials[index] = { ...newTestimonials[index], [field]: value }
-        setTestimonials(newTestimonials)
+// Optimized testimonial data
+const testimonialData = [
+    {
+        name: "Sarah Johnson",
+        role: "Startup Founder",
+        review: "The web app they built increased our customer engagement by 300% in just two months. Incredible results!",
+        rating: 5,
+        image: "/avatar.png"
+    },
+    {
+        name: "Michael Chen",
+        role: "E-commerce Director",
+        review: "Their attention to detail and innovative features helped us stand out in a crowded market.",
+        rating: 5,
+        image: "/avatar.png"
+    },
+    {
+        name: "Emma Rodriguez",
+        role: "Tech Entrepreneur",
+        review: "From concept to launch, they delivered exactly what we needed. Our platform is incredibly fast.",
+        rating: 5,
+        image: "/avatar.png"
+    },
+    {
+        name: "Michael Chen",
+        role: "E-commerce Director",
+        review: "Their attention to detail and innovative features helped us stand out in a crowded market.",
+        rating: 5,
+        image: "/avatar.png"
+    },
+    {
+        name: "Emma Rodriguez",
+        role: "Tech Entrepreneur",
+        review: "From concept to launch, they delivered exactly what we needed. Our platform is incredibly fast.",
+        rating: 5,
+        image: "/avatar.png"
     }
+];
 
-    const handleStarClick = (index: number, rating: number) => {
-        handleInputChange(index, 'rating', rating)
-    }
+const VideoTestimonial = memo(({ isPlaying, isMuted, onPlayClick, onMuteClick }: {
+    isPlaying: boolean;
+    isMuted: boolean;
+    onPlayClick: () => void;
+    onMuteClick: () => void;
+}) => (
+    <div className="relative aspect-video rounded-lg overflow-hidden">
+        <video className="w-full h-full object-cover">
+            <source src="/coming-soon-clip.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <Button
+                size="icon"
+                variant="secondary"
+                onClick={onPlayClick}
+                className="bg-white/90 hover:bg-white"
+            >
+                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            </Button>
+            <Button
+                size="icon"
+                variant="secondary"
+                onClick={onMuteClick}
+                className="bg-white/90 hover:bg-white"
+            >
+                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </Button>
+        </div>
+    </div>
+));
+VideoTestimonial.displayName = 'VideoTestimonial';
+
+const Testimonials = () => {
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isMuted, setIsMuted] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const sectionRef = useRef(null);
+    const isInView = useInView(sectionRef, { once: true });
 
     const togglePlay = () => {
         if (videoRef.current) {
             if (isPlaying) {
-                videoRef.current.pause()
+                videoRef.current.pause();
             } else {
-                videoRef.current.play()
+                videoRef.current.play();
             }
-            setIsPlaying(!isPlaying)
+            setIsPlaying(!isPlaying);
         }
-    }
+    };
 
     const toggleMute = () => {
         if (videoRef.current) {
-            videoRef.current.muted = !isMuted
-            setIsMuted(!isMuted)
+            videoRef.current.muted = !isMuted;
+            setIsMuted(!isMuted);
         }
-    }
-    return (
-        <section id="how-to-use" className="relative overflow-hidden">
-            <MaxWidthWrapper className="relative flex flex-col items-center py-20 md:py-32">
-                {/* Testimonials Header */}
-                <div className="flex flex-col justify-center items-center gap-4 max-w-xl mb-4 md:mb-6">
-                    <ChipBanner text="HEARTFELT TRUTH(s)" />
-                    <h2 className="flex-1 font-extrabold text-xl text-center md:text-3xl lg:text-5xl">
-                        Outstanding <strong className="text-[#fcba28]">results</strong> require outstanding <strong className="text-[#fcba28]">people</strong>
-                    </h2>
-                </div>
-                <p className="flex-1 font-medium text-base text-center justify-center md:text-lg  max-w-lg w-full">
-                    If you are ready to transform ideas int reality quickly, then you&apos;ll fit right in here!
-                </p>
+    };
 
-                {/* HowToUse Video */}
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 my-10">
+    return (
+        <section ref={sectionRef} className="relative py-20 bg-gradient-to-b from-background to-background/95">
+            <MaxWidthWrapper>
+                <div className="flex flex-col items-center justify-center mb-12 ">
+                    <ChipBanner text="TESTIMONIALS" />
+                    <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold">
+                        Trusted by <span className="text-[#fcba28]">Amazing</span> People
+                    </h2>
+                    <p className="mt-4 text-lg text-foreground/80 max-w-2xl mx-auto">
+                        Don&apos;t just take our word for it - hear from some of our satisfied clients
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Featured Video Card */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                        className="lg:col-span-2 lg:row-span-1"
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.6 }}
+                        className="col-span-1 md:col-span-2 lg:col-span-1"
                     >
-                        <Card className="overflow-hidden h-fit bg-[#fcba28]/90 border-b-8 border-r-8 rounded-2xl border-neutral-900">
-                            <CardContent className="p-0">
-                                <div className="relative aspect-video">
-                                    <video
-                                        ref={videoRef}
-                                        className="size-50 object-cover"
-                                    >
-                                        <source src="/brett-testimonial.mp4" type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
-                                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                                        <Button
-                                            size="icon"
-                                            variant="secondary"
-                                            onClick={togglePlay}
-                                            className="bg-[#FF652F] text-background hover:bg-[#FF652F]/90"
-                                        >
-                                            {isPlaying ? <Pause className="size-4" /> : <Play className="size-4" />}
-                                        </Button>
-                                        <Button
-                                            size="icon"
-                                            variant="secondary"
-                                            onClick={toggleMute}
-                                            className="bg-[#FF652F] text-background hover:bg-[#FF652F]/90"
-                                        >
-                                            {isMuted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className="p-6">
-                                    <div className="mb-4 flex items-center">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className="h-6 w-6 text-[#FF652F]" fill="currentColor" />
-                                        ))}
-                                    </div>
-                                    <blockquote className="mb-4 text-lg font-medium italic text-background">
-                                        &quot;I&apos;ve never had a website that communicates just how badass my work is.&quot;
+                        <Card className="h-full bg-[#fcba28]/10 hover:bg-[#fcba28]/20 transition-colors duration-300 backdrop-blur-sm border-none shadow-lg">
+                            <CardContent className="p-6 flex flex-col h-full">
+                                <VideoTestimonial
+                                    isPlaying={isPlaying}
+                                    isMuted={isMuted}
+                                    onPlayClick={togglePlay}
+                                    onMuteClick={toggleMute}
+                                />
+                                <div className="mt-6">
+                                    <StarRating rating={5} />
+                                    <blockquote className="my-4 text-lg italic">
+                                        &quot;Their approach to design and development is simply outstanding. The results speak for themselves.&quot;
                                     </blockquote>
                                     <div className="flex items-center">
                                         <Image
-                                            width={50}
-                                            height={50}
-                                            alt="Brett Bailey"
-                                            src={process.env.S3_BUCKET!}
-                                            className="mr-4 rounded-full object-cover"
+                                            width={40}
+                                            height={40}
+                                            alt="John Doe"
+                                            src="/avatar.png"
+                                            className="rounded-full"
                                         />
-                                        <div>
-                                            <p className="font-semibold text-background">Brett Bailey</p>
-                                            <p className="text-sm text-background/80">Founder of Brett Bailey Men&apos; Coaching</p>
+                                        <div className="ml-3">
+                                            <p className="font-medium">John Doe</p>
+                                            <p className="text-sm text-foreground/70">CEO, Tech Innovators</p>
                                         </div>
                                     </div>
                                 </div>
@@ -145,120 +204,21 @@ export const Testimonials = () => {
                         </Card>
                     </motion.div>
 
-                    {testimonials.map((testimonial, index) => (
+                    {/* Text Testimonials */}
+                    {testimonialData.map((testimonial, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                            transition={{ duration: 0.6, delay: 0.2 * (index + 1) }}
                         >
-                            <Card className="relative h-full bg-foreground border-b-8 border-r-8 rounded-2xl border-background ">
-                                <CardContent className="flex h-full flex-col items-start justify-center p-6">
-                                    {testimonial.name ? (
-                                        <Sparkles className="mb-4 size-12 text-background transform" />
-                                    ) : (
-                                        <Smile className="mb-4 size-12 text-background transform " />
-                                    )}
-                                    <h3 className="mb-2 text-2xl font-bold text-background uppercase transform">
-                                        {testimonial.name || "This could be totally you!"}
-                                    </h3>
-                                    <p className="text-background italic text-lg transform mb-4">
-                                        {testimonial.review || "Picture your success, right next to your awesome app!"}
-                                    </p>
-                                    <div className="space-y-4 w-full">
-                                        <div className="flex items-center space-x-1 mb-2">
-                                            {[1, 2, 3, 4, 5].map((star) => (
-                                                <Button
-                                                    size="sm"
-                                                    key={star}
-                                                    variant="ghost"
-                                                    className={`p-0 ${star <= testimonial.rating ? 'text-[#FF652F]' : 'text-background'}`}
-                                                    onClick={() => handleStarClick(index, star)}
-                                                >
-                                                    <Star className="h-6 w-6" fill={star <= testimonial.rating ? 'currentColor' : 'none'} />
-                                                </Button>
-                                            ))}
-                                        </div>
-                                        <Input
-                                            placeholder="Your Awesome Name"
-                                            value={testimonial.name}
-                                            onChange={(e) => handleInputChange(index, 'name', e.target.value)}
-                                            className="bg-foreground/50 border-background text-background placeholder-background/50"
-                                        />
-                                        <Textarea
-                                            placeholder="Share your epic experience!"
-                                            value={testimonial.review}
-                                            onChange={(e) => handleInputChange(index, 'review', e.target.value)}
-                                            className="bg-foreground/50 border-background text-background placeholder-background/50"
-                                        />
-                                        <Button
-                                            asChild
-                                            variant="secondary"
-                                            className="mt-auto bg-[#fcba28] text-background hover:bg-[#fcba28]/90 rounded-full text-lg font-bold px-6 py-3 w-full"
-                                        >
-                                            <Link href="#cta">
-                                            GRAB YOUR SPOT
-                                            </Link>
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                            <TestimonialCard testimonial={testimonial} />
                         </motion.div>
                     ))}
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                    >
-                        <Card className="h-full bg-[#0ba95b] border-b-8 border-r-8 rounded-2xl border-neutral-900">
-                            <CardContent className="flex h-full flex-col items-start justify-between p-6">
-                                <div>
-                                    <Rocket className="mb-4 h-12 w-12 text-foreground" />
-                                    <h3 className="mb-2 text-2xl font-bold text-foreground uppercase transform">Ready to blast off?</h3>
-                                    <p className="text-foreground italic text-lg transform mb-4">
-                                        My client list soon will be hotter than a supernova! Don&apos;t be left floating in space!
-                                    </p>
-                                </div>
-                                <Button
-                                    asChild
-                                    size="lg"
-                                    variant="secondary"
-                                    className="mt-auto bg-[#f38ba3] text-[#272727] hover:bg-[#f38ba3]/90 rounded-full text-lg font-bold px-6 py-3 w-full"
-                                >
-                                    <Link href="#cta">
-                                        LAUNCH YOUR JOURNEY
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
                 </div>
             </MaxWidthWrapper>
         </section>
-    )
-}
+    );
+};
 
-// Instructions
-/*
-
-The Testimonials component showcases real user experiences with your product. 
-
-Testimonial Structure:
-Each testimonial should follow this general format:
-1. Client's initial problem or challenge
-2. How your product provided a solution
-3. Specific results or benefits the client experienced
-4. Overall satisfaction or recommendation
-
-Video Testimonials:
-   TODO: If possible, include video testimonials for higher impact.
-   TODO: Ensure good video and audio quality.
-   TODO: Keep videos concise (30-60 seconds) and focused.
-   TODO: You can download this in YouTube for free or use other cloud services to store the videos. 
-   TODO: Its not ideal to add them in your public file because it will slow down your website.
-
-Image Testimonials:
-   TODO: If possible, include image testimonials for higher impact.
-   TODO: Ensure good image quality this could be coming from (Twitter, Facebook, LinkedIn etc...).
-*/
+export default Testimonials;

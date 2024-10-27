@@ -1,15 +1,14 @@
-import { CTA } from "@/components/landing-page/cta/CTA";
-import { FAQ } from "@/components/landing-page/faq/FAQ";
-import { Hero } from "@/components/landing-page/hero/Hero";
-import { Pricing } from "@/components/landing-page/pricing/Pricing";
-import { Features } from "@/components/landing-page/features/Features";
-import { HowToUse } from "@/components/landing-page/how-to-use/HowToUse";
-import { Testimonials } from "@/components/landing-page/testimonials/Testimonials";
-import { BannerStacks } from "@/components/landing-page/banner-stacks/BannerStacks";
-import { TimeComparisonTable } from "@/components/landing-page/time-comparison-table/TimeComparisonTable";
+import dynamic from "next/dynamic";
+import { Hero } from "@/features/landing-page/components/hero/Hero";
 
-// This is the homepage where you add all the components for your landing page
-// When you create your components for landing page go to @/components/landing-page the ncreate a folder for your component to organized them
+const BannerStacks = dynamic(() => import("@/features/landing-page/components/banner-stacks/BannerStacks"), { ssr: false });
+const TimeComparisonTable = dynamic(() => import("@/features/landing-page/components/time-comparison-table/TimeComparisonTable"));
+const Features = dynamic(() => import("@/features/landing-page/components/features/Features"));
+const HowToUse = dynamic(() => import("@/features/landing-page/components/how-to-use/HowToUse"));
+const Pricing = dynamic(() => import("@/features/landing-page/components/pricing/Pricing"), { ssr: false });
+const Testimonials = dynamic(() => import("@/features/landing-page/components/testimonials/Testimonials"));
+const FAQ = dynamic(() => import("@/features/landing-page/components/faq/FAQ"));
+const CTA = dynamic(() => import("@/features/landing-page/components/cta/CTA"));
 
 export default function Home() {
   return (

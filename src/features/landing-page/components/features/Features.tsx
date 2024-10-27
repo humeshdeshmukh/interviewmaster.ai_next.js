@@ -35,7 +35,7 @@ const Highlights = dynamic(() => import('./Highlights').then(mod => ({ default: 
 });
 
 
-export const Features = () => {
+const Features = () => {
     return (
         <section id="features" className="relative overflow-hidden">
             <MaxWidthWrapper className="relative flex flex-col items-center py-20 md:py-32">
@@ -80,27 +80,30 @@ export const Features = () => {
     )
 }
 
-// Instructions
-/*
+export default Features;
 
-This component showcases the key features and components of your product. It aims to:
-- Give users a clear understanding of what your product offers
-- Familiarize potential customers with the product's interface and functionality
-- Create an interactive and visually appealing representation of your product
-
-Key Aspects:
-1. Visual Appeal: Use engaging visuals, animations, or interactive elements to capture attention.
-2. Interactivity: Implement hover effects, click interactions, or mini-demos to let users experience the product.
-3. Clear Explanations: Provide concise, benefit-focused descriptions for each feature.
-4. Consistent Branding: Ensure the design aligns with your overall brand aesthetic.
-
-Define Your Key Features:
-   TODO:  Identify 4-6 core features that best represent your product's value.
-   TODO:  For each feature, determine the best way to visually represent it (e.g., screenshot, animation, interactive demo).
-
-Create Individual Feature Components:
-   TODO:  Develop separate components for each feature (e.g., TowerBento, SquareBento1, etc.).
-   TODO:  Each component should be visually appealing and, if possible, interactive.
-   TODO:  Include clear, concise descriptions of the feature's benefits.
-
-*/
+/**
+ * Features Component
+ * 
+ * A showcase section that presents the key features of the product using
+ * an interactive bento grid layout. Each feature is represented by a
+ * distinct component with its own animations and interactions.
+ *
+ * Layout Structure:
+ * - TowerBento: Main feature showcase (4 columns)
+ * - SquareBento1 & 2: Secondary features (2 columns each)
+ * - RectangularBento: Tech stack display (2 columns)
+ *
+ * Performance Optimizations:
+ * - Uses dynamic imports to reduce initial bundle size
+ * - Implements loading states for better UX
+ * - Optimizes animations for performance
+ *
+ * @example
+ * ```tsx
+ * <Features />
+ * ```
+ *
+ * Note: Each bento component is lazy-loaded. Ensure proper loading states
+ * are displayed while components are being loaded.
+ */

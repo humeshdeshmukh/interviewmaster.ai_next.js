@@ -27,7 +27,7 @@ const stacks = [
     }
 ];
 
-export const BannerStacks = () => {
+const BannerStacks = () => {
     return (
         <section id="banner-stacks" className="relative overflow-hidden">
             <MaxWidthWrapper className="relative z-20 flex items-center flex-col md:flex-row justify-center gap-6 py-10">
@@ -49,6 +49,8 @@ export const BannerStacks = () => {
         </section>
     )
 }
+
+export default BannerStacks;
 
 // Instructions
 /*
