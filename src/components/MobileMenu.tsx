@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import {
   FiX,
   FiMenu,
@@ -6,10 +6,11 @@ import {
 } from "react-icons/fi";
 import Link from "next/link";
 import { Logo } from "./Logo";
-import { LINKS } from "@/lib/constants";
+import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { LINKS } from "@/features/landing-page/lib/constants";
+import { BuyButton } from "./BuyButton";
 
 const MobileMenuLink = ({
   href,
@@ -66,9 +67,7 @@ export const MobileMenu = () => {
             </div>
             <div className="flex bg-background p-6 w-full">
               <div className="flex items-center justify-between w-full gap-3">
-                <button className="font-black tracking-widest text-xs md:text-sm w-fit px-8 py-2 bg-[#fcba28]/90 rounded-full text-background transition hover:-translate-y-1 duration-200 ease-linear">
-                  START BUILDING
-                </button>
+                <BuyButton text="I'M READY" kit="Premium Kit" />
                 <Link href="/docs" className="group flex tracking-widest items-center gap-2 text-xs md:text-sm font-black text-foreground/80">
                   LEARN MORE
                   <ChevronRight className="size-4 group-hover:translate-x-2 transition-all duration-200 ease-in-out " />

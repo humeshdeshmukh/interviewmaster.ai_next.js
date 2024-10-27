@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { AuthFlow } from "@/lib/types";
+import { AuthFlow } from "@/features/auth/lib/types";
 import { useAuthActions } from "@convex-dev/auth/react";
 
 import { FcGoogle } from "react-icons/fc";

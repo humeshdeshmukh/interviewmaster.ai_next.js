@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSubscribe } from "@/features/api/subscription/useSubscribe";
-import { subscriptionSchema } from "@/features/schema/subscription.schema";
+import { useSubscribe } from "@/features/subscribe-for-waitlist/api/useSubscribe";
+import { subscriptionSchema } from "@/features/subscribe-for-waitlist/lib/subscription.schema";
 
 import { Gift } from "lucide-react";
 

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useAction } from "convex/react";
 import { useRouter } from "next/navigation";
 import { api } from "../../convex/_generated/api";
-import { useCurrentUser } from "@/features/api/auth/useCurrentUser";
+import { useCurrentUser } from "@/features/auth/api/useCurrentUser";
 
 
 interface BuyButtonProps {

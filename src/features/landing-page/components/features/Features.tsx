@@ -2,8 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
-import { ChipBanner } from "../../ChipBanner";
-import { MaxWidthWrapper } from "../../MaxWidthWrapper";
+import { ChipBanner } from "@/components/ChipBanner";
+import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
 
 // I use lazy loading (dynamic imports) for the feature components to optimize initial page load time. This technique:
 // - Improves performance by loading components only when needed

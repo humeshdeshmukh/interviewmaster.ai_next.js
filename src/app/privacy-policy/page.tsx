@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
         <p className="mb-4"><strong>Last Updated:</strong> October 20, 2024</p>
         
         <p className="mb-4">
-          Welcome to <strong>DevVault</strong> (&quot;we,&quot; &quot;our,&quot; &quot;us&quot;). This Privacy Policy explains how we collect, use, and share your personal information when you use our website, <strong>DevVault</strong>.
+          Welcome to <strong>App Name</strong> (&quot;we,&quot; &quot;our,&quot; &quot;us&quot;). This Privacy Policy explains how we collect, use, and share your personal information when you use our website, <strong>App Name</strong>.
         </p>
         <p className="mb-4">
           By accessing or using the Site, you agree to the terms of this <strong>Privacy Policy</strong>.

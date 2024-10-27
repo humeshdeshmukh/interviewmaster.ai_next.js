@@ -1,4 +1,4 @@
-import { LottiePlayer } from "../../LottiePlayer"
+import { LottiePlayer } from "@/components/LottiePlayer"
 
 {/* TODO: Choose an image or animation that visually represents your headline's message or your product */}
 {/* TODO: Ensure the visual aligns with your brand's color scheme and style */}

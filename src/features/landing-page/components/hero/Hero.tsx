@@ -2,7 +2,7 @@
 
 import { LeftHero } from "./LeftHero";
 import { RightHero } from "./RightHero";
-import { MaxWidthWrapper } from "../../MaxWidthWrapper";
+import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
 
 export const Hero = () => {
     return (

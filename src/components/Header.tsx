@@ -8,17 +8,17 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { LINKS } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import { LINKS } from "@/features/landing-page/lib/constants";
 import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 
 import { Logo } from "./Logo";
 import { NavLink } from "./NavLink";
 import { MobileMenu } from "./MobileMenu";
-import { UserButton } from "./auth/UserButton";
 import { MaxWidthWrapper } from "./MaxWidthWrapper";
 import { FaXTwitter, FaLinkedin } from "react-icons/fa6";
-import { UserButtonLoading } from "./auth/UserButtonLoading";
+import { UserButton } from "../features/auth/components/UserButton";
+import { UserButtonLoading } from "../features/auth/components/UserButtonLoading";
 
 export const Header = () => {
     const router = useRouter();

@@ -7,7 +7,7 @@ import {
 } from 'framer-motion';
 import { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
-import { MaxWidthWrapper } from "../../MaxWidthWrapper";
+import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
 
 const tasks = [
     { name: "Setting up authentication", scratch: "5 hours", kit: "15 minutes" },

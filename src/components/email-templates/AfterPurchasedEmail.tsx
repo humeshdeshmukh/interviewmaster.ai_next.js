@@ -41,7 +41,7 @@ export const AfterPurchasedEmail = ({
             <Head />
             <Preview>Your {kit} is Ready to Clone 🚀</Preview>
             <Tailwind>
-                <Body className="font-sans bg-[#272727] text-[#f9f4da]">
+                <Body className="font-sans bg-[#272727] text-[#f9f4da] p-8">
                     <Container className="mx-auto py-5 pb-12 w-[660px] max-w-full">
                         <Section>
                             <Row>
