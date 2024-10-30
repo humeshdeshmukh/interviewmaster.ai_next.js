@@ -5,9 +5,7 @@ import {
     convexAuthNextjsMiddleware,
 } from "@convex-dev/auth/nextjs/server";
 
-
-// TODO: Add all the routes that you want to be public
-const isPublicRoute = createRouteMatcher(["/", "/auth", "/disclosure", "/privacy-policy"])
+const isPublicRoute = createRouteMatcher(["/auth", "/"])
 
 export default convexAuthNextjsMiddleware((req) => {
     if (!isPublicRoute(req) && !isAuthenticatedNextjs()) {

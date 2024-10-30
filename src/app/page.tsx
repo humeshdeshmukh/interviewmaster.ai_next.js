@@ -1,14 +1,12 @@
-import dynamic from "next/dynamic";
+import { CTA } from "@/features/landing-page/components/cta/CTA";
+import { FAQ } from "@/features/landing-page/components/faq/FAQ";
 import { Hero } from "@/features/landing-page/components/hero/Hero";
-
-const BannerStacks = dynamic(() => import("@/features/landing-page/components/banner-stacks/BannerStacks"), { ssr: false });
-const TimeComparisonTable = dynamic(() => import("@/features/landing-page/components/time-comparison-table/TimeComparisonTable"));
-const Features = dynamic(() => import("@/features/landing-page/components/features/Features"));
-const HowToUse = dynamic(() => import("@/features/landing-page/components/how-to-use/HowToUse"));
-const Pricing = dynamic(() => import("@/features/landing-page/components/pricing/Pricing"), { ssr: false });
-const Testimonials = dynamic(() => import("@/features/landing-page/components/testimonials/Testimonials"));
-const FAQ = dynamic(() => import("@/features/landing-page/components/faq/FAQ"));
-const CTA = dynamic(() => import("@/features/landing-page/components/cta/CTA"));
+import { Pricing } from "@/features/landing-page/components/pricing/Pricing";
+import { Features } from "@/features/landing-page/components/features/Features";
+import { HowToUse } from "@/features/landing-page/components/how-to-use/HowToUse";
+import { Testimonials } from "@/features/landing-page/components/testimonials/Testimonials";
+import { BannerStacks } from "@/features/landing-page/components/banner-stacks/BannerStacks"
+import { TimeComparisonTable } from "@/features/landing-page/components/time-comparison-table/TimeComparisonTable";
 
 export default function Home() {
   return (

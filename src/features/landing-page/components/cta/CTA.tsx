@@ -2,7 +2,7 @@ import { BuyButton } from "@/components/BuyButton"
 import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
 
 
-const CTA = () => {
+export const CTA = () => {
     return (
         <section id="cta" className="relative overflow-hidden bg-neutral-900 border-t-3xl border-neutral-900">
             <MaxWidthWrapper className="relative flex flex-col items-center justify-center space-y-6 py-20 md:py-30">
@@ -21,7 +21,6 @@ const CTA = () => {
     )
 }
 
-export default CTA;
 
 // TODO: If you're first launching your app by gathering waitlist emails, use this CTA
 // export const CTA = () => {

@@ -35,7 +35,7 @@ const Highlights = dynamic(() => import('./Highlights').then(mod => ({ default: 
 });
 
 
-const Features = () => {
+export const Features = () => {
     return (
         <section id="features" className="relative overflow-hidden">
             <MaxWidthWrapper className="relative flex flex-col items-center py-20 md:py-32">
@@ -80,7 +80,6 @@ const Features = () => {
     )
 }
 
-export default Features;
 
 /**
  * Features Component

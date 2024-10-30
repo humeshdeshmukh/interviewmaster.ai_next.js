@@ -39,7 +39,7 @@ const packages = [
     },
 ];
 
-const Pricing = () => {
+export const Pricing = () => {
 
     return (
         <section id="pricing" className="relative overflow-hidden">
@@ -121,7 +121,6 @@ const Pricing = () => {
     )
 }
 
-export default Pricing;
 
 // Instructions
 /*

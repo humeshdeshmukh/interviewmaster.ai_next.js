@@ -56,7 +56,7 @@ const questions = [
 ];
 
 
-const FAQ = () => {
+export const FAQ = () => {
     return (
         <section className="px-4 py-12">
             <MaxWidthWrapper>
@@ -82,8 +82,6 @@ const FAQ = () => {
         </section>
     );
 };
-
-export default FAQ;
 
 const Question = ({
     title,

@@ -9,7 +9,7 @@ import { FaDatabase, FaRocket } from "react-icons/fa6";
 
 
 
-export function Highlights() {
+export const Highlights = () =>  {
   const highlights = [
     {
       title: "Next.js Framework",

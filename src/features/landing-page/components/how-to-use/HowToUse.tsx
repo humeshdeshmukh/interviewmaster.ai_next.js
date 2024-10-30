@@ -10,7 +10,7 @@ import { BuyButton } from "@/components/BuyButton";
 import { ChipBanner } from "@/components/ChipBanner"
 import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
 
-const HowToUse = () => {
+export const HowToUse = () => {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -81,7 +81,6 @@ const HowToUse = () => {
     )
 }
 
-export default HowToUse;
 
 // Instructions
 /*

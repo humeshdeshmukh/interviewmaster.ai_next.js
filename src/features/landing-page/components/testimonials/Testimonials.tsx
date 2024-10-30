@@ -127,7 +127,7 @@ const VideoTestimonial = memo(({ isPlaying, isMuted, onPlayClick, onMuteClick }:
 ));
 VideoTestimonial.displayName = 'VideoTestimonial';
 
-const Testimonials = () => {
+export const Testimonials = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -157,7 +157,7 @@ const Testimonials = () => {
             <MaxWidthWrapper>
                 <div className="flex flex-col items-center justify-center mb-12 ">
                     <ChipBanner text="TESTIMONIALS" />
-                    <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold">
+                    <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold text-center">
                         Trusted by <span className="text-[#fcba28]">Amazing</span> People
                     </h2>
                     <p className="mt-4 text-lg text-foreground/80 max-w-2xl mx-auto">
@@ -220,5 +220,3 @@ const Testimonials = () => {
         </section>
     );
 };
-
-export default Testimonials;
