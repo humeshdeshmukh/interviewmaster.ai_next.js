@@ -53,25 +53,16 @@ export const HowToUse = () => {
                         transformPerspective: "800px",
                     }}
                     className="relative h-full w-full sm:w-10/12 md:w-8/12  p-0.5 my-12 overflow-hidden rounded-2xl">
-                    <iframe
-                        width="100%"
-                        height="auto"
-                        style={{ aspectRatio: "16/9" }}
-                        title="YouTube video player"
-                        src={process.env.YT_VID_URL}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen>
-                    </iframe>
+                    
                     {/* TODO: Use this if you don't have a video yet */}
-                    {/* <video
+                    <video
                         autoPlay
                         preload="metadata"
                         className="w-full h-full aspect-auto z-10"
                     >
                         <source src="/coming-soon-clip.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
-                    </video> */}
+                    </video>
                 </motion.article>
                 {/* HowToUse CTA */}
                 <BuyButton text="I'M READY" kit="Premium Kit" />
