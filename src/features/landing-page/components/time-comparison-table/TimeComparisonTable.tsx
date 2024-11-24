@@ -10,15 +10,15 @@ import { ArrowRight } from "lucide-react";
 import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
 
 const tasks = [
-    { name: "Setting up authentication", scratch: "5 hours", kit: "15 minutes" },
-    { name: "Designing and coding the landing page", scratch: "7+ hours", kit: "30 minutes" },
-    { name: "Integrating payment systems", scratch: "6 hours", kit: "20 minutes" },
-    { name: "Integrating emails and designing templates", scratch: "5 hours", kit: "20 minutes" },
-    { name: "Database setup and configuration", scratch: "5 hours", kit: "10 minutes" },
-    { name: "Implementing user role permissions", scratch: "2 hours", kit: "10 minutes" },
-    { name: "Ensuring mobile responsiveness", scratch: "3 hours", kit: "Already optimized" },
-    { name: "Adding SEO and meta tags", scratch: "2 hours", kit: "Pre-configured" },
-    { name: "Configuring analytics and monitoring", scratch: "4 hours", kit: "10 minutes" },
+    { name: "Setting up user authentication and candidate profiles", scratch: "5 hours", kit: "15 minutes" },
+    { name: "Creating and designing interview question templates", scratch: "7+ hours", kit: "30 minutes" },
+    { name: "Integrating payment systems for subscription plans", scratch: "6 hours", kit: "20 minutes" },
+    { name: "Building automated email systems for candidate feedback", scratch: "5 hours", kit: "20 minutes" },
+    { name: "Configuring the database for scalable candidate data", scratch: "5 hours", kit: "10 minutes" },
+    { name: "Implementing multi-user role management", scratch: "2 hours", kit: "10 minutes" },
+    { name: "Ensuring mobile responsiveness for interview forms", scratch: "3 hours", kit: "Already optimized" },
+    { name: "Adding SEO for interview-related keywords", scratch: "2 hours", kit: "Pre-configured" },
+    { name: "Setting up analytics to monitor platform usage", scratch: "4 hours", kit: "10 minutes" },
 ]
 
 export const TimeComparisonTable = () => {
@@ -47,14 +47,14 @@ export const TimeComparisonTable = () => {
     return (
         <section id="time-comparison-table" className="min-h-screen flex items-center justify-center bg-[#272727] p-4">
             <MaxWidthWrapper className="relative z-20 w-full max-w-4xl space-y-8 pb-16 pt-32">
-                <h2 className="text-3xl font-bold text-center text-[#f9f4da]">DevVault SaaS Kits Comparison</h2>
+                <h2 className="text-3xl font-bold text-center text-[#f9f4da]">InterviewMaster.ai: Time-Saving Features</h2>
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse">
                         <thead>
                             <tr className="bg-[#FF652F] text-[#f9f4da]">
                                 <th className="p-3 text-left">Task</th>
                                 <th className="p-3 text-center">Building From Scratch</th>
-                                <th className="p-3 text-center">Using DevVault SaaS Kits</th>
+                                <th className="p-3 text-center">Using InterviewMaster.ai</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,9 +76,9 @@ export const TimeComparisonTable = () => {
                 <div className="bg-[#3f3f3f] p-6 rounded-lg shadow-lg">
                     <h3 className="text-2xl font-bold text-[#f38ba3] mb-4">Time Saved: 30+ hours</h3>
                     <p className="text-[#f9f4da] leading-relaxed">
-                        With our <strong>Next.js App Router boilerplate</strong>, developers can drastically reduce tedious setup time 
-                        from over 30 hours to less than 2 hours, empowering them to 
-                        <strong className="underline text-[#fcba28]">focus on building and launching their dream SaaS application rapidly.</strong>
+                        With <strong>InterviewMaster.ai</strong>, recruiters and hiring managers can drastically reduce setup and configuration time 
+                        from over 30 hours to less than 2 hours, enabling them to 
+                        <strong className="underline text-[#fcba28]">focus on finding and nurturing top talent quickly and efficiently.</strong>
                     </p>
                 </div>
                 <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-[#f9f4da]">
@@ -86,7 +86,7 @@ export const TimeComparisonTable = () => {
                     <ArrowRight className="text-[#FF652F] w-8 h-8 rotate-90 md:rotate-0" />
                     <div ref={ref} className="relative inline-block">
                         <span className="text-lg font-bold text-[#fcba28] z-10 relative px-2 py-1">
-                            Using DevVault SaaS Kit
+                            Using InterviewMaster.ai
                         </span>
                         <motion.svg
                             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -111,24 +111,3 @@ export const TimeComparisonTable = () => {
         </section>
     )
 }
-
-// Instructions
-/*
-This component creates a visually appealing section that highlights 
-the benefits of using your SaaS product compared to alternative solutions.
-
-For example: My SaaS highlihts the benefits of you SAVING A LOT OF TIME. 
-That's why I built a time comparison table
-
-Purpose:
-- Showcase the key advantages of your SaaS product
-- Provide a clear, quantitative or qualitative comparison for potential customers
-- Reinforce the value proposition of your product
-
-Implementation tips:
-    TODO: Focus on the most impactful benefits that set your product apart
-    TODO: Use concrete examples or metrics where possible
-    TODO: Consider adding icons or illustrations to make the comparison more visually engaging
-    TODO: Ensure the language resonates with your target audience
-
-*/

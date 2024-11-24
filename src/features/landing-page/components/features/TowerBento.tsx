@@ -1,6 +1,4 @@
 import Image from "next/image";
-
-
 import {
     User,
     Layers,
@@ -14,22 +12,20 @@ import {
 import { CardBentoIcon } from "./CardBentoIcon";
 import { CardBentoWrapper } from "./CardBentoWrapper";
 
-
 export const TowerBento = () => {
     return (
         <div className="cols-span-1 h-[600px] lg:col-span-4 lg:h-[600px] hover:scale-105 transition duration-200 ease-linear">
             <CardBentoWrapper className="flex flex-col bg-[#FF652F]">
                 <CardBentoIcon icon={Palette} />
-                <h3 className="mb-2 text-2xl font-bold uppercase text-background">Beautiful Interface</h3>
+                <h3 className="mb-2 text-2xl font-bold uppercase text-background">Sleek Design</h3>
                 <p className="mb-8 text-background">
-                    Style your application effortlessly with TailwindCSS and Shadcn-UI for stunning, responsive designs.
+                    Build modern, minimalistic user interfaces with ease using TailwindCSS and Shadcn-UI.
                 </p>
-                {/* <CornerBlur /> */}
                 <Mockup />
             </CardBentoWrapper>
         </div>
-    )
-}
+    );
+};
 
 const Mockup = () => (
     <div className="absolute -bottom-4 left-6 h-[340px] w-full overflow-hidden rounded-xl border border-zinc-700 bg-background sm:h-[370px]">
@@ -41,12 +37,11 @@ const Mockup = () => (
     </div>
 );
 
-
 const MockupSidebar = () => (
     <div className="h-full w-30 border-r border-zinc-700 bg-zinc-900 p-2">
         <div className="flex items-center mb-4">
-            <Image src="/logo.svg" alt="Dev Vault Logo" width={25} height={25} />
-            <p className="text-foreground text-xs">Vault</p>
+            <Image src="/logo.svg" alt="App Logo" width={25} height={25} />
+            <p className="text-foreground text-xs">AppName</p>
         </div>
         <div className="space-y-2 flex flex-col items-start">
             <div className="flex items-center gap-1 rounded px-1 py-0.5 text-xs text-zinc-600">
@@ -55,7 +50,7 @@ const MockupSidebar = () => (
             </div>
             <div className="flex items-center gap-1 rounded px-1 py-0.5 text-xs text-zinc-600">
                 <BookOpen className="size-4" />
-                Resources
+                Library
             </div>
             <div className="flex items-center gap-1 rounded px-1 py-0.5 text-xs text-zinc-600">
                 <Proportions className="size-4" />
@@ -71,16 +66,15 @@ const MockupSidebar = () => (
             </div>
             <div className="flex items-center gap-1 rounded px-1 py-0.5 text-xs text-zinc-600">
                 <LifeBuoy className="size-4" />
-                Help Center
+                Support
             </div>
             <div className="flex items-center gap-1 rounded px-1 py-0.5 text-xs text-zinc-600">
                 <Megaphone className="size-4" />
-                Feedback
+                Announcements
             </div>
         </div>
     </div>
 );
-
 
 const MockupTopBar = () => (
     <div className="flex gap-1 border-b border-zinc-700 bg-background p-2">
@@ -91,16 +85,15 @@ const MockupTopBar = () => (
 );
 
 const MockupMain = () => {
-
     return (
         <div className="relative w-full">
             <div className="relative z-0 w-full p-4">
                 <div className="w-full border-b border-zinc-700 text-foreground pb-2 text-xs font-semibold">
-                    Premium Templates
+                    Featured Projects
                 </div>
                 <div className="w-full h-full grid grid-cols-3 gap-4 my-4">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-                        <div key={i} className="border border-zinc-700 rounded-lg bg-neutral-900 animate-pulse h-[50px] w-full"/>
+                        <div key={i} className="border border-zinc-700 rounded-lg bg-neutral-900 animate-pulse h-[50px] w-full" />
                     ))}
                 </div>
             </div>

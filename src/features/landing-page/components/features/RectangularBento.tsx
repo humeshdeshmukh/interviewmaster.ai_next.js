@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { AnimationProps, motion } from "framer-motion";
 
-
 import { Blocks } from "lucide-react";
 import { FiFramer } from "react-icons/fi";
 import { BsStripe } from "react-icons/bs";
@@ -12,7 +11,6 @@ import { RiNextjsFill, RiTailwindCssFill } from "react-icons/ri";
 
 import { CardBentoIcon } from "./CardBentoIcon";
 import { CardBentoWrapper } from "./CardBentoWrapper";
-
 
 export const RectangularBento = () => {
   return (
@@ -25,12 +23,11 @@ export const RectangularBento = () => {
             From payments to authentication, database, and animation, everything you need is built-in and ready for use right away.
           </p>
         </div>
-        {/* <div className="absolute bottom-0 right-0 top-0 z-10 w-48 bg-gradient-to-r from-zinc-950/0 to-zinc-950" /> */}
         <SpinningLogos />
       </CardBentoWrapper>
     </div>
-  )
-}
+  );
+};
 
 const SpinningLogos = () => {
   const { width } = useWindowSize();

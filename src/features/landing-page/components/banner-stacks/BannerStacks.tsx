@@ -1,9 +1,8 @@
 import Image from "next/image"
 import { MaxWidthWrapper } from "@/components/MaxWidthWrapper"
 
-
-// TODO: Add logo selection for your own app
-// TODO: Or add companies that uses your products here
+// TODO: Add logo selection for InterviewMaster.ai
+// TODO: Or add companies that use InterviewMaster.ai's services here
 const stacks = [
     {
         name: "NextJS",
@@ -52,13 +51,12 @@ export const BannerStacks = () => {
 
 // Instructions
 /*
-This component displays logos of popular brands or companies that use your product. It serves to:
-1. Build credibility and trust with potential customers
-2. Demonstrate the wide adoption of your product
-3. Leverage social proof to encourage new sign-ups
-4. Choose recognizable brands or your most impressive clients.
+This component displays logos of popular technologies or companies used by InterviewMaster.ai. It serves to:
+1. Build credibility and trust with potential customers.
+2. Demonstrate the high-quality tech stack behind InterviewMaster.ai.
+3. Showcase the trusted tools that power InterviewMaster.ai's services.
+4. Use recognizable brands to establish trust and legitimacy.
 
 Logo Preparation:
    TODO: Use vector formats (SVG) for logos when possible for crisp rendering at all sizes.
-
 */

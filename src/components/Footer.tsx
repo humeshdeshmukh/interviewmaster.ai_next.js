@@ -9,7 +9,7 @@ export const Footer = () => {
             <MaxWidthWrapper className="container flex flex-col items-center justify-between p-6 space-y-4 md:space-y-0 md:flex-row">
                 <p className="text-sm text-foreground font-medium">
                     {/* TODO: Replace App Name */}
-                    © <span className="font-bold">App Name</span> - {year}
+                    © <span className="font-bold">interviewmaster.ai</span> - {year}
                 </p>
                 <div className="flex items-center gap-4">
                     {/* TODO: Add more links to your needs */}

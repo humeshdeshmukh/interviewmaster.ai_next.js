@@ -42,14 +42,14 @@ export const Features = () => {
                 {/* Section Header */}
                 <hgroup className="relative z-20 flex items-center flex-col md:flex-row flex-wrap justify-center md:justify-between w-full gap-6">
                     <div className="flex flex-col justify-center items-center md:justify-start md:items-start gap-4 max-w-xl">
-                        <ChipBanner text="READY TO LAUNCH YET???" />
+                        <ChipBanner text="READY TO LAUNCH YOUR CAREER?" />
                         <h2 className="flex-1 font-extrabold text-xl text-center md:text-start md:text-2xl lg:text-3xl">
-                            I spent <span className="text-[#fcba28]">1 WEEK</span> perfecting this landing page, so you don&apos;t have to. Let me save you time today!
+                            I spent <span className="text-[#fcba28]">1 WEEK</span> perfecting this platform, so you don&apos;t have to. Let me save you time today!
                         </h2>
                     </div>
 
                     <p className="flex-1 font-medium text-base text-center md:text-start md:text-lg justify-end max-w-lg w-full mt-0 md:mt-12">
-                        With our SaaS kit, you&apos;ll have everything you need: Next.js latest version, payment integration, authentication, database, and more. Simply copy, paste, and start building. Focus on your app&apos;s success, not the setup.
+                        With InterviewMaster.ai, you&apos;ll have everything you need: interview preparation, technical questions, AI-powered feedback, and more. Simply get started and focus on acing your interview.
                     </p>
                 </hgroup>
                 {/* Section Bento Grid */}
@@ -84,14 +84,14 @@ export const Features = () => {
 /**
  * Features Component
  * 
- * A showcase section that presents the key features of the product using
- * an interactive bento grid layout. Each feature is represented by a
- * distinct component with its own animations and interactions.
+ * A showcase section that presents the key features of InterviewMaster.ai using
+ * an interactive bento grid layout. Each feature is represented by a distinct component
+ * with its own animations and interactions.
  *
  * Layout Structure:
  * - TowerBento: Main feature showcase (4 columns)
  * - SquareBento1 & 2: Secondary features (2 columns each)
- * - RectangularBento: Tech stack display (2 columns)
+ * - RectangularBento: AI-powered interview preparation tools (2 columns)
  *
  * Performance Optimizations:
  * - Uses dynamic imports to reduce initial bundle size

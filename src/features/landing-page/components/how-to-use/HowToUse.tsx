@@ -24,13 +24,13 @@ export const HowToUse = () => {
             <MaxWidthWrapper className="relative flex flex-col items-center py-20 md:py-32">
                 {/* HowToUse Header */}
                 <div className="flex flex-col justify-center items-center gap-4 max-w-xl mb-4 md:mb-6">
-                    <ChipBanner text="IT'S EASY TO GET STARTED" />
+                    <ChipBanner text="GET STARTED EFFORTLESSLY" />
                     <h2 className="flex-1 font-extrabold text-xl text-center md:text-3xl lg:text-5xl">
-                        Launch Your App Today With Our Easy Setup
+                        Seamlessly Create Your Interview Platform
                     </h2>
                 </div>
-                <p className="flex-1 font-medium text-base text-center justify-center md:text-lg  max-w-lg w-full">
-                    Start building your app without the stress of complicated setups, thanks to our user-friendly Next.js Boilerplate.
+                <p className="flex-1 font-medium text-base text-center justify-center md:text-lg max-w-lg w-full">
+                    InterviewMaster.ai makes launching your interview preparation app simple and intuitive, so you can focus on building features that matter.
                 </p>
 
                 {/* HowToUse Video */}
@@ -52,7 +52,7 @@ export const HowToUse = () => {
                         rotateX: rotateX,
                         transformPerspective: "800px",
                     }}
-                    className="relative h-full w-full sm:w-10/12 md:w-8/12  p-0.5 my-12 overflow-hidden rounded-2xl">
+                    className="relative h-full w-full sm:w-10/12 md:w-8/12 p-0.5 my-12 overflow-hidden rounded-2xl">
                     
                     {/* TODO: Use this if you don't have a video yet */}
                     <video
@@ -65,7 +65,7 @@ export const HowToUse = () => {
                     </video>
                 </motion.article>
                 {/* HowToUse CTA */}
-                <BuyButton text="I'M READY" kit="Premium Kit" />
+                <BuyButton text="GET STARTED" kit="Premium Kit" />
 
             </MaxWidthWrapper>
         </section>
@@ -76,14 +76,14 @@ export const HowToUse = () => {
 // Instructions
 /*
 This component serves a dual purpose:
-1. Demonstrate how to use your product
-2. Build trust by showcasing the people behind the product
+1. Demonstrate how to use InterviewMaster.ai.
+2. Build trust by showcasing the simplicity and effectiveness of the product.
 
 Key Aspects:
-1. Product Demonstration: Clearly show how your product works and its key features.
-2. Personal Touch: Include yourself or team members in the video to build trust and connection.
-3. Engagement: Use motion effects to draw attention and keep users interested.
+1. Product Demonstration: Clearly highlight how InterviewMaster.ai simplifies interview preparation.
+2. Engaging Content: Use motion effects and dynamic elements to captivate your audience.
+3. Call to Action: Encourage users to take the first step towards launching their platform.
 
-Why Show Yourself:
-- Builds trust, Creates connection, Humanizes your brand
+Why Showcase Your Product:
+- Build credibility, Highlight ease of use, Create a positive first impression
 */

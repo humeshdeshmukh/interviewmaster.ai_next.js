@@ -145,6 +145,7 @@ export const fulfill = internalAction({
 
         // grab the date of purchased
         const dateOfPurchased = new Date();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formattedDate = dateOfPurchased.toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',

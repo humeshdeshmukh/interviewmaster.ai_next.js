@@ -7,65 +7,66 @@ import { SiGoogleanalytics } from "react-icons/si";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { FaDatabase, FaRocket } from "react-icons/fa6";
 
-
-
-export const Highlights = () =>  {
+export const Highlights = () => {
   const highlights = [
     {
-      title: "Next.js Framework",
+      title: "Next.js Performance",
       description:
-        "Build scalable applications effortlessly with the powerful Next.js framework.",
+        "Enhance your app's speed and performance with the power of Next.js, built for optimized web development.",
       icon: <RiNextjsFill className="size-8" />,
     },
     {
-      title: "Email Integration",
+      title: "Seamless Email Automation",
       description:
-        "Simplify email communication with seamless integration using Resend.",
+        "Effortlessly automate your email campaigns and user notifications with Resend integration.",
       icon: <MdEmail className="size-8" />,
     },
     {
-      title: "Payment Solutions",
+      title: "Payment Gateways",
       description:
-        "Easily accept payments with Stripe or Lemon Squeezy integration.",
+        "Integrate secure payment systems like Stripe or Lemon Squeezy for smooth online transactions.",
       icon: <PiCreditCardFill className="size-8" />,
     },
     {
-      title: "Secure Authentication",
-      description: "Implement secure user authentication using NextAuth or Clerk for hassle-free login.",
+      title: "Robust Authentication",
+      description:
+        "Ensure secure login for users with powerful authentication systems like NextAuth or Clerk.",
       icon: <IoShieldCheckmark className="size-8" />,
     },
     {
-      title: "Verstile Database",
-      description: "Choose from various databases to fit your app’s unique needs.",
+      title: "Customizable Databases",
+      description:
+        "Choose from multiple database solutions to match your app's unique needs, ensuring flexibility and scalability.",
       icon: <FaDatabase className="size-8" />,
     },
     {
-      title: "SEO Optimization",
+      title: "SEO Excellence",
       description:
-        "Boost visibility with built-in SEO features powered by Next.js.",
+        "Maximize your site's reach with automatic SEO enhancements built into Next.js for higher search engine rankings.",
       icon: <FaRocket className="size-8" />,
     },
     {
-      title: "Web Analytics",
+      title: "Comprehensive Analytics",
       description:
-        "Track user behavior effortlessly with Google Analytics and Microsoft Clarity integration.",
+        "Gain valuable insights into user interactions and behavior with seamless integrations of Google Analytics and Microsoft Clarity.",
       icon: <SiGoogleanalytics className="size-8" />,
     },
     {
-        title: "Ease of use",
-        description:
-          "It's as easy as using an Apple, and as expensive as buying one.",
-        icon: <TbEaseInOut className="size-8" />,
-      },
+      title: "User-Friendly Interface",
+      description:
+        "Experience the ease of use akin to Apple's design, with a premium, seamless interface.",
+      icon: <TbEaseInOut className="size-8" />,
+    },
   ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  relative z-10 py-10 max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
       {highlights.map((feature, index) => (
         <Highlight key={feature.title} {...feature} index={index} />
       ))}
     </div>
   );
-}
+};
 
 const Highlight = ({
   title,
@@ -81,7 +82,7 @@ const Highlight = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r  py-10 relative group/feature dark:border-neutral-800",
+        "flex flex-col lg:border-r py-10 relative group/feature dark:border-neutral-800",
         (index === 0 || index === 4) && "lg:border-l dark:border-neutral-800",
         index < 4 && "lg:border-b dark:border-neutral-800"
       )}
