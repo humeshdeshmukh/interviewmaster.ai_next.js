@@ -10,57 +10,57 @@ import { FaDatabase, FaRocket } from "react-icons/fa6";
 export const Highlights = () => {
   const highlights = [
     {
-      title: "Next.js Performance",
+      title: "Advanced Interview Simulations",
       description:
-        "Enhance your app's speed and performance with the power of Next.js, built for optimized web development.",
-      icon: <RiNextjsFill className="size-8" />,
+        "Prepare for your next job interview with real-world interview simulations, powered by AI-driven question generation and feedback.",
+      icon: <RiNextjsFill className="text-4xl" />,
     },
     {
-      title: "Seamless Email Automation",
+      title: "Personalized Feedback",
       description:
-        "Effortlessly automate your email campaigns and user notifications with Resend integration.",
-      icon: <MdEmail className="size-8" />,
+        "Receive personalized, detailed feedback after each interview practice session, highlighting areas for improvement and suggesting resources.",
+      icon: <MdEmail className="text-4xl" />,
     },
     {
-      title: "Payment Gateways",
+      title: "Seamless Payment Solutions",
       description:
-        "Integrate secure payment systems like Stripe or Lemon Squeezy for smooth online transactions.",
-      icon: <PiCreditCardFill className="size-8" />,
+        "Easily upgrade your plan with seamless payments through Stripe or Lemon Squeezy, providing access to premium features and courses.",
+      icon: <PiCreditCardFill className="text-4xl" />,
     },
     {
-      title: "Robust Authentication",
+      title: "Secure User Authentication",
       description:
-        "Ensure secure login for users with powerful authentication systems like NextAuth or Clerk.",
-      icon: <IoShieldCheckmark className="size-8" />,
+        "Sign in securely using your preferred method, whether it’s email, Google, or LinkedIn, with multi-factor authentication for added protection.",
+      icon: <IoShieldCheckmark className="text-4xl" />,
     },
     {
-      title: "Customizable Databases",
+      title: "Comprehensive Skill Database",
       description:
-        "Choose from multiple database solutions to match your app's unique needs, ensuring flexibility and scalability.",
-      icon: <FaDatabase className="size-8" />,
+        "Access a growing database of interview questions, coding challenges, and mock interviews tailored to various roles and industries.",
+      icon: <FaDatabase className="text-4xl" />,
     },
     {
-      title: "SEO Excellence",
+      title: "Progress Tracking & Analytics",
       description:
-        "Maximize your site's reach with automatic SEO enhancements built into Next.js for higher search engine rankings.",
-      icon: <FaRocket className="size-8" />,
+        "Track your progress over time with detailed analytics, helping you identify areas for improvement and celebrate your growth.",
+      icon: <FaRocket className="text-4xl" />,
     },
     {
-      title: "Comprehensive Analytics",
+      title: "Interactive Learning Modules",
       description:
-        "Gain valuable insights into user interactions and behavior with seamless integrations of Google Analytics and Microsoft Clarity.",
-      icon: <SiGoogleanalytics className="size-8" />,
+        "Engage with interactive tutorials and coding challenges that enhance your interview preparation, making learning fun and effective.",
+      icon: <SiGoogleanalytics className="text-4xl" />,
     },
     {
-      title: "User-Friendly Interface",
+      title: "Easy Navigation & User Experience",
       description:
-        "Experience the ease of use akin to Apple's design, with a premium, seamless interface.",
-      icon: <TbEaseInOut className="size-8" />,
+        "Enjoy a simple, intuitive interface that makes it easy to navigate between courses, practice tests, and your personalized dashboard.",
+      icon: <TbEaseInOut className="text-4xl" />,
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-10 max-w-7xl mx-auto">
       {highlights.map((feature, index) => (
         <Highlight key={feature.title} {...feature} index={index} />
       ))}
@@ -82,21 +82,17 @@ const Highlight = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r py-10 relative group/feature dark:border-neutral-800",
+        "flex flex-col items-center lg:border-r py-8 relative group/feature dark:border-neutral-800",
         (index === 0 || index === 4) && "lg:border-l dark:border-neutral-800",
         index < 4 && "lg:border-b dark:border-neutral-800"
       )}
     >
-      {index < 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-background pointer-events-none" />
-      )}
-      {index >= 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-background pointer-events-none" />
-      )}
-      <div className="mb-4 relative z-10 px-10 text-[#fcba28]">
-        {icon}
-      </div>
-      <div className="text-lg font-bold mb-2 relative z-10 px-10">
+      {/* Hover Effect */}
+      <div
+        className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-background pointer-events-none"
+      />
+      <div className="mb-4 relative z-10 text-[#fcba28]">{icon}</div>
+      <div className="text-lg font-semibold mb-2 relative z-10">
         <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-foreground group-hover/feature:bg-[#fcba28] transition-all duration-200 origin-center" />
         <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-foreground">
           {title}

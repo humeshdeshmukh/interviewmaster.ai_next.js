@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import Link from "next/link";
 import { useState } from "react";
@@ -10,48 +10,48 @@ import { MaxWidthWrapper } from "@/components/MaxWidthWrapper";
 const questions = [
     {
         id: 1,
-        question: "What is InterviewMaster.ai?",
-        answer: "InterviewMaster.ai is an advanced platform designed to help you excel in interviews by offering expert-curated questions, AI-driven feedback, and tailored learning resources."
+        question: "What is InterviewMaster.site and how can it help me prepare for interviews?",
+        answer: "InterviewMaster.site is a platform designed to help you ace your technical interviews. It offers coding challenges, interview questions, and mock interview sessions, along with detailed solutions and explanations to prepare you for real-world interviews."
     },
     {
         id: 2,
-        question: "How does InterviewMaster.ai help with interview preparation?",
-        answer: "Our platform provides interactive mock interviews, instant feedback, and personalized tips to improve your performance, ensuring you're ready for real-world challenges."
+        question: "Can I customize the interview topics on InterviewMaster.site?",
+        answer: "Yes, you can select from various coding topics, difficulty levels, and even programming languages, ensuring that your preparation aligns with the specific requirements of your target job."
     },
     {
         id: 3,
-        question: "Is InterviewMaster.ai suitable for all experience levels?",
-        answer: "Yes! Whether you're a fresher or an experienced professional, our tools are designed to enhance your interview skills at any stage of your career."
+        question: "Is InterviewMaster.site beginner-friendly?",
+        answer: "Absolutely! InterviewMaster.site is designed for both beginners and advanced users. We provide guided tutorials, step-by-step solutions, and a comprehensive FAQ section to help users at every stage of their learning."
     },
     {
         id: 4,
-        question: "Can I track my progress over time?",
-        answer: "Absolutely! Our platform includes detailed analytics and progress tracking to help you monitor improvements and focus on areas needing attention."
+        question: "How quickly can I start using InterviewMaster.site?",
+        answer: "Getting started is simple! Sign up on InterviewMaster.site, and you can start practicing coding challenges and mock interviews right away. No setup required."
     },
     {
         id: 5,
-        question: "What types of interviews does this platform cover?",
-        answer: "InterviewMaster.ai covers technical, HR, behavioral, and domain-specific interviews tailored to various industries and roles."
+        question: "Can I track my progress on InterviewMaster.site?",
+        answer: "Yes, InterviewMaster.site provides a progress tracker that allows you to monitor your learning journey. You can review your completed challenges, areas where you need improvement, and set milestones to keep yourself motivated."
     },
     {
         id: 6,
-        question: "Is there a free trial available?",
-        answer: "Yes, we offer a free trial to explore the platform’s features. Upgrade to unlock premium content and advanced tools."
+        question: "Do you offer a money-back guarantee or refund policy?",
+        answer: "Yes, we offer a 30-day money-back guarantee. If you're not satisfied with our services, you can request a full refund within 30 days of purchase."
     },
     {
         id: 7,
-        question: "What kind of support is available for users?",
-        answer: "You can contact our support team at humeshdeshmukh0@gmail.com for assistance with any questions or technical issues."
+        question: "How do I prepare for a mock interview on InterviewMaster.site?",
+        answer: "You can choose from a list of mock interview sessions in various domains like algorithms, data structures, system design, and behavioral interviews. Simply select your area of interest, and we’ll simulate an interview scenario for you."
     },
     {
         id: 8,
-        question: "Is InterviewMaster.ai accessible on mobile devices?",
-        answer: "Yes! Our platform is fully optimized for mobile and desktop, ensuring you can practice anywhere, anytime."
+        question: "Can I receive feedback on my mock interview performance?",
+        answer: "Yes, after each mock interview, you will receive detailed feedback on your performance. This includes insights into what went well, areas of improvement, and tips for enhancing your responses."
     },
     {
         id: 9,
-        question: "How often are the resources updated?",
-        answer: "Our team regularly updates the content to reflect the latest industry trends and ensure relevance to current hiring practices."
+        question: "How do I stay updated with new features and content on InterviewMaster.site?",
+        answer: "After signing up, you’ll automatically receive email notifications about new content, features, and updates. You can also check the dashboard for the latest challenges and resources."
     }
 ];
 
@@ -65,13 +65,7 @@ export const FAQ = () => {
                             Frequently Asked Questions
                         </h3>
                         <p className="font-medium text-base text-center md:text-start md:text-lg max-w-md">
-                            Have questions about InterviewMaster.ai? I’m here to assist. If your query isn’t covered here, reach out at{" "}
-                            <Link
-                                className="text-[#fcba28] font-bold hover:underline"
-                                href="mailto:humeshdeshmukh0@gmail.com"
-                            >
-                                humeshdeshmukh0@gmail.com
-                            </Link>.
+                            Have questions? We are here to help. If you don’t find what you’re looking for, feel free to <Link className="text-[#fcba28] font-bold hover:underline" href="mailto:support@interviewmaster.site">contact us</Link>.
                         </p>
                     </hgroup>
                     <aside>

@@ -1,135 +1,195 @@
-"use client";
+'use client';
 
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import Link from "next/link";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { LINKS } from "@/features/landing-page/lib/constants";
-import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
-import { Logo } from "./Logo";
-import { MobileMenu } from "./MobileMenu";
-import { MaxWidthWrapper } from "./MaxWidthWrapper";
-import { FaXTwitter, FaLinkedin } from "react-icons/fa6";
-import { UserButton } from "../features/auth/components/UserButton";
-import { UserButtonLoading } from "../features/auth/components/UserButtonLoading";
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react';
+import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa6';
+
+import { Logo } from './Logo';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { NavLink } from './NavLink'; // Ensure NavLink is updated
+import { MobileMenu } from './MobileMenu';
+import { MaxWidthWrapper } from './MaxWidthWrapper';
+import { UserButton } from '../features/auth/components/UserButton';
+import { UserButtonLoading } from '../features/auth/components/UserButtonLoading';
+
+const socialLinks = [
+  { href: 'https://x.com/interviewmaster', icon: FaTwitter, label: 'Twitter' },
+  { href: 'https://linkedin.com/company/interviewmaster', icon: FaLinkedin, label: 'LinkedIn' },
+  { href: 'https://facebook.com/interviewmaster', icon: FaFacebook, label: 'Facebook' },
+  { href: 'https://instagram.com/interviewmaster', icon: FaInstagram, label: 'Instagram' },
+  { href: 'https://github.com/interviewmaster', icon: FaGithub, label: 'GitHub' },
+];
+
+const navigationMenus = [
+  {
+    title: 'Products',
+    links: [
+      { href: '/products/resume-builder', label: 'Resume Builder' },
+      { href: '/products/mock-interviews', label: 'Mock Interviews' },
+      { href: '/products/ai-feedback', label: 'AI Feedback' },
+      { href: '/products/skills-analyzer', label: 'Skills Analyzer' },
+      { href: '/products/job-tracker', label: 'Job Tracker' },
+      { href: '/products/portfolio-builder', label: 'Portfolio Builder' },
+    ],
+  },
+  {
+    title: 'Services',
+    links: [
+      { href: '/services/consultation', label: 'Career Consultation' },
+      { href: '/services/cv-revision', label: 'CV Revision' },
+      { href: '/services/mock-tests', label: 'Mock Tests' },
+      { href: '/services/interview-coaching', label: 'Interview Coaching' },
+      { href: '/services/personal-branding', label: 'Personal Branding' },
+      { href: '/services/salary-negotiation', label: 'Salary Negotiation' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { href: '/resources/blog', label: 'Blog' },
+      { href: '/resources/faq', label: 'FAQ' },
+      { href: '/resources/ebooks', label: 'Ebooks & Guides' },
+      { href: '/resources/tutorials', label: 'Tutorials' },
+      { href: '/resources/webinars', label: 'Webinars' },
+      { href: '/resources/newsletters', label: 'Newsletters' },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
+      { href: '/community/forums', label: 'Forums' },
+      { href: '/community/events', label: 'Events' },
+      { href: '/community/mentorship', label: 'Mentorship' },
+      { href: '/community/success-stories', label: 'Success Stories' },
+      { href: '/community/meetups', label: 'Meetups' },
+      { href: '/community/hackathons', label: 'Hackathons' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { href: '/company/about', label: 'About Us' },
+      { href: '/company/careers', label: 'Careers' },
+      { href: '/company/partners', label: 'Partners' },
+      { href: '/company/contact', label: 'Contact Us' },
+      { href: '/company/press', label: 'Press' },
+      { href: '/company/investors', label: 'Investors' },
+    ],
+  },
+];
+
+const dropdownClasses = cn(
+  'absolute hidden group-hover:flex flex-col mt-2 w-72 py-4 px-6 rounded-lg shadow-lg',
+  'backdrop-blur-md bg-white/10 border border-white/20',
+  'transition-transform transform scale-95 group-hover:scale-100 opacity-0 group-hover:opacity-100 z-50'
+);
 
 export const Header = () => {
-    const router = useRouter();
-    const { scrollY } = useScroll();
-    const [scrolled, setScrolled] = useState(false);
-    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-    const [dropdownTimer, setDropdownTimer] = useState<NodeJS.Timeout | null>(null);
+  const router = useRouter();
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        setScrolled(latest > 100);
-    });
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setScrolled(latest > 100);
+  });
 
-    // Function to handle mouse enter with a delay
-    const handleMouseEnter = (text: string) => {
-        // Clear any existing timer to avoid multiple timers running at once
-        if (dropdownTimer) clearTimeout(dropdownTimer);
-        // Set a new timer to activate the dropdown after 200ms
-        const timer = setTimeout(() => setActiveDropdown(text), 200);
-        setDropdownTimer(timer);
-    };
+  useEffect(() => {
+    if (activeMenu !== null) {
+      const timeout = setTimeout(() => setActiveMenu(null), 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [activeMenu]);
 
-    // Function to handle mouse leave with a delay
-    const handleMouseLeave = () => {
-        // Clear any existing timer on mouse leave
-        if (dropdownTimer) clearTimeout(dropdownTimer);
-        // Set a new timer to deactivate the dropdown after 200ms
-        setDropdownTimer(setTimeout(() => setActiveDropdown(null), 200));
-    };
+  const handleMenuClick = (href: string) => {
+    // Push the clicked route to the router
+    router.push(href);
+  };
 
-    return (
-        <motion.header
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: "0%" }}
-            transition={{ duration: 1.25, ease: "easeInOut" }}
-            className={cn(
-                "fixed left-0 right-0 top-0 z-50 py-6 bg-background transition-colors duration-300 ease-in-out",
-                scrolled && "bg-background/95 backdrop-blur-lg border-b border-background/50"
-            )}
-        >
-            <MaxWidthWrapper>
-                <nav className="flex items-center justify-between">
-                    {/* Logo */}
-                    <div className="flex items-center gap-4">
-                        <Logo className="flex-shrink-0" />
-                        <span className="text-2xl font-bold text-primary tracking-wide md:text-3xl lg:text-4xl">
-                            {/* Logo Text (if needed) */}
-                        </span>
-                    </div>
+  return (
+    <motion.header
+      initial={{ opacity: 0, y: '-100%' }}
+      animate={{ opacity: 1, y: '0%' }}
+      transition={{ duration: 1.25, ease: 'easeInOut' }}
+      className={cn(
+        'fixed left-0 right-0 top-0 z-50 py-4 md:py-6',
+        scrolled
+          ? 'bg-background/95 backdrop-blur-lg border-b border-background/50'
+          : 'bg-background'
+      )}
+    >
+      <MaxWidthWrapper>
+        <nav className="flex items-center justify-between">
+          <Logo className="flex-shrink-0" />
 
-                    {/* Desktop Links with Dropdowns */}
-                    <div className="hidden md:flex flex-1 items-center justify-center gap-10">
-                        {LINKS.map((link, index) => (
-                            <div
-                                key={index}
-                                className="relative group"
-                                onMouseEnter={() => handleMouseEnter(link.text)}
-                                onMouseLeave={handleMouseLeave}
-                            >
-                                {/* Main Link Button */}
-                                <button className="text-white text-xl font-semibold tracking-wide transform transition-all duration-300 ease-in-out hover:text-[#fcba28]">
-                                    {link.text}
-                                </button>
+          {/* Navigation Links */}
+          <ul className="hidden md:flex items-center gap-10">
+            {navigationMenus.map((menu, idx) => (
+              <div
+                key={idx}
+                className="relative group"
+                onMouseEnter={() => setActiveMenu(idx)}
+                onMouseLeave={() => setActiveMenu(null)}
+              >
+                <button
+                  className="text-white text-lg hover:text-[#fcba28] font-semibold"
+                  aria-expanded={activeMenu === idx}
+                  aria-label={menu.title}
+                >
+                  {menu.title}
+                </button>
+                <div className={cn(dropdownClasses, activeMenu === idx && 'block')}>
+                  {menu.links.map((link, linkIdx) => (
+                    <Link
+                      key={linkIdx}
+                      href={link.href}
+                      onClick={() => handleMenuClick(link.href)}
+                      className="block py-2 px-4 text-base text-white hover:bg-white/20 rounded-md"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </ul>
 
-                                {/* Dropdown Menu */}
-                                {activeDropdown === link.text && link.subLinks && (
-                                    <div className="absolute left-0 mt-3 bg-white/20 backdrop-blur-lg border border-white/30 rounded-lg py-4 px-6 w-64 shadow-xl transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100">
-                                        {link.subLinks.map((subLink, idx) => (
-                                            <Link
-                                                key={idx}
-                                                href={subLink.href}
-                                                className="block text-lg py-2 text-gray-200 hover:text-white hover:bg-[#fcba28] rounded-md transform transition-all duration-300 ease-in-out"
-                                            >
-                                                {subLink.text}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+          {/* Social Links & User Actions */}
+          <ul className="hidden md:flex items-center gap-4">
+            {socialLinks.map((social, idx) => (
+              <Link
+                key={idx}
+                target="_blank"
+                href={social.href}
+                aria-label={social.label}
+              >
+                <social.icon className="text-2xl text-muted-foreground hover:text-[#fcba28] transition duration-200 ease-in-out" />
+              </Link>
+            ))}
+            <AuthLoading>
+              <UserButtonLoading />
+            </AuthLoading>
+            <Unauthenticated>
+              <button
+                onClick={() => router.push('/auth')}
+                className="px-6 py-2 rounded-full font-semibold bg-transparent border-2 border-[#fcba28] hover:bg-[#fcba28] text-[#fcba28] hover:text-background transition duration-200 ease-in-out"
+              >
+                Login
+              </button>
+            </Unauthenticated>
+            <Authenticated>
+              <UserButton />
+            </Authenticated>
+          </ul>
 
-                    {/* Social Links & Auth Buttons */}
-                    <div className="hidden md:flex items-center gap-6">
-                        <Link
-                            target="_blank"
-                            href="https://x.com/0dev_vault"
-                        >
-                            <FaXTwitter className="size-6 text-muted-foreground hover:text-[#fcba28] transition duration-200 ease-in-out" />
-                        </Link>
-                        <Link
-                            target="_blank"
-                            href="https://linkedin.com/in/lonzochris/"
-                        >
-                            <FaLinkedin className="size-6 text-muted-foreground hover:text-[#fcba28] transition duration-200 ease-in-out" />
-                        </Link>
-
-                        {/* Auth States */}
-                        <AuthLoading>
-                            <UserButtonLoading />
-                        </AuthLoading>
-                        <Unauthenticated>
-                            <button
-                                onClick={() => router.push("/auth")}
-                                className="px-8 py-2 rounded-full tracking-widest uppercase font-bold bg-transparent border-2 border-[#fcba28] hover:bg-[#fcba28] text-[#fcba28] hover:text-background transition duration-200 ease-in-out"
-                            >
-                                Login
-                            </button>
-                        </Unauthenticated>
-                        <Authenticated>
-                            <UserButton />
-                        </Authenticated>
-                    </div>
-
-                    {/* Mobile Menu */}
-                    <MobileMenu />
-                </nav>
-            </MaxWidthWrapper>
-        </motion.header>
-    );
+          {/* Mobile Menu */}
+          <MobileMenu />
+        </nav>
+      </MaxWidthWrapper>
+    </motion.header>
+  );
 };

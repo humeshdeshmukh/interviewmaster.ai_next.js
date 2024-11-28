@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import { useInView } from 'react-intersection-observer';
 
 import { Trophy, ChevronRight } from "lucide-react";
 import { ChipBanner } from "@/components/ChipBanner";
@@ -9,17 +9,17 @@ import { BuyButton } from "@/components/BuyButton";
 import { CanvasCover } from "@/components/animation/CanvasCover";
 
 export const LeftHero = () => {
-    const controls = useAnimation();
+    const controls = useAnimation()
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
-    });
+    })
 
     useEffect(() => {
         if (inView) {
-            controls.start("visible");
+            controls.start("visible")
         }
-    }, [controls, inView]);
+    }, [controls, inView])
 
     const containerVariants = {
         hidden: { y: 25, opacity: 0, filter: "blur(5px)" },
@@ -31,9 +31,9 @@ export const LeftHero = () => {
                 duration: 1.25,
                 delay: 0.25,
                 ease: "easeInOut",
-            },
-        },
-    };
+            }
+        }
+    }
 
     return (
         <div className="flex flex-col flex-1 w-full">
@@ -41,12 +41,12 @@ export const LeftHero = () => {
                 initial={{
                     y: 25,
                     opacity: 0,
-                    filter: "blur(5px)",
+                    filter: "blur(5px)"
                 }}
                 whileInView={{
                     y: 0,
                     opacity: 1,
-                    filter: "blur(0px)",
+                    filter: "blur(0px)"
                 }}
                 transition={{
                     duration: 1.25,
@@ -55,7 +55,7 @@ export const LeftHero = () => {
                 viewport={{ once: true }}
                 className="flex relative mb-2 justify-center md:justify-start"
             >
-                <ChipBanner text="MASTER EVERY INTERVIEW QUESTION" />
+                <ChipBanner text="YOUR PARTNER IN INTERVIEW SUCCESS" />
             </motion.aside>
 
             <motion.h1
@@ -65,20 +65,20 @@ export const LeftHero = () => {
                 variants={containerVariants}
                 className="mb-3 mt-3 text-center md:text-start text-xl font-bold leading-tighter md:text-4xl sm:leading-tighter md:leading-tighter lg:leading-tighter"
             >
-                <CanvasCover>Land Your Dream Job</CanvasCover> with{" "}
-                <strong>Expert-Guided Interview Prep</strong>
+                <CanvasCover>Crack Your Interviews</CanvasCover> with {" "}
+                AI-Driven Guidance
             </motion.h1>
 
             <motion.p
                 initial={{
                     y: 25,
                     opacity: 0,
-                    filter: "blur(5px)",
+                    filter: "blur(5px)"
                 }}
                 whileInView={{
                     y: 0,
                     opacity: 1,
-                    filter: "blur(0px)",
+                    filter: "blur(0px)"
                 }}
                 transition={{
                     duration: 1.25,
@@ -88,19 +88,20 @@ export const LeftHero = () => {
                 viewport={{ once: true }}
                 className="mb-4 max-w-2xl text-center md:text-start text-sm md:text-md text-foreground lg:text-lg"
             >
-                Elevate your interview preparation with <strong>AI-driven insights</strong>, tailored practice questions, and real-time feedback—all designed to help you stand out from the competition.
+                Prepare for interviews with tailored mock questions, feedback, and insights using our{" "}
+                <strong>AI-powered Interview Master.</strong>
             </motion.p>
 
             <motion.div
                 initial={{
                     y: 25,
                     opacity: 0,
-                    filter: "blur(5px)",
+                    filter: "blur(5px)"
                 }}
                 whileInView={{
                     y: 0,
                     opacity: 1,
-                    filter: "blur(0px)",
+                    filter: "blur(0px)"
                 }}
                 transition={{
                     duration: 1.25,
@@ -110,12 +111,9 @@ export const LeftHero = () => {
                 viewport={{ once: true }}
                 className="flex my-4 items-center gap-10 justify-center md:justify-start"
             >
-                <BuyButton text="GET STARTED NOW" kit="Premium Access" />
+                <BuyButton text="START YOUR INTERVIEW PREP NOW" kit="Premium Access" />
 
-                <Link
-                    href="/docs"
-                    className="group flex tracking-widest items-center gap-2 text-xs md:text-sm font-black text-foreground/80"
-                >
+                <Link href="/docs" className="group flex tracking-widest items-center gap-2 text-xs md:text-sm font-black text-foreground/80">
                     LEARN MORE
                     <ChevronRight className="size-4 group-hover:translate-x-2 transition-all duration-200 ease-in-out " />
                 </Link>
@@ -125,12 +123,12 @@ export const LeftHero = () => {
                 initial={{
                     y: 25,
                     opacity: 0,
-                    filter: "blur(5px)",
+                    filter: "blur(5px)"
                 }}
                 whileInView={{
                     y: 0,
                     opacity: 1,
-                    filter: "blur(0px)",
+                    filter: "blur(0px)"
                 }}
                 transition={{
                     duration: 1.25,
@@ -141,11 +139,8 @@ export const LeftHero = () => {
                 className="flex items-center gap-1 font-medium justify-center md:justify-start text-foreground/80 text-xs"
             >
                 <Trophy className="text-[#fcba28]/80 size-4" />
-                <p>
-                    Join thousands of professionals acing their interviews with{" "}
-                    <strong>InterviewMaster.ai</strong>.
-                </p>
+                <p>Join the thousands of successful candidates who nailed their interviews!</p>
             </motion.div>
         </div>
-    );
-};
+    )
+}
