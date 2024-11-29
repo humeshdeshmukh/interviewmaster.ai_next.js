@@ -8,6 +8,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+// Social Links
 const socialLinks = [
   { href: 'https://x.com/interviewmaster', icon: FaTwitter, label: 'Twitter' },
   { href: 'https://linkedin.com/company/interviewmaster', icon: FaLinkedin, label: 'LinkedIn' },
@@ -16,6 +17,7 @@ const socialLinks = [
   { href: 'https://github.com/interviewmaster', icon: FaGithub, label: 'GitHub' },
 ];
 
+// Navigation Links
 const navigationMenus = [
   {
     title: 'Products',
@@ -74,7 +76,7 @@ const navigationMenus = [
   },
 ];
 
-
+// Mobile Menu Component
 export const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
 

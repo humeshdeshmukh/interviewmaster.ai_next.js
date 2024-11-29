@@ -1,22 +1,25 @@
-import React from "react";
-import { motion } from "framer-motion";
+// Add this at the top of the file to specify that this component should run on the client side
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const FAQPage = () => {
   const faqs = [
     {
-      question: "What is this website about?",
+      question: 'What is this website about?',
       answer:
-        "This website is a platform to explore FAQs and learn more about our services.",
+        'This website is a platform to explore FAQs and learn more about our services.',
     },
     {
-      question: "How can I contact support?",
+      question: 'How can I contact support?',
       answer:
-        "You can contact our support team via the 'Contact Us' page or email us at support@example.com.",
+        'You can contact our support team via the "Contact Us" page or email us at support@example.com.',
     },
     {
-      question: "What services do you offer?",
+      question: 'What services do you offer?',
       answer:
-        "We offer a variety of services including development, consulting, and more.",
+        'We offer a variety of services including development, consulting, and more.',
     },
   ];
 

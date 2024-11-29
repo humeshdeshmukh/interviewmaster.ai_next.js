@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -9,13 +10,13 @@ import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react';
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa6';
 
 import { Logo } from './Logo';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { NavLink } from './NavLink'; // Ensure NavLink is updated
 import { MobileMenu } from './MobileMenu';
 import { MaxWidthWrapper } from './MaxWidthWrapper';
 import { UserButton } from '../features/auth/components/UserButton';
 import { UserButtonLoading } from '../features/auth/components/UserButtonLoading';
 
+// Social Links
 const socialLinks = [
   { href: 'https://x.com/interviewmaster', icon: FaTwitter, label: 'Twitter' },
   { href: 'https://linkedin.com/company/interviewmaster', icon: FaLinkedin, label: 'LinkedIn' },
@@ -24,6 +25,7 @@ const socialLinks = [
   { href: 'https://github.com/interviewmaster', icon: FaGithub, label: 'GitHub' },
 ];
 
+// Navigation Menus
 const navigationMenus = [
   {
     title: 'Products',
@@ -94,10 +96,12 @@ export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
+  // Scroll listener for changing header style when scrolled
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setScrolled(latest > 100);
   });
 
+  // Clear active menu after a timeout
   useEffect(() => {
     if (activeMenu !== null) {
       const timeout = setTimeout(() => setActiveMenu(null), 2000);
@@ -105,6 +109,7 @@ export const Header = () => {
     }
   }, [activeMenu]);
 
+  // Handle menu navigation
   const handleMenuClick = (href: string) => {
     // Push the clicked route to the router
     router.push(href);
@@ -126,7 +131,7 @@ export const Header = () => {
         <nav className="flex items-center justify-between">
           <Logo className="flex-shrink-0" />
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation Links */}
           <ul className="hidden md:flex items-center gap-10">
             {navigationMenus.map((menu, idx) => (
               <div

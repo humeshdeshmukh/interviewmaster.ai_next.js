@@ -1,6 +1,6 @@
-import ProductsLayout from '../layout';
+'use client'; // Mark this as a client-side component to use React hooks like useState
+
 import { useState, useRef } from 'react';
-import { GetStaticProps } from 'next';
 
 interface MockInterviewDetailsProps {
   interviews: string[];
@@ -140,39 +140,4 @@ const MockInterviewDetails = ({ interviews }: MockInterviewDetailsProps) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Simulating a fetch operation (replace with an actual API call if needed)
-    const interviews = [
-      'Tell me about yourself.',
-      'What are your strengths and weaknesses?',
-      'Explain a challenging project you worked on.',
-      'Where do you see yourself in 5 years?',
-    ];
-
-    return {
-      props: { interviews },
-    };
-  } catch (error) {
-    console.error('Error fetching interview data:', error);
-
-    return {
-      notFound: true, // If fetching fails, return 404
-    };
-  }
-};
-
-export default function MockInterviews() {
-  return (
-    <ProductsLayout>
-      <MockInterviewDetails
-        interviews={[
-          'Tell me about yourself.',
-          'What are your strengths and weaknesses?',
-          'Explain a challenging project you worked on.',
-          'Where do you see yourself in 5 years?',
-        ]}
-      />
-    </ProductsLayout>
-  );
-}
+export default MockInterviewDetails;
