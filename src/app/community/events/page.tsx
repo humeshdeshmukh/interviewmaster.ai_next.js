@@ -1,6 +1,7 @@
 "use client";
 
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import Image from "next/image";  // Importing Image component from next/image
 
 const events = [
   {
@@ -46,9 +47,11 @@ export default function Events() {
             key={event.id}
             className="bg-black bg-opacity-80 rounded-lg shadow-lg overflow-hidden hover:scale-105 transition-transform"
           >
-            <img
+            <Image
               src={event.image}
               alt={event.title}
+              width={500}  // Specify the width of the image
+              height={300} // Specify the height of the image
               className="w-full h-40 object-cover"
             />
             <div className="p-6">

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client"; // For Next.js 13+ to enable client-side rendering
 
 import Link from "next/link";

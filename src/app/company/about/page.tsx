@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { FaUsers, FaBuilding, FaLightbulb } from "react-icons/fa";

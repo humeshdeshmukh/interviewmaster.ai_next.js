@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState } from 'react';
-import { questions, Question } from './questionsData.ts';
+import { questions, Question } from './questionsData';
 
 const InterviewQuestions: React.FC = () => {
   const [questionsData, setQuestionsData] = useState<Question[]>(questions);

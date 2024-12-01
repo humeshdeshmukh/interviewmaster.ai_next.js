@@ -108,7 +108,7 @@ export default function AI_Feedback() {
           content: "Hello! How can I assist you today?",
           timestamp: new Date().toLocaleTimeString(),
         },
-      ],
+      ] as Message[], // Explicitly cast to the correct Message[] type
     };
 
     setAllChats((prevChats) => [...prevChats, newChat]);
