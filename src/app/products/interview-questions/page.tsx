@@ -62,8 +62,8 @@ const InterviewQuestions: React.FC = () => {
   }
 
   return (
-    <div className="bg-background py-16 px-4 md:px-10 mt-16">
-      <h1 className="text-center text-4xl font-semibold mb-6 text-foreground">Interview Questions</h1>
+    <div className="bg-background py-16 px-4 md:px-10 mt-16 text-white">
+      <h1 className="text-center text-4xl font-semibold mb-6 text-[#fcd34d]">Interview Questions</h1>
 
       {/* Search, Filter, and Progress Bar */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
@@ -95,11 +95,11 @@ const InterviewQuestions: React.FC = () => {
               Filter by Category
             </button>
             {isCategoryDropdownOpen && (
-              <div className="absolute right-0 mt-1 bg-white border rounded-md shadow-md z-10">
-                <button onClick={() => handleFilterChange('All')} className="block px-4 py-2 text-black hover:bg-gray-100">All</button>
-                <button onClick={() => handleFilterChange('Tech')} className="block px-4 py-2 text-black hover:bg-gray-100">Tech</button>
-                <button onClick={() => handleFilterChange('Non-Tech')} className="block px-4 py-2 text-black hover:bg-gray-100">Non-Tech</button>
-                <button onClick={() => handleFilterChange('Bookmarked')} className="block px-4 py-2 text-black hover:bg-gray-100">Bookmarked</button>
+              <div className="absolute right-0 mt-1 bg-[#2d2d2d] border rounded-md shadow-md z-10">
+                <button onClick={() => handleFilterChange('All')} className="block px-4 py-2 text-white hover:bg-gray-600">All</button>
+                <button onClick={() => handleFilterChange('Tech')} className="block px-4 py-2 text-white hover:bg-gray-600">Tech</button>
+                <button onClick={() => handleFilterChange('Non-Tech')} className="block px-4 py-2 text-white hover:bg-gray-600">Non-Tech</button>
+                <button onClick={() => handleFilterChange('Bookmarked')} className="block px-4 py-2 text-white hover:bg-gray-600">Bookmarked</button>
               </div>
             )}
           </div>
@@ -113,12 +113,12 @@ const InterviewQuestions: React.FC = () => {
               Filter by Company
             </button>
             {isCompanyDropdownOpen && (
-              <div className="absolute right-0 mt-1 bg-white border rounded-md shadow-md z-10">
+              <div className="absolute right-0 mt-1 bg-[#2d2d2d] border rounded-md shadow-md z-10">
                 {['All', 'TCS', 'Infosys', 'Google', 'Amazon', 'Facebook', 'Apple', 'Microsoft', 'IBM'].map(company => (
                   <button
                     key={company}
                     onClick={() => handleCompanyFilterChange(company)}
-                    className="block px-4 py-2 text-black hover:bg-gray-100"
+                    className="block px-4 py-2 text-white hover:bg-gray-600"
                   >
                     {company}
                   </button>
@@ -133,14 +133,14 @@ const InterviewQuestions: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredQuestions.length > 0 ? (
           filteredQuestions.map(question => (
-            <div key={question.id} className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
+            <div key={question.id} className="bg-[#2d2d2d] shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-foreground">
+                <h3 className="text-xl font-semibold text-white">
                   {question.title}
                   <span className="ml-2 bg-[#80cfd1] text-white text-xs py-1 px-3 rounded">{question.category}</span>
                   <span className="ml-2 bg-[#457b9d] text-white text-xs py-1 px-3 rounded">{question.company}</span>
                 </h3>
-                <p className="mt-2 text-gray-600">
+                <p className="mt-2 text-gray-400">
                   {question.description.length > 100
                     ? question.description.substring(0, 100) + '...'
                     : question.description}
@@ -172,9 +172,9 @@ const InterviewQuestions: React.FC = () => {
       {/* Details Modal */}
       {selectedQuestion && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-3/4 md:w-1/2">
+          <div className="bg-[#2d2d2d] p-8 rounded-lg shadow-lg w-3/4 md:w-1/2">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-foreground">{selectedQuestion.title}</h2>
+              <h2 className="text-2xl font-semibold text-[#fcd34d]">{selectedQuestion.title}</h2>
               <button
                 onClick={handleCloseModal}
                 className="text-gray-500 hover:text-gray-700"
@@ -185,15 +185,7 @@ const InterviewQuestions: React.FC = () => {
             <p><strong>Category:</strong> <span className="bg-[#80cfd1] text-white py-1 px-3 rounded">{selectedQuestion.category}</span></p>
             <p><strong>Company:</strong> <span className="bg-[#457b9d] text-white py-1 px-3 rounded">{selectedQuestion.company}</span></p>
             <p>{selectedQuestion.description}</p>
-            <p><strong>Details:</strong> {selectedQuestion.details || 'No additional details available.'}</p>
-            <div className="mt-6">
-              <button
-                onClick={handleCloseModal}
-                className="bg-[#457b9d] text-white px-6 py-2 rounded-md hover:bg-[#1d3557] transition"
-              >
-                Close
-              </button>
-            </div>
+            <p><strong>Details:</strong> {selectedQuestion.details}</p>
           </div>
         </div>
       )}
