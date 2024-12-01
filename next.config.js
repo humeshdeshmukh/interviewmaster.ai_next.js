@@ -30,4 +30,13 @@ module.exports = {
   eslint: {
     ignoreDuringBuilds: true,  // This ensures ESLint warnings won't block the build
   },
+
+  // Define environment variables (for both build and runtime)
+  env: {
+    NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
+    CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
+    STRIPE_URL_ENDPOINT: process.env.STRIPE_URL_ENDPOINT,
+    GA_ID: process.env.GA_ID,
+    MC_ID: process.env.MC_ID,
+  },
 };
