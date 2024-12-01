@@ -1,12 +1,14 @@
 // src/questionsData.ts
 
 export interface Question {
-    id: number;
-    title: string;
-    description: string;
-    category: 'Tech' | 'Non-Tech'; // Category for filtering
-    isBookmarked: boolean;
-  }
+  id: number;
+  title: string;
+  description: string;
+  company?: string;
+  category: 'Tech' | 'Non-Tech'; // Category for filtering
+  isBookmarked: boolean;
+  details?: string;
+}
   
   export const questions: Question[] = [
     // Tech Questions

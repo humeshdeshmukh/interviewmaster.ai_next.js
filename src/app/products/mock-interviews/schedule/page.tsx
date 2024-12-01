@@ -107,7 +107,7 @@ const ScheduleMockInterview = () => {
             <label className="block text-sm md:text-base font-semibold text-white">Select Date & Time</label>
             <DatePicker
               selected={selectedDate}
-              onChange={(date: Date) => setSelectedDate(date)}
+              onChange={(date: Date | null) => setSelectedDate(date)} // Updated to handle Date | null
               showTimeSelect
               dateFormat="Pp"
               className="mt-2 px-4 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-white w-full"

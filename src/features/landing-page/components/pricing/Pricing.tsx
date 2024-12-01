@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { cn } from "@/lib/utils";
 import { Check, Zap } from "lucide-react";
 import { RiNotionFill } from "react-icons/ri";

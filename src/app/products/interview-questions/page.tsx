@@ -56,7 +56,7 @@ const InterviewQuestions: React.FC = () => {
         q.title.toLowerCase().includes(search.toLowerCase()) ||
         q.description.toLowerCase().includes(search.toLowerCase()) ||
         q.category.toLowerCase().includes(search.toLowerCase()) ||
-        q.company.toLowerCase().includes(search.toLowerCase())
+        (q.company && q.company.toLowerCase().includes(search.toLowerCase())) // Check if q.company is defined
       );
   } catch (error) {
     console.error('Error filtering questions:', error);
@@ -185,8 +185,7 @@ const InterviewQuestions: React.FC = () => {
             </div>
             <p><strong>Category:</strong> <span className="bg-[#80cfd1] text-white py-1 px-3 rounded">{selectedQuestion.category}</span></p>
             <p><strong>Company:</strong> <span className="bg-[#457b9d] text-white py-1 px-3 rounded">{selectedQuestion.company}</span></p>
-            <p>{selectedQuestion.description}</p>
-            <p><strong>Details:</strong> {selectedQuestion.details}</p>
+            <p className="mt-4">{selectedQuestion.description}</p>
           </div>
         </div>
       )}
