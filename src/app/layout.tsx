@@ -1,5 +1,5 @@
 import "./globals.css";
-
+import { Analytics } from "@vercel/analytics/react"
 import { cn } from "@/lib/utils";
 import { Noto_Sans } from 'next/font/google';
 import { Analytics } from "@/lib/analytics/Analytics";
