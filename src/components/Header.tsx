@@ -34,8 +34,8 @@ const navigationMenus = [
       { href: '/products/mock-interviews', label: 'Mock Interviews' },
       { href: '/products/ai-feedback', label: 'AI Feedback' },
       { href: '/products/skills-analyzer', label: 'Skills Analyzer' },
-      { href: '/products/job-tracker', label: 'Job Tracker' },
-      { href: '/products/portfolio-builder', label: 'Portfolio Builder' },
+      { href: '/products/interview-questions', label: 'Interview-Questions' },
+      { href: '/products/Practice-Tests', label: 'Practice-Tests' },
     ],
   },
   {

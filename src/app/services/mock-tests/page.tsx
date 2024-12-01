@@ -1,82 +1,121 @@
-import React, { useState } from 'react';
+"use client"; // For client-side rendering in Next.js 13+
 
-interface MockTest {
-  id: number;
-  title: string;
-  description: string;
-  duration: number; // in minutes
-}
+import { motion } from "framer-motion";
+import Link from "next/link";
 
-const mockTestsPage = () => {
-  // Sample mock tests data
-  const mockTests: MockTest[] = [
-    { id: 1, title: 'Coding Fundamentals', description: 'Test your basic coding skills with algorithms and data structures.', duration: 30 },
-    { id: 2, title: 'JavaScript Proficiency', description: 'Evaluate your understanding of JavaScript concepts and syntax.', duration: 45 },
-    { id: 3, title: 'React Mastery', description: 'Challenge your knowledge in React, including hooks, components, and state management.', duration: 60 },
-  ];
-
-  // State to manage the selected test
-  const [selectedTest, setSelectedTest] = useState<MockTest | null>(null);
-
-  const handleTestSelection = (test: MockTest) => {
-    setSelectedTest(test);
-  };
-
-  const handleTestStart = () => {
-    if (selectedTest) {
-      // This is where you can route to the test or start it (e.g., navigating to a test page)
-      alert(`Starting the test: ${selectedTest.title}`);
-    }
-  };
-
+export default function MockTestsPage() {
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Mock Tests</h1>
-      <p>Welcome to the mock tests page. Choose a test to start your practice!</p>
+    <div className="min-h-screen bg-background text-white px-6 py-12">
+      {/* Main Container */}
+      <motion.div
+        className="max-w-7xl mx-auto space-y-16"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        {/* Page Heading */}
+        <motion.h1
+          className="text-4xl font-bold text-center text-yellow-400"
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          Mock Tests
+        </motion.h1>
+        <motion.p
+          className="text-lg text-center text-gray-300"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+        >
+          Prepare for your dream job interviews with our tailored mock tests
+          designed for a variety of industries and roles.
+        </motion.p>
 
-      <div style={{ marginTop: '20px' }}>
-        <h2>Available Mock Tests</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          {mockTests.map((test) => (
-            <div
-              key={test.id}
-              style={{
-                padding: '15px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                backgroundColor: selectedTest?.id === test.id ? '#e0f7fa' : '#fff',
-                cursor: 'pointer',
-              }}
-              onClick={() => handleTestSelection(test)}
+        {/* Section: Features */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          {[
+            {
+              title: "Industry-Specific Tests",
+              description:
+                "Mock tests customized for different industries like IT, Finance, Marketing, and more.",
+              icon: "/icons/industry.svg",
+            },
+            {
+              title: "Role-Based Tests",
+              description:
+                "Practice for specific job roles with role-focused questions and scenarios.",
+              icon: "/icons/roles.svg",
+            },
+            {
+              title: "Timed Challenges",
+              description:
+                "Simulate real-time interview scenarios with timed assessments.",
+              icon: "/icons/timer.svg",
+            },
+            {
+              title: "Detailed Analytics",
+              description:
+                "Get detailed feedback and analytics to understand your strengths and weaknesses.",
+              icon: "/icons/analytics.svg",
+            },
+            {
+              title: "Expert Solutions",
+              description:
+                "Learn from detailed solutions and explanations for every question.",
+              icon: "/icons/solutions.svg",
+            },
+            {
+              title: "Adaptive Difficulty",
+              description:
+                "Experience a dynamic difficulty level based on your performance.",
+              icon: "/icons/adaptive.svg",
+            },
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              className="bg-gray-800 rounded-lg shadow-lg p-6 space-y-4 hover:scale-105 transition-transform"
+              whileHover={{ scale: 1.05 }}
             >
-              <h3>{test.title}</h3>
-              <p>{test.description}</p>
-              <p>Duration: {test.duration} minutes</p>
-            </div>
+              <img
+                src={feature.icon}
+                alt={feature.title}
+                className="w-12 h-12"
+              />
+              <h2 className="text-xl font-semibold text-yellow-400">
+                {feature.title}
+              </h2>
+              <p className="text-gray-300">{feature.description}</p>
+            </motion.div>
           ))}
-        </div>
-      </div>
+        </motion.div>
 
-      {selectedTest && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Selected Test: {selectedTest.title}</h3>
-          <button
-            onClick={handleTestStart}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#4CAF50',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-            }}
-          >
-            Start Test
-          </button>
-        </div>
-      )}
+        {/* Call to Action */}
+        <motion.div
+          className="text-center space-y-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          <h2 className="text-2xl font-semibold text-yellow-400">
+            Ready to Test Your Skills?
+          </h2>
+          <p className="text-gray-300">
+            Explore our wide range of mock tests and get started on your
+            preparation journey today.
+          </p>
+          <Link href="/services/mock-tests/start">
+            <button className="bg-yellow-400 text-black py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition duration-300">
+              Start Mock Tests
+            </button>
+          </Link>
+        </motion.div>
+      </motion.div>
     </div>
   );
-};
-
-export default mockTestsPage;
+}

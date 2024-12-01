@@ -1,318 +1,155 @@
-"use client";
+"use client"; // For Next.js 13+ to enable client-side rendering
 
-import React, { useState } from "react";
-import { jsPDF } from "jspdf";
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBriefcase, FaGraduationCap, FaCheckCircle } from "react-icons/fa";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-const ResumeBuilderPage = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    summary: "",
-    experience: [{ company: "", role: "", description: "", duration: "" }],
-    education: [{ institution: "", degree: "", year: "" }],
-    skills: [""],
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index?: number, field?: string) => {
-    const { name, value } = e.target;
-
-    if (index !== undefined && field) {
-      const section = formData[name as keyof typeof formData] as any[];
-      section[index][field] = value;
-      setFormData({ ...formData, [name]: section });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  const addField = (section: string) => {
-    const updatedSection = [...(formData[section as keyof typeof formData] as any[])];
-    updatedSection.push(section === "skills" ? "" : {});
-    setFormData({ ...formData, [section]: updatedSection });
-  };
-
-  const removeField = (section: string, index: number) => {
-    const updatedSection = [...(formData[section as keyof typeof formData] as any[])];
-    updatedSection.splice(index, 1);
-    setFormData({ ...formData, [section]: updatedSection });
-  };
-
-  const downloadResume = () => {
-    const doc = new jsPDF();
-    doc.setFont("helvetica", "normal");
-
-    // Header
-    doc.setFontSize(22);
-    doc.text(formData.fullName || "Your Name", 105, 20, { align: "center" });
-
-    // Contact Details
-    doc.setFontSize(12);
-    doc.text(`${formData.email || "Email"} | ${formData.phone || "Phone"} | ${formData.address || "Address"}`, 105, 30, { align: "center" });
-
-    // Summary
-    if (formData.summary) {
-      doc.setFontSize(16);
-      doc.text("Summary", 10, 40);
-      doc.setFontSize(12);
-      doc.text(doc.splitTextToSize(formData.summary, 180), 10, 50);
-    }
-
-    // Experience
-    if (formData.experience.some((exp) => exp.company)) {
-      doc.setFontSize(16);
-      doc.text("Experience", 10, 70);
-      let y = 80;
-      formData.experience.forEach((exp) => {
-        if (exp.company) {
-          doc.setFontSize(14);
-          doc.text(`${exp.role || "Role"} at ${exp.company || "Company"} (${exp.duration || "Duration"})`, 10, y);
-          doc.setFontSize(12);
-          doc.text(doc.splitTextToSize(exp.description || "Description", 180), 10, y + 6);
-          y += 20;
-        }
-      });
-    }
-
-    // Education
-    if (formData.education.some((edu) => edu.institution)) {
-      doc.setFontSize(16);
-      doc.text("Education", 10, 110);
-      let y = 120;
-      formData.education.forEach((edu) => {
-        if (edu.institution) {
-          doc.setFontSize(14);
-          doc.text(`${edu.degree || "Degree"}, ${edu.institution || "Institution"} (${edu.year || "Year"})`, 10, y);
-          y += 10;
-        }
-      });
-    }
-
-    // Skills
-    if (formData.skills.some((skill) => skill)) {
-      doc.setFontSize(16);
-      doc.text("Skills", 10, 140);
-      doc.setFontSize(12);
-      let skillsText = formData.skills.filter((skill) => skill).join(", ");
-      doc.text(doc.splitTextToSize(skillsText || "Skills", 180), 10, 150);
-    }
-
-    doc.save(`${formData.fullName || "resume"}.pdf`);
-  };
-
+export default function ResumeBuilderLanding() {
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
-      <h1 style={{ textAlign: "center" }}>Resume Builder</h1>
-      <div style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
-        {/* Input Section */}
-        <div style={{ flex: 1, border: "1px solid #ddd", padding: "20px", borderRadius: "5px" }}>
-          <h2>Basic Information</h2>
-          <input
-            name="fullName"
-            placeholder="Full Name"
-            value={formData.fullName}
-            onChange={handleInputChange}
-            style={inputStyle}
-          />
-          <input
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleInputChange}
-            style={inputStyle}
-          />
-          <input
-            name="phone"
-            placeholder="Phone Number"
-            value={formData.phone}
-            onChange={handleInputChange}
-            style={inputStyle}
-          />
-          <input
-            name="address"
-            placeholder="Address"
-            value={formData.address}
-            onChange={handleInputChange}
-            style={inputStyle}
-          />
-          <textarea
-            name="summary"
-            placeholder="Professional Summary"
-            value={formData.summary}
-            onChange={handleInputChange}
-            style={{ ...inputStyle, height: "100px" }}
-          />
+    <div className="min-h-screen bg-background text-white pt-20 px-8 flex flex-col justify-between">
+      {/* Main Container */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="max-w-screen-xl mx-auto"
+      >
+        {/* Heading Section */}
+        <motion.h1
+          className="text-4xl font-extrabold text-center mb-12 text-[#fcba28]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          Build Your Perfect Resume
+        </motion.h1>
 
-          {/* Experience */}
-          <h2>Experience</h2>
-          {formData.experience.map((exp, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <input
-                name="experience"
-                placeholder="Company Name"
-                value={exp.company}
-                onChange={(e) => handleInputChange(e, index, "company")}
-                style={inputStyle}
-              />
-              <input
-                name="experience"
-                placeholder="Role"
-                value={exp.role}
-                onChange={(e) => handleInputChange(e, index, "role")}
-                style={inputStyle}
-              />
-              <textarea
-                name="experience"
-                placeholder="Description"
-                value={exp.description}
-                onChange={(e) => handleInputChange(e, index, "description")}
-                style={{ ...inputStyle, height: "80px" }}
-              />
-              <input
-                name="experience"
-                placeholder="Duration"
-                value={exp.duration}
-                onChange={(e) => handleInputChange(e, index, "duration")}
-                style={inputStyle}
-              />
-              <button onClick={() => removeField("experience", index)} style={buttonStyle("red")}>
-                Remove Experience
-              </button>
+        {/* Zig-Zag Layout Section */}
+        <div className="space-y-16">
+          {/* Section 1: How to Build a Resume */}
+          <motion.section
+            className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            <div className="md:w-1/2">
+              <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#fcba28]">
+                How to Build a Resume
+              </h2>
+              <ul className="list-decimal pl-6 space-y-3 text-sm md:text-base">
+                <li>Start with your personal and contact details.</li>
+                <li>Write a compelling objective or summary.</li>
+                <li>Highlight your skills and achievements.</li>
+                <li>List your education and professional experience.</li>
+                <li>Make it visually appealing with clear formatting.</li>
+              </ul>
             </div>
-          ))}
-          <button onClick={() => addField("experience")} style={buttonStyle("green")}>
-            Add Experience
-          </button>
+            <div className="md:w-1/2">
+              <img
+                src="/images/resume-building-1.png"
+                alt="Resume Building Tips"
+                className="w-full rounded-lg shadow-lg transition-transform transform hover:scale-105"
+              />
+            </div>
+          </motion.section>
 
-          {/* Education */}
-          <h2>Education</h2>
-          {formData.education.map((edu, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <input
-                name="education"
-                placeholder="Institution"
-                value={edu.institution}
-                onChange={(e) => handleInputChange(e, index, "institution")}
-                style={inputStyle}
+          {/* Section 2: Visual Resume Builder */}
+          <motion.section
+            className="flex flex-col-reverse md:flex-row items-center space-y-6 md:space-y-0 md:space-x-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            <div className="md:w-1/2">
+              <img
+                src="/images/visual-resume-builder.png"
+                alt="Visual Resume Builder"
+                className="w-full rounded-lg shadow-lg transition-transform transform hover:scale-105"
               />
-              <input
-                name="education"
-                placeholder="Degree"
-                value={edu.degree}
-                onChange={(e) => handleInputChange(e, index, "degree")}
-                style={inputStyle}
-              />
-              <input
-                name="education"
-                placeholder="Year"
-                value={edu.year}
-                onChange={(e) => handleInputChange(e, index, "year")}
-                style={inputStyle}
-              />
-              <button onClick={() => removeField("education", index)} style={buttonStyle("red")}>
-                Remove Education
-              </button>
             </div>
-          ))}
-          <button onClick={() => addField("education")} style={buttonStyle("green")}>
-            Add Education
-          </button>
+            <div className="md:w-1/2">
+              <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#fcba28]">
+                Visual Resume Builder Tool
+              </h2>
+              <p className="mb-4 text-sm md:text-base">
+                Use our interactive tool to create a visually appealing resume that will make you stand out to employers.
+              </p>
+              <ul className="list-disc pl-6 space-y-3 text-sm md:text-base">
+                <li>Drag and drop sections to customize your resume.</li>
+                <li>Choose from various templates and designs.</li>
+                <li>Real-time preview of your resume.</li>
+              </ul>
+            </div>
+          </motion.section>
 
-          {/* Skills */}
-          <h2>Skills</h2>
-          {formData.skills.map((skill, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <input
-                name="skills"
-                placeholder="Skill"
-                value={skill}
-                onChange={(e) => handleInputChange(e, index)}
-                style={inputStyle}
-              />
-              <button onClick={() => removeField("skills", index)} style={buttonStyle("red")}>
-                Remove Skill
+          {/* Section 3: Why Use a Resume Builder */}
+          <motion.section
+            className="flex flex-col items-start space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 2 }}
+          >
+            <h2 className="text-xl md:text-2xl font-semibold text-[#fcba28]">
+              Why Use a Professional Resume Builder?
+            </h2>
+            <ul className="list-disc pl-6 space-y-3 text-sm md:text-base">
+              <li>Increase your chances of landing your dream job with a polished resume.</li>
+              <li>Ensure your resume highlights your strengths in the best light.</li>
+              <li>Stay ahead of the competition with modern design and formatting.</li>
+              <li>Get personalized advice for optimizing your resume for each job application.</li>
+            </ul>
+          </motion.section>
+
+          {/* Section 4: Hire a Professional Resume Writer */}
+          <motion.section
+            className="flex flex-col items-center space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 2.5 }}
+          >
+            <h2 className="text-xl md:text-2xl font-semibold text-[#fcba28] text-center">
+              Need Expert Help? Hire a Professional Resume Writer
+            </h2>
+            <p className="text-sm md:text-base">
+              If you'd like to take your resume to the next level, consider hiring a professional resume writer who can tailor your resume to your specific needs and make it stand out to recruiters.
+            </p>
+            <Link href="/products/resume-builder/hire-resume-writer">
+              <button className="bg-[#fcba28] text-black py-3 px-8 rounded-full shadow-lg hover:bg-[#e29f1e] transition duration-300">
+                Hire a Professional Resume Writer
               </button>
+            </Link>
+          </motion.section>
+
+          {/* Section 5: Call to Action with Buttons */}
+          <motion.section
+            className="flex flex-col items-center space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 3 }}
+          >
+            <h2 className="text-xl md:text-2xl font-semibold text-[#fcba28] text-center">
+              Ready to Build Your Dream Resume?
+            </h2>
+            <div className="flex flex-wrap justify-center gap-6">
+              <Link href="/products/resume-builder/create">
+                <button className="bg-[#fcba28] text-black py-3 px-8 rounded-full shadow-lg hover:bg-[#e29f1e] transition duration-300">
+                  Start Building Your Resume
+                </button>
+              </Link>
+              <Link href="/products/resume-builder/examples">
+                <button className="bg-[#b2be10] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#2c3648] transition duration-300">
+                  View Resume Examples
+                </button>
+              </Link>
+              <Link href="/products/resume-builder/tips">
+                <button className="bg-[#1c6bff] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#155bb5] transition duration-300">
+                  Resume Tips
+                </button>
+              </Link>
             </div>
-          ))}
-          <button onClick={() => addField("skills")} style={buttonStyle("green")}>
-            Add Skill
-          </button>
+          </motion.section>
         </div>
-
-        {/* Resume Preview */}
-        <div style={{ flex: 1, border: "1px solid #ddd", padding: "20px", borderRadius: "5px" }}>
-          <h2>Resume Preview</h2>
-          <p>
-            <strong>Name:</strong> {formData.fullName || "Your Name"}
-          </p>
-          <p>
-            <strong>Email:</strong> {formData.email || "Email"}
-          </p>
-          <p>
-            <strong>Phone:</strong> {formData.phone || "Phone"}
-          </p>
-          <p>
-            <strong>Address:</strong> {formData.address || "Address"}
-          </p>
-          <h3>Summary</h3>
-          <p>{formData.summary || "Summary"}</p>
-          <h3>Experience</h3>
-          <ul>
-            {formData.experience.map((exp, index) => (
-              <li key={index}>
-                <strong>{exp.role || "Role"}</strong> at <strong>{exp.company || "Company"}</strong>{" "}
-                ({exp.duration || "Duration"})
-                <p>{exp.description || "Description"}</p>
-              </li>
-            ))}
-          </ul>
-          <h3>Education</h3>
-          <ul>
-            {formData.education.map((edu, index) => (
-              <li key={index}>
-                <strong>{edu.degree || "Degree"}</strong>, {edu.institution || "Institution"} ({edu.year || "Year"})
-              </li>
-            ))}
-          </ul>
-          <h3>Skills</h3>
-          <ul>
-            {formData.skills.map((skill, index) => (
-              <li key={index}>{skill || "Skill"}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Download Button */}
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <button onClick={downloadResume} style={buttonStyle("blue")}>
-          Download Resume
-        </button>
-      </div>
+      </motion.div>
     </div>
   );
-};
-
-const inputStyle = {
-  display: "block",
-  width: "100%",
-  padding: "10px",
-  margin: "10px 0",
-  border: "1px solid #ddd",
-  borderRadius: "5px",
-};
-
-const buttonStyle = (color: string) => ({
-  padding: "10px 20px",
-  backgroundColor: color,
-  color: "#fff",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-  marginTop: "10px",
-  marginRight: "10px",
-});
-
-export default ResumeBuilderPage;
+}
