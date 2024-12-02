@@ -10,7 +10,7 @@ import { Metadata } from "next";
 
 export function generateMetadata({
   title = "interviewmaster.ai",
-  description = "DevVault helps developers and startups skip the tedious setup of landing pages, auth, payments, and databases. Save time, focus on building your dream app, and launch faster to start earning!",
+  description = " ",
   image = "/thumbnail.png",
   noIndex = false,
 }: {
