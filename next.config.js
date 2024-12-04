@@ -4,12 +4,7 @@ module.exports = {
 
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],  // Ensure Next.js recognizes TypeScript and JSX files
 
-  webpack(config) {
-    // You can extend the webpack configuration here if necessary
-    return config;
-  },
-
-  // Setup redirects, for example:
+  // Setup redirects
   async redirects() {
     return [
       {
@@ -20,18 +15,19 @@ module.exports = {
     ];
   },
 
-  // Experimental settings for Turbopack (if you want to try it)
+  // Experimental settings with valid structure for Turbopack
   experimental: {
-    // turboMode was deprecated, no longer needed, remove it
-    // Remove turboMode option completely
+    turbo: {
+      loaders: {},  // Optional: Customize loader configurations if needed
+      plugins: {},  // Optional: Add plugin configurations
+      resolveOptions: {},  // Optional: Custom resolution options
+    },
   },
 
-  // Disable ESLint during build
   eslint: {
-    ignoreDuringBuilds: true,  // This ensures ESLint warnings won't block the build
+    ignoreDuringBuilds: true,  // Ensure ESLint warnings don't block the build
   },
 
-  // Define environment variables (for both build and runtime)
   env: {
     NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
     CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
