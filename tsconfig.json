@@ -27,7 +27,8 @@
       ]
     },
     "target": "ES2017",             // Target ECMAScript 2017
-   // Suppress errors for implicit 'any' types
+    "skipDefaultLibCheck": true,    // Skip type checking for default library files
+    "noEmitOnError": false          // Allow emitting files even when there are type errors
   },
   "include": [
     "next-env.d.ts",
