@@ -46,3 +46,10 @@ export declare const internal: FilterApi<
   typeof fullApi,
   FunctionReference<any, "internal">
 >;
+import { api } from "../convex/_generated/api";
+
+// Using a public function
+const result = await convex.query(api.users.getUser, { userId: "123" });
+
+// Using an internal function (only within Convex functions)
+await ctx.runAction(internal.emails.sendEmail, { to: "user@example.com" });
