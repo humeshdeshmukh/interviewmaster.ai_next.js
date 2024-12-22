@@ -18,13 +18,19 @@ export const MobileMenu = () => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log('MobileMenu mounted');
     setMounted(true);
-    return () => setMounted(false);
+    return () => {
+      console.log('MobileMenu unmounted');
+      setMounted(false);
+    };
   }, []);
 
   useEffect(() => {
+    console.log('MobileMenu open state changed:', isOpen);
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        console.log('Clicked outside, closing menu');
         setIsOpen(false);
       }
     };
