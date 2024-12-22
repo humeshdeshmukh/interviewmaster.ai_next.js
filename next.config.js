@@ -18,11 +18,12 @@ module.exports = {
   // Experimental settings with valid structure for Turbopack
   experimental: {
     turbo: {
-      loaders: {},  // Optional: Customize loader configurations if needed
-      plugins: {},  // Optional: Add plugin configurations
-      resolveOptions: {},  // Optional: Custom resolution options
+      rules: {
+        '*.mdx': ['mdx-loader']
+      },
     },
   },
+
 
   eslint: {
     ignoreDuringBuilds: true,  // Ensure ESLint warnings don't block the build
