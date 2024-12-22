@@ -26,7 +26,7 @@ export default function RootLayout({
     <ConvexAuthNextjsServerProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={cn(font.className, "antialiased", "bg-white", "dark:bg-gray-900")}
+          className={cn(font.className, "antialiased", "bg-gray", "dark:bg-gray-900")}
         >
           <ConvexClientProvider>
             <NextTopLoader showSpinner={false} color="#fcba28" />
