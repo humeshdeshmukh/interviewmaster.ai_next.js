@@ -23,7 +23,7 @@ export const pay = action({
     };
 
     // TODO: instead of this use get if the app is development or production mode
-    const domain = process.env.HOSTING_URL ?? "http://localhost:3000";
+    const domain = process.env.HOSTING_URL ?? "https://interviewmasterai.vercel.app";
     const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
       apiVersion: "2024-11-20.acacia"
     });
