@@ -22,9 +22,9 @@
    children: React.ReactNode;
  }>) {
    return (
-     <ConvexAuthNextjsServerProvider>
-       <html lang="en" suppressHydrationWarning>
-         <body className={cn(font.className, "antialiased")}>
+     <html lang="en" suppressHydrationWarning>
+       <body className={cn(font.className, "antialiased")}>
+         <ConvexAuthNextjsServerProvider>
            <ConvexClientProvider>
              <NextTopLoader showSpinner={false} color="#fcba28" />
              <Toaster />
@@ -33,8 +33,9 @@
              <Footer />
              <Analytics />
            </ConvexClientProvider>
-         </body>
-       </html>
-     </ConvexAuthNextjsServerProvider>
+         </ConvexAuthNextjsServerProvider>
+       </body>
+     </html>
    );
  }
+
