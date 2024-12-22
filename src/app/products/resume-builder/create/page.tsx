@@ -1,10 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"; // Ensures this file works with React 18 client-side rendering
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import jsPDF from "jspdf";
 import { Document, Packer, Paragraph, TextRun } from "docx";
+
+// Define interface for resume data
+interface ResumeData {
+  name: string;
+  email: string;
+  phone: string;
+  summary: string;
+  experience: string;
+  education: string;
+  skills: string;
+  projects: string;
+  certifications: string;
+  declaration: string;
+}
 
 const sections = [
   { label: "Name", type: "text", name: "name", placeholder: "Enter your name" },
@@ -20,9 +35,9 @@ const sections = [
 ];
 
 // Resume Form Component
-const ResumeForm = ({ setResumeData }: any) => {
+const ResumeForm = ({ setResumeData }: { setResumeData: React.Dispatch<React.SetStateAction<ResumeData>> }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setResumeData((prev: any) => ({
+    setResumeData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
@@ -56,20 +71,20 @@ const ResumeForm = ({ setResumeData }: any) => {
 };
 
 // Resume Preview Component
-const ResumePreview = ({ resumeData }: any) => (
+const ResumePreview = ({ resumeData }: { resumeData: ResumeData }) => (
   <div className="p-6 border rounded-lg bg-gray-800 shadow-lg text-gray-100">
     <h2 className="text-2xl font-bold mb-4 text-center">Resume Preview</h2>
     {Object.entries(resumeData).map(([key, value]) => (
       <div key={key} className="mt-4">
         <h3 className="text-lg font-semibold capitalize">{key}</h3>
-        <p>{value || "Not Provided"}</p>
+        <p>{String(value) || "Not Provided"}</p>
       </div>
     ))}
   </div>
 );
 
 // Generate PDF Content
-const generatePDF = (resumeData: any) => {
+const generatePDF = (resumeData: ResumeData) => {
   const doc = new jsPDF();
   doc.setFont("helvetica", "bold");
   doc.text("Resume", 20, 20);
@@ -87,7 +102,7 @@ const generatePDF = (resumeData: any) => {
 };
 
 // Generate DOCX Content
-const generateDocx = (resumeData: any) => {
+const generateDocx = (resumeData: ResumeData) => {
   const doc = new Document({
     sections: [
       {
@@ -115,8 +130,8 @@ const generateDocx = (resumeData: any) => {
 
 // Main Component
 export default function ResumeBuilder() {
-  const [resumeData, setResumeData] = useState<any>(
-    sections.reduce((acc, { name }) => ({ ...acc, [name]: "" }), {})
+  const [resumeData, setResumeData] = useState<ResumeData>(
+    sections.reduce((acc, { name }) => ({ ...acc, [name]: "" }), {} as ResumeData)
   );
 
   return (
