@@ -7,7 +7,7 @@
     ],
     "allowJs": true,               // Allow JavaScript files to be compiled
     "skipLibCheck": true,           // Skip type checking for declaration files (.d.ts)
-    "strict": false,                // Disable strict type checking
+    "strict": true,                // Enable strict type checking
     "noEmit": true,                 // Don't generate any output (no .js files)
     "esModuleInterop": true,        // Enable compatibility with CommonJS modules
     "module": "esnext",             // Use ESNext module resolution
@@ -26,7 +26,7 @@
         "./src/*"
       ]
     },
-    "target": "ES2017",             // Target ECMAScript 2017
+    "target": "ES2020",             // Target more modern ECMAScript version
     "skipDefaultLibCheck": true,    // Skip type checking for default library files
     "noEmitOnError": false          // Allow emitting files even when there are type errors
   },
