@@ -96,13 +96,18 @@ export const MobileMenu = () => {
       </Button>
 
       {/* Mobile Menu Panel */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, x: '-100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '-100%' }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            onAnimationComplete={() => {
+              if (!isOpen) {
+                document.body.style.overflow = 'auto';
+              }
+            }}
             className={cn(
               'fixed top-0 left-0 w-3/4 h-full bg-background p-6 z-40 shadow-lg',
               'flex flex-col gap-6 overflow-y-scroll'
