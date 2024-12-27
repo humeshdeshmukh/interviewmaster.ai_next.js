@@ -10,6 +10,78 @@ import { cn } from '@/lib/utils';
 import { createPortal } from 'react-dom';
 
 // Social Links and navigationMenus arrays remain the same...
+// Social Links
+const socialLinks = [
+  { href: 'https://x.com/interviewmaster', icon: FaTwitter, label: 'Twitter' },
+  { href: 'https://linkedin.com/company/interviewmaster', icon: FaLinkedin, label: 'LinkedIn' },
+  { href: 'https://facebook.com/interviewmaster', icon: FaFacebook, label: 'Facebook' },
+  { href: 'https://instagram.com/interviewmaster', icon: FaInstagram, label: 'Instagram' },
+  { href: 'https://github.com/interviewmaster', icon: FaGithub, label: 'GitHub' },
+];
+
+// Navigation Menus with icons
+const navigationMenus = [
+  {
+    title: 'Products',
+    icon: FaCubes,
+    links: [
+      { href: '/products/resume-builder', label: 'Resume Builder', icon: FaFileAlt, description: 'Create professional resumes with AI assistance' },
+      { href: '/products/mock-interviews', label: 'Mock Interviews', icon: FaUserTie, description: 'Practice with AI-powered interview simulations' },
+      { href: '/products/ai-feedback', label: 'AI Feedback', icon: FaRobot, description: 'Get instant feedback on your interview responses' },
+      { href: '/products/skills-analyzer', label: 'Skills Analyzer', icon: FaChartBar, description: 'Analyze and improve your technical skills' },
+      { href: '/products/interview-questions', label: 'Interview Questions', icon: FaQuestionCircle, description: 'Access curated interview questions' },
+      { href: '/products/Practice-Tests', label: 'Practice Tests', icon: FaClipboardCheck, description: 'Take industry-specific practice tests' },
+    ],
+  },
+  {
+    title: 'Services',
+    icon: FaCog,
+    links: [
+      { href: '/services/consultation', label: 'Career Consultation', icon: FaComments, description: 'Get expert career guidance' },
+      { href: '/services/cv-revision', label: 'CV Revision', icon: FaEdit, description: 'Professional CV review and optimization' },
+      { href: '/services/mock-tests', label: 'Mock Tests', icon: FaTasks, description: 'Practice with real interview scenarios' },
+      { href: '/services/interview-coaching', label: 'Interview Coaching', icon: FaChalkboardTeacher, description: 'One-on-one interview preparation' },
+      { href: '/services/personal-branding', label: 'Personal Branding', icon: FaUserCircle, description: 'Build your professional brand' },
+      { href: '/services/salary-negotiation', label: 'Salary Negotiation', icon: FaHandshake, description: 'Learn effective negotiation strategies' },
+    ],
+  },
+  {
+    title: 'Resources',
+    icon: FaBookOpen,
+    links: [
+      { href: '/resources/blog', label: 'Blog', icon: FaNewspaper, description: 'Latest articles and insights' },
+      { href: '/resources/faq', label: 'FAQ', icon: FaQuestionCircle2, description: 'Frequently asked questions' },
+      { href: '/resources/ebooks', label: 'Ebooks & Guides', icon: FaBook, description: 'In-depth learning materials' },
+      { href: '/resources/tutorials', label: 'Tutorials', icon: FaVideo, description: 'Step-by-step video guides' },
+      { href: '/resources/webinars', label: 'Webinars', icon: FaDesktop, description: 'Live and recorded sessions' },
+      { href: '/resources/newsletters', label: 'Newsletters', icon: FaEnvelope, description: 'Stay updated with our newsletter' },
+    ],
+  },
+  {
+    title: 'Community',
+    icon: FaUsers,
+    links: [
+      { href: '/community/forums', label: 'Forums', icon: FaComments2, description: 'Join the discussion' },
+      { href: '/community/events', label: 'Events', icon: FaCalendarAlt, description: 'Upcoming community events' },
+      { href: '/community/mentorship', label: 'Mentorship', icon: FaUserGraduate, description: 'Connect with mentors' },
+      { href: '/community/success-stories', label: 'Success Stories', icon: FaTrophy, description: 'Community achievements' },
+      { href: '/community/meetups', label: 'Meetups', icon: FaHandshake2, description: 'Local community gatherings' },
+      { href: '/community/hackathons', label: 'Hackathons', icon: FaCode, description: 'Coding competitions' },
+    ],
+  },
+  {
+    title: 'Company',
+    icon: FaBuilding,
+    links: [
+      { href: '/company/about', label: 'About Us', icon: FaInfo, description: 'Our story and mission' },
+      { href: '/company/careers', label: 'Careers', icon: FaBriefcase, description: 'Join our team' },
+      { href: '/company/partners', label: 'Partners', icon: FaHandshake2, description: 'Our trusted partners' },
+      { href: '/company/contact', label: 'Contact Us', icon: FaEnvelope, description: 'Get in touch' },
+      { href: '/company/press', label: 'Press', icon: FaNewspaper, description: 'Media coverage' },
+      { href: '/company/investors', label: 'Investors', icon: FaChartLine, description: 'Investment opportunities' },
+    ],
+  },
+];
 
 // Mobile Menu Component
 export const MobileMenu = () => {
@@ -54,10 +126,10 @@ export const MobileMenu = () => {
           initial={{ opacity: 0, x: '-100%' }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: '-100%' }}
-          transition={{ duration: 0.2, ease: 'easeInOut' }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
           className={cn(
             'fixed top-0 left-0 w-3/4 h-full bg-background p-6 z-50 shadow-lg',
-            'flex flex-col gap-6 overflow-y-auto'
+            'flex flex-col gap-6 overflow-y-auto transition-all duration-300'
           )}
         >
           {/* Close button */}
@@ -65,7 +137,7 @@ export const MobileMenu = () => {
             variant="ghost"
             size="icon"
             onClick={() => setIsOpen(false)}
-            className="absolute top-4 right-4"
+            className="absolute top-4 right-4 transition-all duration-300"
           >
             <FaTimes size={24} />
           </Button>
@@ -74,13 +146,13 @@ export const MobileMenu = () => {
           <div className="flex flex-col gap-6 mt-12">
             {navigationMenus.map((menu, idx) => (
               <div key={idx} className="flex flex-col gap-4">
-                <h2 className="text-lg font-semibold text-foreground">{menu.title}</h2>
+                <h2 className="text-lg font-semibold text-foreground transition-all duration-300">{menu.title}</h2>
                 {menu.links.map((link, linkIdx) => (
                   <Link
                     key={linkIdx}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-sm text-muted-foreground hover:text-primary transition-all"
+                    className="text-sm text-muted-foreground hover:text-primary transition-all duration-300"
                   >
                     {link.label}
                   </Link>
@@ -100,7 +172,7 @@ export const MobileMenu = () => {
                 onClick={() => setIsOpen(false)}
               >
                 <social.icon
-                  className="text-foreground hover:text-primary transition-colors"
+                  className="text-foreground hover:text-primary transition-all duration-300"
                   size={20}
                 />
               </Link>
@@ -118,7 +190,7 @@ export const MobileMenu = () => {
         size="icon"
         onClick={toggleMenu}
         aria-label={isOpen ? 'Close Menu' : 'Open Menu'}
-        className="text-foreground"
+        className="text-foreground transition-all duration-300"
       >
         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </Button>
