@@ -3,13 +3,18 @@
 
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react';
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa6';
-import { LuBookOpen, LuBriefcase, LuGraduationCap, LuUsers, LuBuilding, LuSearch } from 'react-icons/lu';
-import { Button } from './ui/button';
+import { FaCubes, FaCog, FaFileAlt, FaUserTie, FaRobot, FaChartBar, FaQuestionCircle, FaClipboardCheck, FaComments, FaEdit, FaTasks, FaChalkboardTeacher, FaUserCircle, FaHandshake } from 'react-icons/fa6';
+import {
+  FaBookOpen, FaNewspaper, FaQuestionCircle as FaQuestionCircle2, FaBook, FaVideo,
+  FaDesktop, FaEnvelope, FaUsers, FaComments as FaComments2, FaCalendarAlt,
+  FaUserGraduate, FaTrophy, FaHandshake as FaHandshake2, FaCode, FaBuilding,
+  FaInfo, FaBriefcase, FaChartLine
+} from 'react-icons/fa';
 
 import { Logo } from './Logo';
 import { NavLink } from './NavLink';
@@ -18,312 +23,363 @@ import { MaxWidthWrapper } from './MaxWidthWrapper';
 import { UserButton } from '../features/auth/components/UserButton';
 import { UserButtonLoading } from '../features/auth/components/UserButtonLoading';
 
-// Navigation configuration
-const navigationConfig = {
-  socialLinks: [
-    { href: 'https://x.com/interviewmaster', icon: FaTwitter, label: 'Twitter', hoverColor: 'hover:text-[#1DA1F2]' },
-    { href: 'https://linkedin.com/company/interviewmaster', icon: FaLinkedin, label: 'LinkedIn', hoverColor: 'hover:text-[#0077B5]' },
-    { href: 'https://facebook.com/interviewmaster', icon: FaFacebook, label: 'Facebook', hoverColor: 'hover:text-[#4267B2]' },
-    { href: 'https://instagram.com/interviewmaster', icon: FaInstagram, label: 'Instagram', hoverColor: 'hover:text-[#E4405F]' },
-    { href: 'https://github.com/interviewmaster', icon: FaGithub, label: 'GitHub', hoverColor: 'hover:text-[#333]' },
-  ],
-  navigationMenus: [
-    {
-      title: 'Products',
-      icon: LuBookOpen,
-      links: [
-        { href: '/products/resume-builder', label: 'Resume Builder', description: 'Create professional resumes with AI assistance' },
-        { href: '/products/mock-interviews', label: 'Mock Interviews', description: 'Practice with AI-powered interview simulations' },
-        { href: '/products/ai-feedback', label: 'AI Feedback', description: 'Get instant feedback on your interview responses' },
-        { href: '/products/skills-analyzer', label: 'Skills Analyzer', description: 'Assess your technical and soft skills' },
-        { href: '/products/interview-questions', label: 'Interview Questions', description: 'Access our curated question bank' },
-        { href: '/products/Practice-Tests', label: 'Practice Tests', description: 'Test your knowledge with our assessments' },
-      ],
-    },
-    {
-      title: 'Services',
-      icon: LuBriefcase,
-      links: [
-        { href: '/services/consultation', label: 'Career Consultation', description: 'Get expert career guidance' },
-        { href: '/services/cv-revision', label: 'CV Revision', description: 'Professional CV review and optimization' },
-        { href: '/services/mock-tests', label: 'Mock Tests', description: 'Industry-specific mock interviews' },
-        { href: '/services/interview-coaching', label: 'Interview Coaching', description: 'One-on-one interview preparation' },
-        { href: '/services/personal-branding', label: 'Personal Branding', description: 'Build your professional brand' },
-        { href: '/services/salary-negotiation', label: 'Salary Negotiation', description: 'Learn effective negotiation strategies' },
-      ],
-    },
-    {
-      title: 'Resources',
-      icon: LuGraduationCap,
-      links: [
-        { href: '/resources/blog', label: 'Blog', description: 'Latest interview tips and trends' },
-        { href: '/resources/faq', label: 'FAQ', description: 'Common interview questions answered' },
-        { href: '/resources/ebooks', label: 'Ebooks & Guides', description: 'Comprehensive interview guides' },
-        { href: '/resources/tutorials', label: 'Tutorials', description: 'Step-by-step interview preparation' },
-        { href: '/resources/webinars', label: 'Webinars', description: 'Live and recorded training sessions' },
-        { href: '/resources/newsletters', label: 'Newsletters', description: 'Weekly interview insights' },
-      ],
-    },
-    {
-      title: 'Community',
-      icon: LuUsers,
-      links: [
-        { href: '/community/forums', label: 'Forums', description: 'Connect with fellow job seekers' },
-        { href: '/community/events', label: 'Events', description: 'Join our community events' },
-        { href: '/community/mentorship', label: 'Mentorship', description: 'Find a mentor or become one' },
-        { href: '/community/success-stories', label: 'Success Stories', description: 'Read inspiring success stories' },
-        { href: '/community/meetups', label: 'Meetups', description: 'Network at local meetups' },
-        { href: '/community/hackathons', label: 'Hackathons', description: 'Participate in coding challenges' },
-      ],
-    },
-    {
-      title: 'Company',
-      icon: LuBuilding,
-      links: [
-        { href: '/company/about', label: 'About Us', description: 'Learn about our mission' },
-        { href: '/company/careers', label: 'Careers', description: 'Join our growing team' },
-        { href: '/company/partners', label: 'Partners', description: 'Our trusted partners' },
-        { href: '/company/contact', label: 'Contact Us', description: 'Get in touch with us' },
-        { href: '/company/press', label: 'Press', description: 'Latest news and updates' },
-        { href: '/company/investors', label: 'Investors', description: 'Investment opportunities' },
-      ],
-    },
-  ],
-};
+// Social Links
+const socialLinks = [
+  { href: 'https://x.com/interviewmaster', icon: FaTwitter, label: 'Twitter' },
+  { href: 'https://linkedin.com/company/interviewmaster', icon: FaLinkedin, label: 'LinkedIn' },
+  { href: 'https://facebook.com/interviewmaster', icon: FaFacebook, label: 'Facebook' },
+  { href: 'https://instagram.com/interviewmaster', icon: FaInstagram, label: 'Instagram' },
+  { href: 'https://github.com/interviewmaster', icon: FaGithub, label: 'GitHub' },
+];
+
+// Navigation Menus with icons
+const navigationMenus = [
+  {
+    title: 'Products',
+    icon: FaCubes,
+    links: [
+      { href: '/products/resume-builder', label: 'Resume Builder', icon: FaFileAlt, description: 'Create professional resumes with AI assistance' },
+      { href: '/products/mock-interviews', label: 'Mock Interviews', icon: FaUserTie, description: 'Practice with AI-powered interview simulations' },
+      { href: '/products/ai-feedback', label: 'AI Feedback', icon: FaRobot, description: 'Get instant feedback on your interview responses' },
+      { href: '/products/skills-analyzer', label: 'Skills Analyzer', icon: FaChartBar, description: 'Analyze and improve your technical skills' },
+      { href: '/products/interview-questions', label: 'Interview Questions', icon: FaQuestionCircle, description: 'Access curated interview questions' },
+      { href: '/products/Practice-Tests', label: 'Practice Tests', icon: FaClipboardCheck, description: 'Take industry-specific practice tests' },
+    ],
+  },
+  {
+    title: 'Services',
+    icon: FaCog,
+    links: [
+      { href: '/services/consultation', label: 'Career Consultation', icon: FaComments, description: 'Get expert career guidance' },
+      { href: '/services/cv-revision', label: 'CV Revision', icon: FaEdit, description: 'Professional CV review and optimization' },
+      { href: '/services/mock-tests', label: 'Mock Tests', icon: FaTasks, description: 'Practice with real interview scenarios' },
+      { href: '/services/interview-coaching', label: 'Interview Coaching', icon: FaChalkboardTeacher, description: 'One-on-one interview preparation' },
+      { href: '/services/personal-branding', label: 'Personal Branding', icon: FaUserCircle, description: 'Build your professional brand' },
+      { href: '/services/salary-negotiation', label: 'Salary Negotiation', icon: FaHandshake, description: 'Learn effective negotiation strategies' },
+    ],
+  },
+  {
+    title: 'Resources',
+    icon: FaBookOpen,
+    links: [
+      { href: '/resources/blog', label: 'Blog', icon: FaNewspaper, description: 'Latest articles and insights' },
+      { href: '/resources/faq', label: 'FAQ', icon: FaQuestionCircle2, description: 'Frequently asked questions' },
+      { href: '/resources/ebooks', label: 'Ebooks & Guides', icon: FaBook, description: 'In-depth learning materials' },
+      { href: '/resources/tutorials', label: 'Tutorials', icon: FaVideo, description: 'Step-by-step video guides' },
+      { href: '/resources/webinars', label: 'Webinars', icon: FaDesktop, description: 'Live and recorded sessions' },
+      { href: '/resources/newsletters', label: 'Newsletters', icon: FaEnvelope, description: 'Stay updated with our newsletter' },
+    ],
+  },
+  {
+    title: 'Community',
+    icon: FaUsers,
+    links: [
+      { href: '/community/forums', label: 'Forums', icon: FaComments2, description: 'Join the discussion' },
+      { href: '/community/events', label: 'Events', icon: FaCalendarAlt, description: 'Upcoming community events' },
+      { href: '/community/mentorship', label: 'Mentorship', icon: FaUserGraduate, description: 'Connect with mentors' },
+      { href: '/community/success-stories', label: 'Success Stories', icon: FaTrophy, description: 'Community achievements' },
+      { href: '/community/meetups', label: 'Meetups', icon: FaHandshake2, description: 'Local community gatherings' },
+      { href: '/community/hackathons', label: 'Hackathons', icon: FaCode, description: 'Coding competitions' },
+    ],
+  },
+  {
+    title: 'Company',
+    icon: FaBuilding,
+    links: [
+      { href: '/company/about', label: 'About Us', icon: FaInfo, description: 'Our story and mission' },
+      { href: '/company/careers', label: 'Careers', icon: FaBriefcase, description: 'Join our team' },
+      { href: '/company/partners', label: 'Partners', icon: FaHandshake2, description: 'Our trusted partners' },
+      { href: '/company/contact', label: 'Contact Us', icon: FaEnvelope, description: 'Get in touch' },
+      { href: '/company/press', label: 'Press', icon: FaNewspaper, description: 'Media coverage' },
+      { href: '/company/investors', label: 'Investors', icon: FaChartLine, description: 'Investment opportunities' },
+    ],
+  },
+];
+
+const dropdownClasses = cn(
+  'absolute hidden group-hover:flex flex-col mt-4 w-[480px] py-6 px-4 rounded-2xl shadow-2xl',
+  'backdrop-blur-2xl bg-background/80 border border-border/10',
+  'transition-all duration-300 transform scale-98 group-hover:scale-100 opacity-0 group-hover:opacity-100 z-50',
+  'before:content-[""] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/5 before:to-white/5 before:backdrop-blur-xl before:-z-10'
+);
+
+const menuItemClasses = cn(
+  'relative flex items-start gap-4 p-4 rounded-xl transition-all duration-300',
+  'hover:bg-[#fcba28]/5 hover:backdrop-blur-lg',
+  'before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-b before:from-[#fcba28]/5 before:to-transparent before:opacity-0 before:transition-opacity before:duration-300',
+  'hover:before:opacity-100'
+);
 
 export const Header = () => {
   const router = useRouter();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<number | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
-  // Mount after initial render to prevent hydration issues
+  // Increased timeout duration
+  const HOVER_TIMEOUT = 300; // 300ms for smoother interaction
+
+  // Mount check with increased timeout
   useEffect(() => {
-    setMounted(true);
+    const timeout = setTimeout(() => {
+      setIsMounted(true);
+    }, HOVER_TIMEOUT);
+
+    return () => {
+      setIsMounted(false);
+      clearTimeout(timeout);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
-  // Scroll handler with debounce
+  // Click outside handler
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setActiveMenu(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMounted]);
+
+  // Scroll listener
   useMotionValueEvent(scrollY, 'change', (latest) => {
+    if (!isMounted) return;
     const shouldBeScrolled = latest > 100;
     if (scrolled !== shouldBeScrolled) {
       setScrolled(shouldBeScrolled);
     }
   });
 
-  // Memoized handlers
-  const handleSearchToggle = useCallback(() => {
-    setShowSearch(prev => !prev);
-  }, []);
+  // Enhanced menu hover handler with delay
+  const handleMenuHover = useCallback((index: number | null) => {
+    if (!isMounted || isNavigating) return;
+    
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-  const handleSearchClose = useCallback(() => {
-    setShowSearch(false);
-  }, []);
+    if (index === null) {
+      timeoutRef.current = setTimeout(() => {
+        setActiveMenu(null);
+      }, HOVER_TIMEOUT);
+    } else {
+      setActiveMenu(index);
+    }
+  }, [isMounted, isNavigating, HOVER_TIMEOUT]);
 
-  // Don't render until mounted to prevent hydration issues
-  if (!mounted) {
-    return null;
+  // Navigation handler
+  const handleMenuClick = useCallback((href: string) => {
+    if (isNavigating) return;
+    
+    setIsNavigating(true);
+    setActiveMenu(null);
+    
+    try {
+      router.push(href);
+    } finally {
+      // Reset navigation state after a short delay
+      setTimeout(() => {
+        setIsNavigating(false);
+      }, 100);
+    }
+  }, [router, isNavigating]);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((event: React.KeyboardEvent, href?: string) => {
+    if (!isMounted || isNavigating) return;
+    
+    if (event.key === 'Enter' && href) {
+      handleMenuClick(href);
+    } else if (event.key === 'Escape') {
+      setActiveMenu(null);
+    }
+  }, [handleMenuClick, isMounted, isNavigating]);
+
+  if (!isMounted) {
+    return (
+      <div className="fixed left-0 right-0 top-0 z-50 py-4 md:py-6 bg-background">
+        <MaxWidthWrapper>
+          <nav className="flex items-center justify-between">
+            <Logo className="flex-shrink-0" />
+          </nav>
+        </MaxWidthWrapper>
+      </div>
+    );
   }
 
   return (
     <motion.header
+      initial={{ opacity: 0, y: '-100%' }}
+      animate={{ opacity: 1, y: '0%' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-16',
-        scrolled ? 'bg-background/80 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        'fixed left-0 right-0 top-0 z-40 transition-all duration-300',
+        scrolled
+          ? 'bg-background/80 backdrop-blur-2xl border-b border-border/10 shadow-lg'
+          : 'bg-background'
       )}
-      initial={false}
     >
-      <MaxWidthWrapper className="h-full">
-        <nav className="flex items-center justify-between h-full">
-          {/* Logo Section */}
-          <div className="flex-shrink-0 w-[200px]">
-            <Link href="/" className="flex items-center space-x-2 group">
-              <Logo className="w-8 h-8 transition-transform duration-200 group-hover:scale-110" />
-              <span className="font-semibold text-lg tracking-tight">
-                <span className="text-primary"></span>
-              </span>
-            </Link>
+      <MaxWidthWrapper>
+        <nav className="flex items-center h-20" role="navigation" ref={menuRef}>
+          {/* Logo with hover effect */}
+          <motion.div 
+            className="flex items-center mr-16"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Logo className="flex-shrink-0" />
+          </motion.div>
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex items-center justify-between flex-1">
+            <ul className="flex items-center gap-12" role="menubar">
+              {navigationMenus.map((menu, idx) => (
+                <div
+                  key={idx}
+                  className="relative group"
+                  onMouseEnter={() => handleMenuHover(idx)}
+                  onMouseLeave={() => handleMenuHover(null)}
+                  role="menuitem"
+                  onKeyDown={(e) => handleKeyDown(e)}
+                  tabIndex={0}
+                >
+                  <motion.button
+                    className="flex items-center gap-2 py-2 text-base text-muted-foreground hover:text-[#fcba28] font-medium transition-all duration-300 group"
+                    aria-expanded={activeMenu === idx}
+                    aria-haspopup="true"
+                    aria-label={menu.title}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {menu.icon && (
+                      <menu.icon className="text-lg opacity-70 group-hover:opacity-100 group-hover:text-[#fcba28] transition-colors" />
+                    )}
+                    {menu.title}
+                  </motion.button>
+
+                  <AnimatePresence mode="wait">
+                    {activeMenu === idx && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        className={dropdownClasses}
+                        role="menu"
+                      >
+                        <div className="relative grid grid-cols-1 gap-1 px-2">
+                          {menu.links.map((link, linkIdx) => (
+                            <motion.div
+                              key={linkIdx}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: linkIdx * 0.05 }}
+                              className="group/item"
+                            >
+                              <Link
+                                href={link.href}
+                                onClick={() => handleMenuClick(link.href)}
+                                onKeyDown={(e) => handleKeyDown(e, link.href)}
+                                className={menuItemClasses}
+                                role="menuitem"
+                                tabIndex={0}
+                              >
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#fcba28]/5 group-hover/item:bg-[#fcba28]/10 text-[#fcba28] transition-colors">
+                                  {link.icon && <link.icon className="h-5 w-5" />}
+                                </span>
+                                <div className="flex-1">
+                                  <div className="text-sm font-medium text-white group-hover/item:text-[#fcba28] transition-colors mb-1">
+                                    {link.label}
+                                  </div>
+                                  {link.description && (
+                                    <div className="text-xs text-muted-foreground group-hover/item:text-white/70 transition-colors line-clamp-2">
+                                      {link.description}
+                                    </div>
+                                  )}
+                                </div>
+                              </Link>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </ul>
+
+            {/* Desktop Social Links & User Actions */}
+            <div className="flex items-center gap-6">
+              {socialLinks.map((social, idx) => (
+                <motion.div
+                  key={idx}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link
+                    target="_blank"
+                    href={social.href}
+                    aria-label={social.label}
+                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-white/10 transition-all duration-300"
+                  >
+                    <social.icon className="h-4 w-4 text-muted-foreground hover:text-[#fcba28] transition-colors" />
+                  </Link>
+                </motion.div>
+              ))}
+              <div className="h-6 w-px bg-border/10" />
+              <AuthLoading>
+                <UserButtonLoading />
+              </AuthLoading>
+              <Unauthenticated>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => !isNavigating && router.push('/auth')}
+                  className="px-5 py-2 rounded-lg font-medium bg-[#fcba28] text-background hover:bg-[#fcba28]/90 transition-all duration-300"
+                >
+                  Sign in
+                </motion.button>
+              </Unauthenticated>
+              <Authenticated>
+                <UserButton />
+              </Authenticated>
+            </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center justify-center flex-1 mx-4 space-x-1">
-            {navigationConfig.navigationMenus.map((menu, idx) => (
-              <NavigationItem key={idx} menu={menu} />
-            ))}
-          </div>
-
-          {/* Right Section */}
-          <div className="flex items-center space-x-2 flex-shrink-0 w-[200px] justify-end">
-            <SearchButton onClick={handleSearchToggle} />
-            <SocialLinks />
-            <AuthSection router={router} />
-            <MobileMenuButton />
+          {/* Mobile Menu */}
+          <div className="md:hidden flex items-center gap-4 ml-auto">
+            <AuthLoading>
+              <UserButtonLoading />
+            </AuthLoading>
+            <Unauthenticated>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => !isNavigating && router.push('/auth')}
+                className="px-4 py-1.5 text-sm rounded-lg font-medium bg-[#fcba28] text-background hover:bg-[#fcba28]/90 transition-all duration-300"
+              >
+                Sign in
+              </motion.button>
+            </Unauthenticated>
+            <Authenticated>
+              <UserButton />
+            </Authenticated>
+            <div className="h-6 w-px bg-border/10" />
+            <MobileMenu />
           </div>
         </nav>
       </MaxWidthWrapper>
-
-      {/* Search Overlay */}
-      <AnimatePresence mode="wait">
-        {showSearch && (
-          <SearchOverlay onClose={handleSearchClose} />
-        )}
-      </AnimatePresence>
     </motion.header>
   );
 };
-
-// Extracted components
-const NavigationItem = ({ menu }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div
-      className="group relative px-2"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <button 
-        className={cn(
-          "flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200",
-          "hover:bg-white/10 active:scale-95",
-          "text-sm font-medium"
-        )}
-      >
-        <menu.icon className="w-4 h-4" />
-        <span>{menu.title}</span>
-      </button>
-
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className={cn(
-              'absolute top-full left-1/2 -translate-x-1/2 pt-2',
-              'w-[380px] p-4 rounded-xl shadow-lg',
-              'bg-background/95 backdrop-blur-xl border border-white/10',
-              'grid grid-cols-1 gap-2'
-            )}
-          >
-            {menu.links.map((link, linkIdx) => (
-              <Link
-                key={linkIdx}
-                href={link.href}
-                className={cn(
-                  "flex flex-col space-y-1 p-3 rounded-lg",
-                  "hover:bg-white/5 transition-colors duration-200",
-                  "group/link"
-                )}
-              >
-                <span className="font-medium text-sm group-hover/link:text-primary transition-colors">
-                  {link.label}
-                </span>
-                <span className="text-xs text-muted-foreground line-clamp-1">
-                  {link.description}
-                </span>
-              </Link>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
-
-const SearchButton = ({ onClick }) => (
-  <Button
-    variant="ghost"
-    size="icon"
-    onClick={onClick}
-    className="hidden md:flex"
-    aria-label="Search"
-  >
-    <LuSearch className="w-4 h-4" />
-  </Button>
-);
-
-const SocialLinks = () => (
-  <div className="hidden xl:flex items-center">
-    {navigationConfig.socialLinks.map((social, idx) => (
-      <Link
-        key={idx}
-        href={social.href}
-        target="_blank"
-        className={cn(
-          "p-2 rounded-lg transition-all duration-200",
-          "hover:bg-white/5",
-          social.hoverColor
-        )}
-        aria-label={social.label}
-      >
-        <social.icon className="w-4 h-4" />
-      </Link>
-    ))}
-  </div>
-);
-
-const AuthSection = ({ router }) => (
-  <div className="flex items-center space-x-2">
-    <AuthLoading>
-      <UserButtonLoading />
-    </AuthLoading>
-    <Authenticated>
-      <UserButton />
-    </Authenticated>
-    <Unauthenticated>
-      <Button
-        variant="default"
-        size="sm"
-        className="bg-primary text-primary-foreground hover:bg-primary/90"
-        onClick={() => router.push('/login')}
-      >
-        Sign In
-      </Button>
-    </Unauthenticated>
-  </div>
-);
-
-const MobileMenuButton = () => (
-  <div className="lg:hidden">
-    <MobileMenu />
-  </div>
-);
-
-const SearchOverlay = ({ onClose }) => (
-  <motion.div
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -20 }}
-    transition={{ duration: 0.2 }}
-    className="absolute top-full left-0 right-0 p-4 border-t border-white/10"
-  >
-    <MaxWidthWrapper>
-      <div className={cn(
-        "flex items-center space-x-4 h-12 px-4 rounded-lg",
-        "bg-background/95 backdrop-blur-xl",
-        "border border-white/10 shadow-lg"
-      )}>
-        <LuSearch className="w-4 h-4 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Search everything..."
-          className={cn(
-            "flex-1 bg-transparent border-none",
-            "text-sm placeholder:text-muted-foreground",
-            "focus:outline-none focus:ring-0"
-          )}
-          autoFocus
-        />
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onClose}
-        >
-          Cancel
-        </Button>
-      </div>
-    </MaxWidthWrapper>
-  </motion.div>
-);

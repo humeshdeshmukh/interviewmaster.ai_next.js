@@ -1,142 +1,323 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FaSearch,
+  FaPlus,
+  FaFire,
+  FaClock,
+  FaStar,
+  FaUser,
+  FaUsers,
+  FaChartLine,
+  FaCode,
+  FaLaptopCode,
+  FaBrain,
+  FaGraduationCap,
+  FaBriefcase,
+  FaLightbulb,
+  FaSpinner,
+  FaComments,
+  FaHeart
+} from 'react-icons/fa';
+import { mockCategories, mockStats, mockTags, forumTheme } from './data/mock';
+import type { Post, Category } from './types';
+import { MaxWidthWrapper } from '@/components/MaxWidthWrapper';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import cn from 'classnames';
 
-export default function Forums() {
-  // Sample forum categories and discussions data
-  const categories = [
-    { name: "General Discussion", slug: "general" },
-    { name: "Coding Challenges", slug: "coding-challenges" },
-    { name: "Interview Tips", slug: "interview-tips" },
-    { name: "Career Advice", slug: "career-advice" },
-  ];
+interface ForumPageProps {
+  className?: string;
+}
 
-  const discussions = [
-    {
-      title: "Best resources for mastering React?",
-      author: "JaneDoe123",
-      category: "Coding Challenges",
-      date: "2024-11-28",
-      link: "/community/forums/general/react-resources",
-      replies: 12,
-    },
-    {
-      title: "How to handle tricky behavioral questions?",
-      author: "CodeMaster",
-      category: "Interview Tips",
-      date: "2024-12-01",
-      link: "/community/forums/interview-tips/behavioral-questions",
-      replies: 8,
-    },
-    {
-      title: "Is a bootcamp worth it for a career switch?",
-      author: "DevGuy",
-      category: "Career Advice",
-      date: "2024-11-25",
-      link: "/community/forums/career-advice/bootcamp-worth-it",
-      replies: 15,
-    },
-    {
-      title: "Weekly coding challenge: Sorting algorithms",
-      author: "ChallengeBot",
-      category: "Coding Challenges",
-      date: "2024-11-30",
-      link: "/community/forums/coding-challenges/sorting-challenge",
-      replies: 20,
-    },
-  ];
+export default function ForumsPage({ className = '' }: ForumPageProps) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<'latest' | 'trending' | 'top'>('latest');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const getIconComponent = (iconName: string) => {
+    const icons: { [key: string]: React.ComponentType } = {
+      FaCode,
+      FaLaptopCode,
+      FaBrain,
+      FaGraduationCap,
+      FaBriefcase,
+      FaLightbulb
+    };
+    return icons[iconName] || FaCode;
+  };
 
-  // Filter discussions based on search and selected category
-  const filteredDiscussions = discussions.filter((discussion) => {
-    const matchesSearch = discussion.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "" || discussion.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const renderCategoryCard = (category: Category) => {
+    const IconComponent = getIconComponent(category.icon);
+    return (
+      <motion.div
+        key={category.id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className={cn(
+          "bg-black/20 backdrop-blur-lg p-6 rounded-xl border border-white/10",
+          "hover:border-[#fcba28]/50 transition-all cursor-pointer hover:shadow-lg",
+          selectedCategory === category.id && "border-[#fcba28]"
+        )}
+        onClick={() => setSelectedCategory(category.id)}
+      >
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-4">
+            <div
+              className="p-3 rounded-lg"
+              style={{ backgroundColor: `${category.color}20` }}
+            >
+              <IconComponent
+                className="w-6 h-6"
+                style={{ color: category.color }}
+              />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-1">
+                {category.name}
+              </h3>
+              <p className="text-sm text-white/60">{category.description}</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="text-sm font-medium text-[#fcba28]">
+              {category.postCount.toLocaleString()} posts
+            </span>
+          </div>
+        </div>
+
+        {category.lastActivity && (
+          <div className="mt-4 pt-4 border-t border-white/10">
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center gap-2 text-white/60">
+                <FaClock className="w-4 h-4" />
+                <span>Last activity:</span>
+              </div>
+              <span className="text-white/60">
+                {new Date(category.lastActivity.timestamp).toLocaleDateString()}
+              </span>
+            </div>
+            <Link
+              href={`/community/forums/${category.id}/${category.lastActivity.post.id}`}
+              className="block mt-2 text-sm text-[#fcba28] hover:underline"
+            >
+              {category.lastActivity.post.title}
+            </Link>
+          </div>
+        )}
+      </motion.div>
+    );
+  };
+
+  const renderStats = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="bg-black/20 backdrop-blur-lg p-4 rounded-xl border border-white/10 hover:border-[#fcba28]/30 transition-all"
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-[#fcba28]/20">
+            <FaUsers className="w-5 h-5 text-[#fcba28]" />
+          </div>
+          <div>
+            <div className="text-sm text-white/60">Total Users</div>
+            <div className="text-xl font-semibold text-white">
+              {mockStats.totalUsers.toLocaleString()}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="bg-black/20 backdrop-blur-lg p-4 rounded-xl border border-white/10 hover:border-[#7B61FF]/30 transition-all"
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-[#7B61FF]/20">
+            <FaChartLine className="w-5 h-5 text-[#7B61FF]" />
+          </div>
+          <div>
+            <div className="text-sm text-white/60">Posts Today</div>
+            <div className="text-xl font-semibold text-white">
+              {mockStats.postsToday.toLocaleString()}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="bg-black/20 backdrop-blur-lg p-4 rounded-xl border border-white/10 hover:border-[#4CAF50]/30 transition-all"
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-[#4CAF50]/20">
+            <FaUser className="w-5 h-5 text-[#4CAF50]" />
+          </div>
+          <div>
+            <div className="text-sm text-white/60">Online Users</div>
+            <div className="text-xl font-semibold text-white">
+              {mockStats.onlineUsers.toLocaleString()}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="bg-black/20 backdrop-blur-lg p-4 rounded-xl border border-white/10 hover:border-[#FF5252]/30 transition-all"
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-[#FF5252]/20">
+            <FaFire className="w-5 h-5 text-[#FF5252]" />
+          </div>
+          <div>
+            <div className="text-sm text-white/60">Total Posts</div>
+            <div className="text-xl font-semibold text-white">
+              {mockStats.totalPosts.toLocaleString()}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-background text-white px-6 py-12">
-      {/* Title */}
-      <h1 className="text-4xl font-bold text-center mb-6">Community Forums</h1>
-      <p className="text-lg text-center mb-8">
-        Join the conversation! Share your knowledge, ask questions, and connect
-        with others.
-      </p>
-
-      {/* Categories and Search */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        {/* Categories */}
-        <div className="flex space-x-4 mb-4 md:mb-0">
-          {categories.map((category) => (
-            <button
-              key={category.slug}
-              onClick={() => setSelectedCategory(category.name)}
-              className={`px-4 py-2 rounded-lg ${
-                selectedCategory === category.name
-                  ? "bg-[#fcba28] text-gray-900"
-                  : "bg-gray-700 hover:bg-gray-600"
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-
-        {/* Search Bar */}
-        <div className="relative w-full max-w-md">
-          <input
-            type="text"
-            placeholder="Search discussions..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-3 pl-10 bg-white text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
-          />
-          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-            🔍
-          </span>
-        </div>
+    <div className="relative min-h-screen bg-background">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#fcba2810_0%,transparent_65%)] blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
 
-      {/* Discussions Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredDiscussions.length > 0 ? (
-          filteredDiscussions.map((discussion, index) => (
-            <div
-              key={index}
-              className="bg-[#1d3557] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              <h2 className="text-2xl font-semibold text-[#fcba28] mb-4">
-                {discussion.title}
-              </h2>
-              <p className="text-sm text-gray-400 mb-4">
-                By {discussion.author} | {discussion.date} |{" "}
-                <span className="text-gray-300">
-                  {discussion.replies} replies
-                </span>
-              </p>
-              <p className="text-sm text-gray-300 mb-4">
-                Category: {discussion.category}
-              </p>
-              <Link
-                href={discussion.link}
-                className="text-[#fcba28] hover:underline text-lg font-medium"
-              >
-                View Discussion &rarr;
-              </Link>
+      <MaxWidthWrapper>
+        {/* Hero Section */}
+        <section className="relative pt-20 pb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+              InterviewMaster.AI Community
+            </h1>
+            <p className="text-lg text-white/60 max-w-3xl mx-auto mb-12">
+              Join our vibrant community of developers and tech professionals. Share experiences,
+              ask questions, and help others succeed in their interview journey.
+            </p>
+          </motion.div>
+
+          {/* Search and Filter */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-12">
+            <div className="relative flex-1">
+              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+              <Input
+                type="text"
+                placeholder="Search discussions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 bg-black/20 border-white/10 text-white placeholder:text-white/40"
+              />
             </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-300 col-span-full">
-            No discussions found. Start a new one!
-          </p>
-        )}
-      </div>
+            <Button
+              onClick={() => {}}
+              className="bg-[#fcba28] text-black hover:bg-[#fcba28]/90"
+            >
+              <FaPlus className="mr-2" /> New Discussion
+            </Button>
+          </div>
+
+          {/* Sort Options */}
+          <div className="flex gap-2 mb-8">
+            <Button
+              variant={sortBy === 'latest' ? 'secondary' : 'ghost'}
+              onClick={() => setSortBy('latest')}
+              className="text-white/60"
+            >
+              <FaClock className="mr-2" /> Latest
+            </Button>
+            <Button
+              variant={sortBy === 'trending' ? 'secondary' : 'ghost'}
+              onClick={() => setSortBy('trending')}
+              className="text-white/60"
+            >
+              <FaFire className="mr-2" /> Trending
+            </Button>
+            <Button
+              variant={sortBy === 'top' ? 'secondary' : 'ghost'}
+              onClick={() => setSortBy('top')}
+              className="text-white/60"
+            >
+              <FaStar className="mr-2" /> Top
+            </Button>
+          </div>
+
+          {/* Stats */}
+          {renderStats()}
+
+          {/* Categories */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {mockCategories.map(renderCategoryCard)}
+          </div>
+
+          {/* Trending Tags */}
+          <div className="mb-12">
+            <h2 className="text-xl font-semibold text-white mb-4">Trending Tags</h2>
+            <div className="flex flex-wrap gap-2">
+              {mockTags.map((tag) => (
+                <div
+                  key={tag.id}
+                  className="px-3 py-1 rounded-full text-sm"
+                  style={{
+                    backgroundColor: `${tag.color}20`,
+                    color: tag.color,
+                    border: `1px solid ${tag.color}40`
+                  }}
+                >
+                  {tag.name} ({tag.count})
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Top Contributors */}
+          <div>
+            <h2 className="text-xl font-semibold text-white mb-4">Top Contributors</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {mockStats.topContributors.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center gap-3 p-4 bg-black/20 backdrop-blur-lg rounded-xl border border-white/10"
+                >
+                  <div className="w-10 h-10 rounded-full bg-[#fcba28]/20 flex items-center justify-center">
+                    <FaUser className="w-5 h-5 text-[#fcba28]" />
+                  </div>
+                  <div>
+                    <div className="font-medium text-white">{user.name}</div>
+                    <div className="text-sm text-white/60">
+                      {user.reputation.toLocaleString()} reputation
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </MaxWidthWrapper>
     </div>
   );
 }

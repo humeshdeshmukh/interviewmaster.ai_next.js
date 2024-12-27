@@ -1,111 +1,283 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { MaxWidthWrapper } from "@/components/MaxWidthWrapper";
+import { ArrowRight, Check } from "lucide-react";
 import Image from "next/image";
-import { FaHandsHelping, FaNetworkWired, FaRocket } from "react-icons/fa";
+import {
+  partnershipTypes,
+  partnerStats,
+  partnerBenefits,
+  partnershipProcess,
+} from "./data";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 },
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const PartnershipCard = ({
+  icon: Icon,
+  title,
+  description,
+  benefits,
+}: {
+  icon: any;
+  title: string;
+  description: string;
+  benefits: string[];
+}) => (
+  <motion.div
+    variants={fadeInUp}
+    className="group hover:bg-white/[0.1] bg-black/20 backdrop-blur-lg border border-white/10 rounded-xl p-6 transition-colors"
+  >
+    <div className="flex items-center gap-4 mb-4">
+      <div className="p-2 rounded-lg bg-[#fcba28]/10">
+        <Icon className="w-6 h-6 text-[#fcba28]" />
+      </div>
+      <h3 className="text-xl font-semibold text-white">{title}</h3>
+    </div>
+    <p className="text-white/60 mb-6">{description}</p>
+    <ul className="space-y-2">
+      {benefits.map((benefit) => (
+        <li key={benefit} className="flex items-center gap-2 text-white/60">
+          <Check className="w-4 h-4 text-[#fcba28]" />
+          {benefit}
+        </li>
+      ))}
+    </ul>
+  </motion.div>
+);
+
+const StatCard = ({
+  icon: Icon,
+  label,
+  value,
+  description,
+}: {
+  icon: any;
+  label: string;
+  value: string;
+  description: string;
+}) => (
+  <motion.div
+    variants={fadeInUp}
+    className="group hover:bg-white/[0.1] bg-black/20 backdrop-blur-lg border border-white/10 rounded-xl p-6 transition-colors text-center"
+  >
+    <div className="flex justify-center text-[#fcba28] mb-4">
+      <Icon className="w-8 h-8" />
+    </div>
+    <h3 className="text-lg font-semibold text-white/60 mb-2">{label}</h3>
+    <p className="text-3xl font-bold text-white mb-2">{value}</p>
+    <p className="text-sm text-white/60">{description}</p>
+  </motion.div>
+);
+
+const ProcessStep = ({
+  step,
+  title,
+  description,
+}: {
+  step: number;
+  title: string;
+  description: string;
+}) => (
+  <motion.div
+    variants={fadeInUp}
+    className="relative flex items-center gap-6"
+  >
+    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#fcba28]/10 flex items-center justify-center border border-[#fcba28]/20">
+      <span className="text-[#fcba28] font-bold">{step}</span>
+    </div>
+    <div>
+      <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
+      <p className="text-white/60">{description}</p>
+    </div>
+  </motion.div>
+);
 
 export default function PartnersPage() {
   return (
-    <div className="bg-background text-white min-h-screen p-8">
+    <div className="relative min-h-screen bg-background overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#fcba2810_0%,transparent_65%)] blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      </div>
+
       {/* Hero Section */}
-      <section className="text-center mb-16">
-        <h1 className="text-5xl font-bold mb-4 text-[#fcba28]">
-          Partner With Us
-        </h1>
-        <p className="text-xl">
-          Collaborate with us to drive innovation and success.
-        </p>
+      <section className="relative pt-20 pb-16">
+        <MaxWidthWrapper>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+              Partner With Us
+            </h1>
+            <p className="text-lg text-white/60 max-w-3xl mx-auto mb-12">
+              Join forces with InterviewMaster.AI to revolutionize technical interview preparation.
+              Together, we can help more professionals succeed in their career journeys.
+            </p>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#fcba28] text-black rounded-lg font-semibold hover:bg-[#fcba28]/90 transition-colors"
+            >
+              Become a Partner <ArrowRight className="w-5 h-5" />
+            </a>
+          </motion.div>
+        </MaxWidthWrapper>
       </section>
 
-      {/* Partnership Benefits */}
-      <section className="mb-16">
-        <h2 className="text-4xl font-semibold text-center mb-8">
-          Why Partner With Us?
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="p-8 bg-gray-800 rounded-lg shadow-lg text-center">
-            <FaHandsHelping className="text-5xl text-[#fcba28] mb-4 mx-auto" />
-            <h3 className="text-2xl font-bold mb-2">Mutual Growth</h3>
-            <p>
-              We believe in fostering partnerships that drive mutual success and
-              long-term value.
-            </p>
-          </div>
-
-          <div className="p-8 bg-gray-800 rounded-lg shadow-lg text-center">
-            <FaNetworkWired className="text-5xl text-[#fcba28] mb-4 mx-auto" />
-            <h3 className="text-2xl font-bold mb-2">Expansive Network</h3>
-            <p>
-              Join a global network of innovators, businesses, and industry
-              leaders.
-            </p>
-          </div>
-
-          <div className="p-8 bg-gray-800 rounded-lg shadow-lg text-center">
-            <FaRocket className="text-5xl text-[#fcba28] mb-4 mx-auto" />
-            <h3 className="text-2xl font-bold mb-2">Innovative Solutions</h3>
-            <p>
-              Collaborate with us on cutting-edge projects that push the
-              boundaries of technology.
-            </p>
-          </div>
-        </div>
+      {/* Stats Section */}
+      <section className="relative py-16">
+        <MaxWidthWrapper>
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {partnerStats.map((stat) => (
+              <StatCard
+                key={stat.label}
+                icon={stat.icon}
+                label={stat.label}
+                value={stat.value}
+                description={stat.description}
+              />
+            ))}
+          </motion.div>
+        </MaxWidthWrapper>
       </section>
 
-      {/* Current Partners */}
-      <section className="mb-16">
-        <h2 className="text-4xl font-semibold text-center mb-8">
-          Our Esteemed Partners
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-          <div className="text-center">
-            <Image
-              src="/images/partner1.jpg"
-              alt="Partner 1"
-              width={150}
-              height={150}
-              className="rounded-lg mx-auto mb-4"
-            />
-            <h3 className="text-2xl font-bold">Partner 1</h3>
-          </div>
-
-          <div className="text-center">
-            <Image
-              src="/images/partner2.jpg"
-              alt="Partner 2"
-              width={150}
-              height={150}
-              className="rounded-lg mx-auto mb-4"
-            />
-            <h3 className="text-2xl font-bold">Partner 2</h3>
-          </div>
-
-          <div className="text-center">
-            <Image
-              src="/images/partner3.jpg"
-              alt="Partner 3"
-              width={150}
-              height={150}
-              className="rounded-lg mx-auto mb-4"
-            />
-            <h3 className="text-2xl font-bold">Partner 3</h3>
-          </div>
-        </div>
+      {/* Partnership Types Section */}
+      <section className="relative py-16">
+        <MaxWidthWrapper>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-white mb-12 text-center"
+          >
+            Partnership Opportunities
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            {partnershipTypes.map((type) => (
+              <PartnershipCard
+                key={type.title}
+                icon={type.icon}
+                title={type.title}
+                description={type.description}
+                benefits={type.benefits}
+              />
+            ))}
+          </motion.div>
+        </MaxWidthWrapper>
       </section>
 
-      {/* Call to Action */}
-      <section className="text-center">
-        <h2 className="text-4xl font-semibold mb-4">
-          Interested in Partnering?
-        </h2>
-        <p className="text-lg mb-8">
-          Reach out to us to explore how we can work together.
-        </p>
-        <a
-          href="mailto:humeshdeshmukh0@gmail.com"
-          className="bg-[#fcba28] text-black px-8 py-4 rounded-lg text-xl font-medium hover:bg-[#fcba28]/90 transition"
-        >
-          Contact Us
-        </a>
+      {/* Benefits Section */}
+      <section className="relative py-16">
+        <MaxWidthWrapper>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-white mb-12 text-center"
+          >
+            Partner Benefits
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {partnerBenefits.map((benefit) => (
+              <motion.div
+                key={benefit.title}
+                variants={fadeInUp}
+                className="group hover:bg-white/[0.1] bg-black/20 backdrop-blur-lg border border-white/10 rounded-xl p-6 transition-colors"
+              >
+                <h3 className="text-xl font-semibold text-white mb-3">{benefit.title}</h3>
+                <p className="text-white/60">{benefit.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </MaxWidthWrapper>
+      </section>
+
+      {/* Partnership Process Section */}
+      <section className="relative py-16">
+        <MaxWidthWrapper>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-white mb-12 text-center"
+          >
+            Partnership Process
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto space-y-8"
+          >
+            {partnershipProcess.map((step) => (
+              <ProcessStep
+                key={step.step}
+                step={step.step}
+                title={step.title}
+                description={step.description}
+              />
+            ))}
+          </motion.div>
+        </MaxWidthWrapper>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="relative py-16">
+        <MaxWidthWrapper>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <h2 className="text-3xl font-bold text-white mb-6">Ready to Partner?</h2>
+            <p className="text-lg text-white/60 mb-8">
+              Contact us to explore partnership opportunities and learn how we can work together to
+              achieve shared success.
+            </p>
+            <a
+              href="mailto:partnerships@interviewmaster.ai"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#fcba28] text-black rounded-lg font-semibold hover:bg-[#fcba28]/90 transition-colors"
+            >
+              Contact Partnership Team
+            </a>
+          </motion.div>
+        </MaxWidthWrapper>
       </section>
     </div>
   );

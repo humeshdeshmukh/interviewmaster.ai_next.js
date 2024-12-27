@@ -6,6 +6,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { TriangleAlert } from "lucide-react";
+import { motion } from "framer-motion";
 
 import {
     Card,
@@ -31,117 +32,172 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     });
     const [pending, setPending] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
-
-    const signInByOAuth = (provider: "github" | "google") => {
-        setPending(true);
-        signIn(provider).finally(() => setPending(false));
+    const signInByOAuth = async (provider: "github" | "google") => {
+        try {
+            setPending(true);
+            setError(null);
+            await signIn(provider);
+        } catch (err) {
+            setError(`Failed to sign in with ${provider}. Please try again or use email.`);
+        } finally {
+            setPending(false);
+        }
     }
 
-    const signInByEmail = (e: React.FormEvent<HTMLFormElement>) => {
+    const signInByEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setPending(true);
-        signIn("password", {
-            email: account.email,
-            password: account.password,
-            flow: "signIn",
-        })
-            .catch(() => {
-                setError("Invalid credentials");
-            })
-            .finally(() => setPending(false));
+        if (!account.email || !account.password) {
+            setError("Please fill in all fields");
+            return;
+        }
+        
+        try {
+            setPending(true);
+            setError(null);
+            await signIn("password", {
+                email: account.email,
+                password: account.password,
+                flow: "signIn",
+            });
+        } catch (err) {
+            setError("Invalid credentials. Please try again or continue without login.");
+        } finally {
+            setPending(false);
+        }
     }
 
     return (
-        <Card className="w-full h-full p-8 bg-background rounded-xl text-foreground border-none shadow-xl shadow-neutral-900 mt-24">
-            <CardHeader className="px-0 pt-0">
-                <Logo />
-                <CardTitle className="mt-4 md:mt-6">
-                    Login to continue
+        <Card className="border-none shadow-2xl bg-gradient-to-b from-background/80 to-background/60 backdrop-blur-xl">
+            <CardHeader className="space-y-4">
+                <div className="flex justify-center">
+                    <Logo className="h-12 animate-pulse" />
+                </div>
+                <CardTitle className="text-2xl text-center bg-gradient-to-r from-[#fcba28] to-[#fcba28]/70 bg-clip-text text-transparent font-bold">
+                    Welcome Back!
                 </CardTitle>
-                <CardDescription className="text-foreground/70">
-                    Use your email or another provider to login
+                <CardDescription className="text-center text-[#fcba28]/70">
+                    Sign in to continue your journey
                 </CardDescription>
             </CardHeader>
-            {!!error && (
-                <span className="bg-destructive/15 p-3 rounded-md flex items-center text-foreground gap-x-2 text-sm">
-                    <TriangleAlert className="size-4" />
-                    {error}
-                </span>
-            )}
-            <CardContent className="space-y-5 px-0 pb-0">
-                <aside className="flex flex-col gap-y-2.5">
-                    <Button
-                        size="sm"
-                        disabled={pending}
-                        variant="outline"
-                        onClick={() => signInByOAuth("google")}
-                        className="w-full flex items-center justify-center font-semibold gap-x-2 bg-neutral-900 hover:bg-neutral-800 hover:bg-neutral-900/50 hover:text-foregorund  text-foreground border-none"
+            <CardContent className="space-y-6">
+                {error && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-2 p-3 text-sm text-red-500 bg-red-500/10 rounded-lg border border-red-500/20"
                     >
-                        <FcGoogle className="size-5" />
-                        Continue with Google
-                    </Button>
-                    <Button
-                        size="sm"
-                        disabled={pending}
-                        variant="outline"
-                        onClick={() => signInByOAuth("github")}
-                        className="w-full flex items-center justify-center font-semibold gap-x-2 bg-neutral-900 hover:bg-neutral-800 hover:bg-neutral-900/50 hover:text-foregorund  text-foreground border-none"
-                    >
-                        <FaGithub className="size-5" />
-                        Continue with GitHub
-                    </Button>
-                </aside>
+                        <TriangleAlert className="h-4 w-4" />
+                        <p>{error}</p>
+                    </motion.div>
+                )}
 
-                <Separator className="my-2 bg-foreground/50" />
-
-                <form className="space-y-4" onSubmit={signInByEmail}>
-                    <fieldset>
-                        <label htmlFor="email" className="text-sm font-medium text-foreground/70">Email</label>
+                <form onSubmit={signInByEmail} className="space-y-4">
+                    <div className="space-y-2">
                         <Input
-                            required
-                            id="email"
-                            name="email"
                             type="email"
-                            disabled={pending}
+                            placeholder="Email"
                             value={account.email}
-                            placeholder="Enter your email"
-                            className="bg-neutral-900 border-none"
-                            onChange={(e) => setAccount({ ...account, email: e.target.value })}
-                        />
-                    </fieldset>
-                    <fieldset>
-                        <label htmlFor="password" className="text-sm font-medium text-foreground/70">Password</label>
-                        <Input
-                            required
-                            id="password"
-                            type="password"
-                            name="password"
+                            onChange={(e) => {
+                                setError(null);
+                                setAccount({ ...account, email: e.target.value });
+                            }}
                             disabled={pending}
-                            value={account.password}
-                            placeholder="Enter your password"
-                            className="bg-neutral-900 border-none"
-                            onChange={(e) => setAccount({ ...account, password: e.target.value })}
+                            required
+                            className="bg-white/5 border-[#fcba28]/20 focus:border-[#fcba28] transition-colors"
                         />
-                    </fieldset>
-                    <Button
-                        size="sm"
-                        type="submit"
-                        disabled={pending}
-                        className="w-full rounded-full bg-[#fcba28] text-background font-semibold hover:bg-[#fcba28]/80"
+                    </div>
+
+                    <div className="space-y-2">
+                        <div className="relative">
+                            <Input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Password"
+                                value={account.password}
+                                onChange={(e) => {
+                                    setError(null);
+                                    setAccount({ ...account, password: e.target.value });
+                                }}
+                                disabled={pending}
+                                required
+                                className="bg-white/5 border-[#fcba28]/20 focus:border-[#fcba28] transition-colors"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#fcba28]/70 hover:text-[#fcba28] transition-colors"
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
+                    </div>
+
+                    <motion.div
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
                     >
-                        Continue with email
-                    </Button>
+                        <Button
+                            type="submit"
+                            className="w-full bg-[#fcba28] hover:bg-[#fcba28]/90 text-background font-medium"
+                            disabled={pending}
+                        >
+                            {pending ? (
+                                <span className="flex items-center gap-2">
+                                    <span className="h-4 w-4 border-2 border-background/30 border-t-background animate-spin rounded-full" />
+                                    Signing in...
+                                </span>
+                            ) : (
+                                "Sign in"
+                            )}
+                        </Button>
+                    </motion.div>
                 </form>
-                <p className="text-xs text-center text-foreground/50">
-                    Don&apos;t have an account?{" "}
-                    <span
+
+                <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-[#fcba28]/20" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-[#fcba28]/70">Or continue with</span>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Button
+                            variant="outline"
+                            onClick={() => signInByOAuth("google")}
+                            disabled={pending}
+                            className="w-full bg-white/5 border-[#fcba28]/20 hover:bg-[#fcba28]/10 hover:border-[#fcba28]/30 transition-colors"
+                        >
+                            <FcGoogle className="mr-2 h-5 w-5" />
+                            Google
+                        </Button>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Button
+                            variant="outline"
+                            onClick={() => signInByOAuth("github")}
+                            disabled={pending}
+                            className="w-full bg-white/5 border-[#fcba28]/20 hover:bg-[#fcba28]/10 hover:border-[#fcba28]/30 transition-colors"
+                        >
+                            <FaGithub className="mr-2 h-5 w-5" />
+                            GitHub
+                        </Button>
+                    </motion.div>
+                </div>
+
+                <div className="text-center text-sm">
+                    <span className="text-[#fcba28]/70">Don't have an account?</span>{" "}
+                    <button
                         onClick={() => setState("signUp")}
-                        className="text-[#fcba28] hover:underline cursor-pointer"
+                        className="text-[#fcba28] hover:text-[#fcba28]/90 font-medium hover:underline transition-colors"
+                        disabled={pending}
                     >
                         Sign up
-                    </span>
-                </p>
+                    </button>
+                </div>
             </CardContent>
         </Card>
     );

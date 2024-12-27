@@ -222,3 +222,5 @@ const TRANSITION: AnimationProps["transition"] = {
   duration: 50,
   ease: "linear",
 };
+
+export default RectangularBento;

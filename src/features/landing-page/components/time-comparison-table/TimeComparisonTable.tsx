@@ -3,20 +3,80 @@
 
 import { motion, useInView, useAnimation } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock, Zap, CheckCircle2, XCircle } from "lucide-react";
 import { MaxWidthWrapper } from "@/components/MaxWidthWrapper";
 
 const features = [
-  { name: "Automated Interview Scheduling", competitor: "3 hours", kit: "15 minutes" },
-  { name: "Personalized Interview Feedback", competitor: "5+ hours", kit: "30 minutes" },
-  { name: "Dynamic Coding Challenges Integration", competitor: "4 hours", kit: "20 minutes" },
-  { name: "Real-Time Interview Analytics", competitor: "6 hours", kit: "20 minutes" },
-  { name: "User Role Management (Recruiters, Candidates, Admin)", competitor: "4 hours", kit: "10 minutes" },
-  { name: "Customizable Question Bank", competitor: "2 hours", kit: "10 minutes" },
-  { name: "Seamless Video Interview Integration", competitor: "3 hours", kit: "Already optimized" },
-  { name: "Auto Evaluation and Scoring System", competitor: "3 hours", kit: "Pre-configured" },
-  { name: "Comprehensive Dashboard and Reporting", competitor: "5 hours", kit: "10 minutes" },
+  {
+    name: "AI-Powered Mock Interviews",
+    competitor: { time: "Manual setup", status: false },
+    kit: { time: "Instant", status: true },
+    description: "Real-time AI interviews with personalized feedback"
+  },
+  {
+    name: "Resume Analysis & Feedback",
+    competitor: { time: "24-48 hours", status: false },
+    kit: { time: "5 minutes", status: true },
+    description: "Comprehensive resume review with AI-powered suggestions"
+  },
+  {
+    name: "Technical Skills Assessment",
+    competitor: { time: "2-3 hours", status: false },
+    kit: { time: "15 minutes", status: true },
+    description: "In-depth evaluation of programming & technical skills"
+  },
+  {
+    name: "Interview Performance Analytics",
+    competitor: { time: "Manual tracking", status: false },
+    kit: { time: "Real-time", status: true },
+    description: "Detailed insights into interview performance metrics"
+  },
+  {
+    name: "Custom Interview Questions",
+    competitor: { time: "Hours to prepare", status: false },
+    kit: { time: "Auto-generated", status: true },
+    description: "AI-generated questions based on job requirements"
+  },
+  {
+    name: "Behavioral Assessment",
+    competitor: { time: "1-2 hours", status: false },
+    kit: { time: "10 minutes", status: true },
+    description: "Advanced behavioral analysis using AI"
+  },
+  {
+    name: "Interview Recording & Analysis",
+    competitor: { time: "Manual review", status: false },
+    kit: { time: "Automated", status: true },
+    description: "AI-powered analysis of interview recordings"
+  },
+  {
+    name: "Practice Interview Sessions",
+    competitor: { time: "Limited availability", status: false },
+    kit: { time: "24/7 access", status: true },
+    description: "Unlimited practice with AI interviewer"
+  }
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.5 }
+  }
+};
 
 export const TimeComparisonTable = () => {
   const controls = useAnimation();
@@ -29,102 +89,122 @@ export const TimeComparisonTable = () => {
     }
   }, [controls, inView]);
 
-  const draw = {
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: {
-      pathLength: 1,
-      opacity: 1,
-      transition: {
-        pathLength: { type: "spring", duration: 1.5, bounce: 0 },
-        opacity: { duration: 0.01 },
-      },
-    },
-  };
-
   return (
-    <section
-      id="time-comparison-table"
-      className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#2e2e2e] to-[#121212] p-8"
-    >
-      <MaxWidthWrapper className="relative z-20 w-full max-w-5xl space-y-12 pb-16 pt-36">
-        <h2 className="text-4xl font-semibold text-center text-white">
-          InterviewMaster.ai Feature Comparison
-        </h2>
-        <div className="overflow-x-auto shadow-lg rounded-xl border border-[#444]">
-          <table className="w-full table-auto">
-            <thead>
-              <tr className="bg-[#FF652F] text-white">
-                <th className="p-4 text-left">Feature</th>
-                <th className="p-4 text-center">Competitors</th>
-                <th className="p-4 text-center">InterviewMaster.ai</th>
-              </tr>
-            </thead>
-            <tbody>
-              {features.map((feature, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    index % 2 === 0 ? "bg-[#1c1c1c]" : "bg-[#2a2a2a]"
-                  } hover:bg-[#383838] transition-colors`}
-                >
-                  <td className="p-4 text-white border-b border-[#3f3f3f]">
-                    {feature.name}
-                  </td>
-                  <td className="p-4 text-center text-gray-300 border-b border-[#3f3f3f]">
-                    {feature.competitor}
-                  </td>
-                  <td className="p-4 text-center text-[#fcba28] font-semibold border-b border-[#3f3f3f]">
-                    {feature.kit}
-                  </td>
-                </tr>
-              ))}
-              <tr className="bg-[#2a2a2a] font-bold text-white">
-                <td className="p-4">Total Time Spent</td>
-                <td className="p-4 text-center text-gray-300">40+ hours</td>
-                <td className="p-4 text-center text-[#fcba28]">Less than 2 hours</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="bg-[#444] p-8 rounded-lg shadow-xl">
-          <h3 className="text-2xl font-semibold text-[#f38ba3] mb-4">Time Saved: 35+ hours</h3>
-          <p className="text-white leading-relaxed">
-            With <strong>InterviewMaster.ai</strong>, interviewers can reduce the setup time of interview management and feedback processes from over 40 hours to less than 2 hours. This allows you to:
-            <strong className="underline text-[#fcba28]">focus on optimizing your recruitment process and improving candidate experience.</strong>
-          </p>
-        </div>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-white">
-          <span className="text-lg line-through">Competitors</span>
-          <ArrowRight className="text-[#FF652F] w-8 h-8 rotate-90 md:rotate-0" />
-          <div ref={ref} className="relative inline-block">
-            <span className="text-lg font-semibold text-[#fcba28] z-10 relative px-2 py-1">
-              Using InterviewMaster.ai
-            </span>
-            <motion.svg
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              width="200%"
-              height="200%"
-              viewBox="0 0 360 80"
-              initial="hidden"
-              animate={controls}
+    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-background to-background/50">
+      <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      
+      <MaxWidthWrapper className="relative z-20">
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="space-y-16"
+        >
+          {/* Header */}
+          <div className="text-center space-y-4">
+            <motion.h2 
+              variants={itemVariants}
+              className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fcba28] to-[#FF652F]"
             >
-              <motion.path
-                d="M20,40 C20,10 340,0 340,40 C340,70 20,80 20,40"
-                fill="transparent"
-                strokeWidth="2"
-                stroke="#FF652F"
-                variants={draw}
-              />
-            </motion.svg>
+              Why Choose InterviewMaster.ai?
+            </motion.h2>
+            <motion.p 
+              variants={itemVariants}
+              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+            >
+              Experience the future of interview preparation with our AI-powered platform
+            </motion.p>
           </div>
-        </div>
+
+          {/* Comparison Table */}
+          <motion.div 
+            variants={itemVariants}
+            className="relative rounded-2xl border border-[#fcba28]/20 backdrop-blur-xl overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fcba28]/5 to-transparent" />
+            
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-[#fcba28]/20">
+                    <th className="p-6 text-left text-lg font-medium">Features</th>
+                    <th className="p-6 text-center text-lg font-medium">Traditional Methods</th>
+                    <th className="p-6 text-center text-lg font-medium">InterviewMaster.ai</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {features.map((feature, index) => (
+                    <motion.tr
+                      key={index}
+                      variants={itemVariants}
+                      className="border-b border-[#fcba28]/10 hover:bg-[#fcba28]/5 transition-colors"
+                    >
+                      <td className="p-6">
+                        <div className="space-y-1">
+                          <div className="font-medium">{feature.name}</div>
+                          <div className="text-sm text-muted-foreground">{feature.description}</div>
+                        </div>
+                      </td>
+                      <td className="p-6">
+                        <div className="flex flex-col items-center space-y-2">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="w-4 h-4 text-muted-foreground" />
+                            <span className="text-muted-foreground">{feature.competitor.time}</span>
+                          </div>
+                          {feature.competitor.status ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-500" />
+                          ) : (
+                            <XCircle className="w-5 h-5 text-red-500" />
+                          )}
+                        </div>
+                      </td>
+                      <td className="p-6">
+                        <div className="flex flex-col items-center space-y-2">
+                          <div className="flex items-center space-x-2 text-[#fcba28]">
+                            <Zap className="w-4 h-4" />
+                            <span className="font-medium">{feature.kit.time}</span>
+                          </div>
+                          {feature.kit.status && (
+                            <CheckCircle2 className="w-5 h-5 text-[#fcba28]" />
+                          )}
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+
+          {/* Summary Card */}
+          <motion.div 
+            variants={itemVariants}
+            className="relative p-8 rounded-2xl border border-[#fcba28]/20 bg-gradient-to-b from-[#fcba28]/5 to-transparent backdrop-blur-xl"
+          >
+            <div className="max-w-3xl mx-auto space-y-4">
+              <h3 className="text-2xl font-bold text-[#fcba28]">Transform Your Interview Process</h3>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                InterviewMaster.ai reduces interview preparation time by up to 90% while providing deeper insights and better candidate evaluation. Our AI-powered platform helps you make better hiring decisions faster.
+              </p>
+              <div className="flex items-center justify-center gap-4 pt-4">
+                <div className="text-center px-6 py-3 rounded-xl bg-[#fcba28]/10 border border-[#fcba28]/20">
+                  <div className="text-3xl font-bold text-[#fcba28]">90%</div>
+                  <div className="text-sm text-muted-foreground">Time Saved</div>
+                </div>
+                <div className="text-center px-6 py-3 rounded-xl bg-[#fcba28]/10 border border-[#fcba28]/20">
+                  <div className="text-3xl font-bold text-[#fcba28]">24/7</div>
+                  <div className="text-sm text-muted-foreground">Availability</div>
+                </div>
+                <div className="text-center px-6 py-3 rounded-xl bg-[#fcba28]/10 border border-[#fcba28]/20">
+                  <div className="text-3xl font-bold text-[#fcba28]">100%</div>
+                  <div className="text-sm text-muted-foreground">AI-Powered</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </MaxWidthWrapper>
     </section>
   );
 };
-
-// Instructions
-/*
-This component showcases the time savings of InterviewMaster.ai, comparing its features against competitors.
-It aims to illustrate how InterviewMaster.ai can streamline the interview process and save valuable time for recruiters.
-*/

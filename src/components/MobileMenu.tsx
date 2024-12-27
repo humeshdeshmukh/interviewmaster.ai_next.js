@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa6';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import { createPortal } from 'react-dom';
 
 // Social Links
 const socialLinks = [
@@ -76,76 +78,174 @@ const navigationMenus = [
   },
 ];
 
-// Mobile Menu Component
+// Animation variants
+const menuVariants = {
+  closed: {
+    x: '-100%',
+    opacity: 0,
+    transition: { duration: 0.2, ease: 'easeIn' }
+  },
+  open: {
+    x: 0,
+    opacity: 1,
+    transition: { duration: 0.3, ease: 'easeOut', staggerChildren: 0.07 }
+  }
+};
+
+const itemVariants = {
+  closed: { x: -20, opacity: 0 },
+  open: { x: 0, opacity: 1 }
+};
+
+const overlayVariants = {
+  closed: { opacity: 0 },
+  open: { opacity: 1 }
+};
+
 export const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const portalRoot = useRef<HTMLElement | null>(null);
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);
+  useEffect(() => {
+    setMounted(true);
+    portalRoot.current = document.getElementById('portal-root');
+    return () => setMounted(false);
+  }, []);
+
+  const handleNavigation = useCallback((href: string) => {
+    setIsOpen(false);
+    router.push(href);
+  }, [router]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  if (!mounted) return null;
+
+  const MenuContent = () => (
+    <>
+      <motion.div
+        variants={overlayVariants}
+        initial="closed"
+        animate="open"
+        exit="closed"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+        onClick={() => setIsOpen(false)}
+      />
+      <motion.div
+        ref={menuRef}
+        variants={menuVariants}
+        initial="closed"
+        animate="open"
+        exit="closed"
+        className={cn(
+          'fixed top-0 left-0 h-[100dvh] w-[85%] max-w-[400px] bg-background/95',
+          'backdrop-blur-md p-6 z-50 shadow-xl border-r border-border/10',
+          'flex flex-col overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#fcba28]'
+        )}
+      >
+        <div className="absolute top-4 right-4">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsOpen(false)}
+            className="p-2 text-muted-foreground hover:text-[#fcba28]"
+          >
+            <FaTimes size={24} />
+          </motion.button>
+        </div>
+
+        <nav className="mt-12 flex flex-col gap-8">
+          {navigationMenus.map((menu, idx) => (
+            <motion.div
+              key={idx}
+              variants={itemVariants}
+              className="flex flex-col gap-4"
+            >
+              <h2 className="text-xl font-bold text-[#fcba28]">{menu.title}</h2>
+              <div className="flex flex-col gap-3 pl-2">
+                {menu.links.map((link, linkIdx) => (
+                  <motion.button
+                    key={linkIdx}
+                    variants={itemVariants}
+                    whileHover={{ x: 8 }}
+                    onClick={() => handleNavigation(link.href)}
+                    className="text-base text-muted-foreground hover:text-[#fcba28] text-left py-1.5 transition-colors"
+                  >
+                    {link.label}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </nav>
+
+        <motion.div
+          variants={itemVariants}
+          className="mt-auto pt-8 border-t border-border/10"
+        >
+          <div className="flex justify-between items-center">
+            {socialLinks.map((social, idx) => (
+              <motion.a
+                key={idx}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-2 text-muted-foreground hover:text-[#fcba28]"
+              >
+                <social.icon size={24} />
+              </motion.a>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+    </>
+  );
 
   return (
-    <div className="md:hidden relative">
-      {/* Mobile Menu Toggle Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={toggleMenu}
-        aria-label={isOpen ? 'Close Menu' : 'Open Menu'}
-        className="text-foreground"
+    <>
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsOpen(true)}
+        className="relative z-50 p-2 text-muted-foreground hover:text-[#fcba28]"
+        aria-label="Open menu"
       >
-        {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-      </Button>
+        <FaBars size={24} />
+      </motion.button>
 
-      {/* Mobile Menu Panel */}
-      <AnimatePresence mode="wait">
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '-100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '-100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            onAnimationComplete={() => {
-              if (!isOpen) {
-                document.body.style.overflow = 'auto';
-              }
-            }}
-            className={cn(
-              'fixed top-0 left-0 w-3/4 h-full bg-background p-6 z-40 shadow-lg',
-              'flex flex-col gap-6 overflow-y-scroll'
-            )}
-            aria-hidden={!isOpen}
-          >
-            {/* Navigation Links */}
-            <div className="flex flex-col gap-6">
-              {navigationMenus.map((menu, idx) => (
-                <div key={idx} className="flex flex-col gap-4">
-                  <h2 className="text-lg font-semibold text-foreground">{menu.title}</h2>
-                  {menu.links.map((link, linkIdx) => (
-                    <Link
-                      key={linkIdx}
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-all"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              ))}
-            </div>
-
-            {/* Social Media Links */}
-            <div className="flex justify-between gap-4 mt-auto">
-              {socialLinks.map((social, idx) => (
-                <Link key={idx} href={social.href} target="_blank" aria-label={social.label}>
-                  <social.icon
-                    className="text-foreground hover:text-primary transition-colors"
-                    size={20}
-                  />
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+      {mounted && isOpen && portalRoot.current && createPortal(
+        <AnimatePresence mode="wait">
+          {isOpen && <MenuContent />}
+        </AnimatePresence>,
+        portalRoot.current
+      )}
+    </>
   );
 };

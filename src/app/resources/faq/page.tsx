@@ -1,88 +1,214 @@
-// Add this at the top of the file to specify that this component should run on the client side
-'use client';
+"use client";
 
-import Link from 'next/link';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { faqCategories } from './data/faq';
+import {
+  FaInfoCircle,
+  FaCode,
+  FaDollarSign,
+  FaUserCog,
+  FaSearch,
+  FaChevronDown,
+  FaExternalLinkAlt,
+  FaArrowRight
+} from 'react-icons/fa';
 
-export default function FAQ() {
+const iconMap = {
+  FaInfoCircle,
+  FaCode,
+  FaDollarSign,
+  FaUserCog,
+};
+
+export default function FAQPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [expandedFAQs, setExpandedFAQs] = useState<string[]>([]);
+
+  const toggleFAQ = (faqId: string) => {
+    setExpandedFAQs(prev => 
+      prev.includes(faqId) 
+        ? prev.filter(id => id !== faqId)
+        : [...prev, faqId]
+    );
+  };
+
+  const filteredCategories = faqCategories.filter(category => {
+    if (selectedCategory !== 'all' && category.id !== selectedCategory) {
+      return false;
+    }
+
+    if (!searchQuery) return true;
+
+    return category.faqs.some(faq =>
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
   return (
-    <div className="container mx-auto p-6 bg-background text-foreground max-w-3xl my-24">
-      <h1 className="text-3xl font-bold mb-8 border-b pb-2">Frequently Asked Questions (FAQ)</h1>
+    <div className="min-h-screen bg-background text-white pt-20 px-4 md:px-8">
+      {/* Background gradients */}
+      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-purple-500/10 to-transparent rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-[#fcba28]/10 to-transparent rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+      </div>
 
-      {/* General Questions Section */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-[#fcba28]">General Questions</h2>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">What is InterviewMaster.ai?</h3>
-          <p className="mb-4">
-            InterviewMaster.ai is an AI-powered platform designed to help job seekers improve their interview skills through personalized feedback, mock interviews, and AI-generated tips.
+      <div className="max-w-6xl mx-auto relative">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#fcba28] via-[#fcd978] to-[#fcba28] text-transparent bg-clip-text">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            Find answers to common questions about InterviewMaster.AI
           </p>
         </div>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">How does it work?</h3>
-          <p className="mb-4">
-            Our platform uses artificial intelligence to simulate real-world interview scenarios. Users can participate in mock interviews, receive feedback on their performance, and access resources to enhance their interview techniques.
-          </p>
-        </div>
-      </section>
 
-      {/* Pricing and Subscription Section */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-[#fcba28]">Pricing and Subscription</h2>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">Is InterviewMaster.ai free?</h3>
-          <p className="mb-4">
-            We offer a free plan with limited features. Premium plans are available for users who need access to advanced tools, more interview simulations, and detailed feedback reports.
-          </p>
-        </div>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">How can I upgrade to a premium plan?</h3>
-          <p className="mb-4">
-            You can upgrade by visiting our <Link href="/pricing" className="text-[#fcba28] hover:text-[#fcba28]/70 hover:underline">pricing page</Link> and selecting a plan that suits your needs.
-          </p>
-        </div>
-      </section>
+        {/* Search and Filter */}
+        <div className="mb-12 space-y-6">
+          <div className="relative max-w-2xl mx-auto">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <FaSearch className="text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search FAQs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-[#fcba28] transition-colors"
+            />
+          </div>
 
-      {/* Account and Technical Support Section */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-[#fcba28]">Account and Technical Support</h2>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">I forgot my password. How can I reset it?</h3>
-          <p className="mb-4">
-            Click on the <Link href="/forgot-password" className="text-[#fcba28] hover:text-[#fcba28]/70 hover:underline">Forgot Password</Link> link on the login page and follow the instructions to reset your password.
-          </p>
+          <div className="flex flex-wrap justify-center gap-2">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                selectedCategory === 'all'
+                  ? 'bg-[#fcba28] text-black'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10'
+              }`}
+            >
+              All Categories
+            </button>
+            {faqCategories.map(category => {
+              const Icon = iconMap[category.icon as keyof typeof iconMap];
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2 ${
+                    selectedCategory === category.id
+                      ? 'bg-[#fcba28] text-black'
+                      : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                  }`}
+                >
+                  {Icon && <Icon />} {category.title}
+                </button>
+              );
+            })}
+          </div>
         </div>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">How can I contact customer support?</h3>
-          <p className="mb-4">
-            You can reach out to our support team by emailing us at <Link href="mailto:support@interviewmaster.ai" className="text-[#fcba28] hover:text-[#fcba28]/70 hover:underline">support@interviewmaster.ai</Link>. We aim to respond within 24 hours.
-          </p>
-        </div>
-      </section>
 
-      {/* Data Privacy and Security Section */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-[#fcba28]">Data Privacy and Security</h2>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">How is my data protected?</h3>
-          <p className="mb-4">
-            We take data security seriously and implement industry-standard measures to protect your information. For more details, please review our <Link href="/privacy-policy" className="text-[#fcba28] hover:text-[#fcba28]/70 hover:underline">Privacy Policy</Link>.
-          </p>
-        </div>
-        <div className="mb-6">
-          <h3 className="text-xl font-medium mb-2">Can I delete my account and data?</h3>
-          <p className="mb-4">
-            Yes, you can request account deletion by contacting our support team. Please note that some data may be retained for legal or regulatory purposes.
-          </p>
-        </div>
-      </section>
+        {/* FAQ Categories */}
+        <div className="space-y-8">
+          {filteredCategories.map(category => {
+            const Icon = iconMap[category.icon as keyof typeof iconMap];
+            return (
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white/5 rounded-xl border border-white/10 overflow-hidden"
+              >
+                <div className="p-6 border-b border-white/10">
+                  <div className="flex items-center gap-3 mb-2">
+                    {Icon && <Icon className="w-6 h-6 text-[#fcba28]" />}
+                    <h2 className="text-2xl font-semibold text-white">{category.title}</h2>
+                  </div>
+                  <p className="text-gray-400">{category.description}</p>
+                </div>
 
-      {/* Contact Us Section */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-[#fcba28]">Contact Us</h2>
-        <p className="mb-4">
-          If you have any further questions, feel free to <Link href="mailto:support@interviewmaster.ai" className="text-[#fcba28] hover:text-[#fcba28]/70 hover:underline">contact us</Link>.
-        </p>
-      </section>
+                <div className="divide-y divide-white/10">
+                  {category.faqs.map(faq => (
+                    <div key={faq.id} className="p-6">
+                      <button
+                        onClick={() => toggleFAQ(faq.id)}
+                        className="w-full flex items-center justify-between text-left"
+                      >
+                        <h3 className="text-lg font-medium text-white pr-4">{faq.question}</h3>
+                        <FaChevronDown
+                          className={`w-5 h-5 text-[#fcba28] transform transition-transform ${
+                            expandedFAQs.includes(faq.id) ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {expandedFAQs.includes(faq.id) && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <p className="mt-4 text-gray-400">{faq.answer}</p>
+                            
+                            {faq.relatedLinks && faq.relatedLinks.length > 0 && (
+                              <div className="mt-4 space-y-2">
+                                {faq.relatedLinks.map((link, index) => (
+                                  <a
+                                    key={index}
+                                    href={link.url}
+                                    className="flex items-center gap-2 text-[#fcba28] hover:text-[#fcba28]/70 transition-colors"
+                                  >
+                                    <FaArrowRight className="w-4 h-4" />
+                                    {link.text}
+                                    <FaExternalLinkAlt className="w-3 h-3" />
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {filteredCategories.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-12"
+          >
+            <p className="text-xl text-gray-400">No FAQs found matching your search criteria</p>
+          </motion.div>
+        )}
+
+        {/* Contact Support */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-12 text-center p-8 bg-white/5 rounded-xl border border-white/10"
+        >
+          <h2 className="text-2xl font-semibold mb-4">Still have questions?</h2>
+          <p className="text-gray-400 mb-6">
+            Can't find the answer you're looking for? Our support team is here to help.
+          </p>
+          <a
+            href="/contact"
+            className="inline-flex items-center px-6 py-3 bg-[#fcba28] text-black rounded-xl hover:bg-[#fcba28]/90 transition-colors"
+          >
+            Contact Support
+          </a>
+        </motion.div>
+      </div>
     </div>
   );
 }

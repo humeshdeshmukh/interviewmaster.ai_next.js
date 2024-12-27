@@ -1,129 +1,167 @@
-'use client'
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import useMeasure from "react-use-measure";
-import { FiChevronDown } from "react-icons/fi";
-import { MaxWidthWrapper } from "@/components/MaxWidthWrapper";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, MessageSquare, Code, Brain, Clock, Award, Zap } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { MaxWidthWrapper } from '@/components/MaxWidthWrapper';
+import { ChipBanner } from '@/components/ChipBanner';
 
-const questions = [
-    {
-        id: 1,
-        question: "What is InterviewMaster.site and how can it help me prepare for interviews?",
-        answer: "InterviewMaster.site is a platform designed to help you ace your technical interviews. It offers coding challenges, interview questions, and mock interview sessions, along with detailed solutions and explanations to prepare you for real-world interviews."
-    },
-    {
-        id: 2,
-        question: "Can I customize the interview topics on InterviewMaster.site?",
-        answer: "Yes, you can select from various coding topics, difficulty levels, and even programming languages, ensuring that your preparation aligns with the specific requirements of your target job."
-    },
-    {
-        id: 3,
-        question: "Is InterviewMaster.site beginner-friendly?",
-        answer: "Absolutely! InterviewMaster.site is designed for both beginners and advanced users. We provide guided tutorials, step-by-step solutions, and a comprehensive FAQ section to help users at every stage of their learning."
-    },
-    {
-        id: 4,
-        question: "How quickly can I start using InterviewMaster.site?",
-        answer: "Getting started is simple! Sign up on InterviewMaster.site, and you can start practicing coding challenges and mock interviews right away. No setup required."
-    },
-    {
-        id: 5,
-        question: "Can I track my progress on InterviewMaster.site?",
-        answer: "Yes, InterviewMaster.site provides a progress tracker that allows you to monitor your learning journey. You can review your completed challenges, areas where you need improvement, and set milestones to keep yourself motivated."
-    },
-    {
-        id: 6,
-        question: "Do you offer a money-back guarantee or refund policy?",
-        answer: "Yes, we offer a 30-day money-back guarantee. If you're not satisfied with our services, you can request a full refund within 30 days of purchase."
-    },
-    {
-        id: 7,
-        question: "How do I prepare for a mock interview on InterviewMaster.site?",
-        answer: "You can choose from a list of mock interview sessions in various domains like algorithms, data structures, system design, and behavioral interviews. Simply select your area of interest, and we’ll simulate an interview scenario for you."
-    },
-    {
-        id: 8,
-        question: "Can I receive feedback on my mock interview performance?",
-        answer: "Yes, after each mock interview, you will receive detailed feedback on your performance. This includes insights into what went well, areas of improvement, and tips for enhancing your responses."
-    },
-    {
-        id: 9,
-        question: "How do I stay updated with new features and content on InterviewMaster.site?",
-        answer: "After signing up, you’ll automatically receive email notifications about new content, features, and updates. You can also check the dashboard for the latest challenges and resources."
-    }
-];
+interface FAQItemProps {
+    question: string;
+    answer: string;
+    icon: JSX.Element;
+    isOpen: boolean;
+    onToggle: () => void;
+}
 
-export const FAQ = () => {
+const FAQItem = ({ question, answer, icon, isOpen, onToggle }: FAQItemProps) => {
     return (
-        <section className="px-4 py-12">
-            <MaxWidthWrapper>
-                <article className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <hgroup className="flex flex-col gap-2 mt-6">
-                        <h3 className="mb-4 text-3xl text-center md:text-start font-bold">
-                            Frequently Asked Questions
-                        </h3>
-                        <p className="font-medium text-base text-center md:text-start md:text-lg max-w-md">
-                            Have questions? We are here to help. If you don’t find what you’re looking for, feel free to <Link className="text-[#fcba28] font-bold hover:underline" href="mailto:support@interviewmaster.site">contact us</Link>.
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className={cn(
+                "group rounded-2xl p-6 backdrop-blur-sm transition-all duration-300",
+                isOpen 
+                    ? "bg-[#fcba28]/20 shadow-lg" 
+                    : "bg-foreground/5 hover:bg-foreground/10"
+            )}
+        >
+            <button
+                onClick={onToggle}
+                className="flex w-full items-center justify-between gap-4"
+            >
+                <div className="flex items-center gap-4">
+                    <div className={cn(
+                        "p-2 rounded-lg transition-colors duration-300",
+                        isOpen ? "bg-[#fcba28] text-background" : "bg-foreground/10 text-foreground/70 group-hover:text-foreground"
+                    )}>
+                        {icon}
+                    </div>
+                    <h3 className="text-left text-lg font-semibold">{question}</h3>
+                </div>
+                <ChevronDown
+                    className={cn(
+                        "h-5 w-5 transition-transform duration-300",
+                        isOpen ? "rotate-180" : "rotate-0"
+                    )}
+                />
+            </button>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                    >
+                        <p className="mt-4 text-foreground/80 leading-relaxed pl-14">
+                            {answer}
                         </p>
-                    </hgroup>
-                    <aside>
-                        {questions.map((q, i) => (
-                            <Question key={i} title={q.question} defaultOpen={q.id === 1}>
-                                {q.answer}
-                            </Question>
-                        ))}
-                    </aside>
-                </article>
-            </MaxWidthWrapper>
-        </section>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     );
 };
 
-const Question = ({
-    title,
-    children,
-    defaultOpen = false,
-}: {
-    title: string;
-    defaultOpen?: boolean;
-    children: React.ReactNode;
-}) => {
-    const [ref, { height }] = useMeasure();
-    const [open, setOpen] = useState(defaultOpen);
+const faqData = [
+    {
+        question: "How does InterviewMaster.ai's AI interview simulation work?",
+        answer: "Our AI-powered interview simulator uses advanced natural language processing to conduct realistic interview scenarios. It adapts to your responses in real-time, providing personalized feedback on your communication style, technical accuracy, and problem-solving approach. The system also analyzes your body language and tone through video interviews, offering comprehensive feedback to improve your interview performance.",
+        icon: <Brain className="h-5 w-5" />,
+    },
+    {
+        question: "What types of technical interviews does the platform cover?",
+        answer: "We cover a wide range of technical interviews including Data Structures & Algorithms, System Design, Full Stack Development, Machine Learning, and Cloud Architecture. Each category features curated questions from top tech companies, real-time coding environments, and AI-powered code review. Our platform is regularly updated with the latest interview patterns from companies like Google, Amazon, Microsoft, and Meta.",
+        icon: <Code className="h-5 w-5" />,
+    },
+    {
+        question: "How does the instant feedback system work?",
+        answer: "Our instant feedback system uses AI to analyze multiple aspects of your interview performance. For coding challenges, it evaluates code quality, time complexity, and problem-solving approach. For behavioral interviews, it assesses your response structure, relevance, and delivery. You receive detailed insights and actionable improvements after each practice session.",
+        icon: <Zap className="h-5 w-5" />,
+    },
+    {
+        question: "What makes InterviewMaster.ai different from other platforms?",
+        answer: "InterviewMaster.ai stands out with its advanced AI technology that provides personalized interview experiences. Unlike traditional platforms, we offer dynamic question adaptation, real-time feedback, and comprehensive performance analytics. Our platform also includes industry-specific interview preparation, mock interviews with AI-powered interviewers, and a vast library of company-specific interview questions.",
+        icon: <Award className="h-5 w-5" />,
+    },
+    {
+        question: "How long does it take to see improvement in interview skills?",
+        answer: "Most users report significant improvement within 2-4 weeks of consistent practice. Our analytics dashboard tracks your progress across different interview aspects, showing measurable improvements in areas like problem-solving speed, communication clarity, and technical accuracy. The platform adapts to your learning pace and continuously challenges you with appropriate difficulty levels.",
+        icon: <Clock className="h-5 w-5" />,
+    },
+    {
+        question: "Can I get help if I'm stuck during practice?",
+        answer: "Absolutely! We offer multiple support channels including AI-powered hints during coding challenges, detailed solution explanations, and community discussion forums. Premium users also get access to one-on-one mentoring sessions with industry experts and priority support for technical queries.",
+        icon: <MessageSquare className="h-5 w-5" />,
+    },
+];
+
+export const FAQ = () => {
+    const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     return (
-        <motion.div
-            animate={open ? "open" : "closed"}
-            className="border-b-[1px] border-b-slate-300"
-        >
-            <button
-                onClick={() => setOpen((pv) => !pv)}
-                className="flex w-full items-center justify-between gap-4 py-6"
-            >
-                <span className="text-[#fcba28] text-left text-lg font-bold">
-                    {title}
-                </span>
-                <motion.span
-                    variants={{
-                        open: { rotate: "180deg" },
-                        closed: { rotate: "0deg" },
-                    }}
+        <section className="relative py-20 bg-gradient-to-b from-background to-background/95">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+            
+            <MaxWidthWrapper>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col items-center justify-center mb-12"
                 >
-                    <FiChevronDown className="text-2xl text-[#fcba28]" />
-                </motion.span>
-            </button>
-            <motion.div
-                initial={false}
-                animate={{
-                    height: open ? height : "0px",
-                    marginBottom: open ? "24px" : "0px",
-                }}
-                className="overflow-hidden text-foreground"
-            >
-                <p ref={ref}>{children}</p>
-            </motion.div>
-        </motion.div>
+                    <ChipBanner text="FAQ" />
+                    <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold text-center">
+                        Common Questions About{" "}
+                        <span className="text-[#fcba28]">InterviewMaster.ai</span>
+                    </h2>
+                    <p className="mt-4 text-lg text-foreground/80 max-w-2xl mx-auto text-center">
+                        Get answers to frequently asked questions about our AI-powered interview preparation platform
+                    </p>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="grid gap-4"
+                >
+                    {faqData.map((faq, index) => (
+                        <FAQItem
+                            key={index}
+                            question={faq.question}
+                            answer={faq.answer}
+                            icon={faq.icon}
+                            isOpen={openIndex === index}
+                            onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+                        />
+                    ))}
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    viewport={{ once: true }}
+                    className="mt-12 text-center"
+                >
+                    <p className="text-foreground/80">
+                        Still have questions?{" "}
+                        <a
+                            href="#contact"
+                            className="text-[#fcba28] hover:underline font-medium"
+                        >
+                            Contact our support team
+                        </a>
+                    </p>
+                </motion.div>
+            </MaxWidthWrapper>
+        </section>
     );
 };

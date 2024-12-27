@@ -4,7 +4,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Link from "next/link";
 import Image from 'next/image';
-import { useState, useRef, memo } from 'react';
+import { useState, useRef, memo, useCallback, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 import {
@@ -40,13 +40,14 @@ const TestimonialCard = memo(({ testimonial }: { testimonial: typeof testimonial
                 &quot;{testimonial.review}&quot;
             </blockquote>
             <div className="flex items-center mt-auto pt-4 border-t border-foreground/10">
-                <Image
-                    width={40}
-                    height={40}
-                    alt={testimonial.name}
-                    src={testimonial.image}
-                    className="rounded-full"
-                />
+                <div className="relative w-10 h-10">
+                    <Image
+                        fill
+                        alt={testimonial.name}
+                        src={testimonial.image}
+                        className="rounded-full object-cover"
+                    />
+                </div>
                 <div className="ml-3">
                     <p className="font-medium text-foreground">{testimonial.name}</p>
                     <p className="text-sm text-foreground/70">{testimonial.role}</p>
@@ -61,36 +62,36 @@ TestimonialCard.displayName = 'TestimonialCard';
 const testimonialData = [
     {
         name: "Sarah Johnson",
-        role: "Startup Founder",
-        review: "InterviewMaster.site provided a personalized, intuitive platform that helped our candidates excel and land their dream jobs. Their system is unparalleled in performance and user experience.",
+        role: "Software Engineer at Google",
+        review: "InterviewMaster.ai transformed my interview preparation. The AI-powered mock interviews and real-time feedback helped me land my dream job at Google.",
         rating: 5,
         image: "/avatar.png"
     },
     {
         name: "Michael Chen",
-        role: "Hiring Manager",
-        review: "InterviewMaster.site revolutionized our interview process. The platform allowed us to streamline our hiring and made a huge impact on our recruitment efficiency.",
+        role: "Senior Developer at Microsoft",
+        review: "The technical interview preparation on InterviewMaster.ai is outstanding. The platform's coding challenges and system design scenarios are incredibly realistic.",
         rating: 5,
         image: "/avatar.png"
     },
     {
         name: "Emma Rodriguez",
-        role: "HR Specialist",
-        review: "Thanks to InterviewMaster.site, our candidates now feel more confident with their interview preparation. The resources provided are top-notch and truly make a difference.",
+        role: "Product Manager at Amazon",
+        review: "From behavioral questions to case studies, InterviewMaster.ai covered everything I needed. The personalized feedback was instrumental in my interview success.",
         rating: 5,
         image: "/avatar.png"
     },
     {
         name: "David Patel",
-        role: "Software Engineer",
-        review: "InterviewMaster.site helped me prepare for some of the toughest tech interviews I’ve ever had. The mock interview platform and coding challenges were invaluable.",
+        role: "Full Stack Developer at Meta",
+        review: "The mock interviews and instant AI feedback helped me identify and improve my weak areas. I felt much more confident during my actual interviews.",
         rating: 5,
         image: "/avatar.png"
     },
     {
-        name: "John Smith",
-        role: "Product Manager",
-        review: "As a recruiter, InterviewMaster.site made candidate evaluation faster and more efficient. The intuitive interface and detailed insights saved us so much time.",
+        name: "Lisa Wang",
+        role: "Data Scientist at Netflix",
+        review: "InterviewMaster.ai's machine learning focused interview prep was exactly what I needed. The platform's comprehensive coverage helped me ace my technical rounds.",
         rating: 5,
         image: "/avatar.png"
     }
@@ -102,17 +103,18 @@ const VideoTestimonial = memo(({ isPlaying, isMuted, onPlayClick, onMuteClick }:
     onPlayClick: () => void;
     onMuteClick: () => void;
 }) => (
-    <div className="relative aspect-video rounded-lg overflow-hidden">
+    <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5">
         <video className="w-full h-full object-cover">
             <source src="/coming-soon-clip.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
         </video>
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/20 transition-opacity duration-300 hover:bg-black/30" />
         <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
             <Button
                 size="icon"
                 variant="secondary"
                 onClick={onPlayClick}
-                className="bg-white/90 hover:bg-white"
+                className="bg-white/90 hover:bg-white transition-colors duration-300"
             >
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             </Button>
@@ -120,7 +122,7 @@ const VideoTestimonial = memo(({ isPlaying, isMuted, onPlayClick, onMuteClick }:
                 size="icon"
                 variant="secondary"
                 onClick={onMuteClick}
-                className="bg-white/90 hover:bg-white"
+                className="bg-white/90 hover:bg-white transition-colors duration-300"
             >
                 {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </Button>
@@ -131,41 +133,65 @@ VideoTestimonial.displayName = 'VideoTestimonial';
 
 export const Testimonials = () => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isMuted, setIsMuted] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
     const videoRef = useRef<HTMLVideoElement>(null);
     const sectionRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: true });
+    const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-    const togglePlay = () => {
+    const togglePlay = useCallback(() => {
         if (videoRef.current) {
             if (isPlaying) {
                 videoRef.current.pause();
             } else {
-                videoRef.current.play();
+                const playPromise = videoRef.current.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        // Auto-play was prevented, handle silently
+                        setIsPlaying(false);
+                    });
+                }
             }
             setIsPlaying(!isPlaying);
         }
-    };
+    }, [isPlaying]);
 
-    const toggleMute = () => {
+    const toggleMute = useCallback(() => {
         if (videoRef.current) {
             videoRef.current.muted = !isMuted;
             setIsMuted(!isMuted);
         }
-    };
+    }, [isMuted]);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (video) {
+            video.muted = isMuted;
+        }
+        return () => {
+            if (video) {
+                video.pause();
+            }
+        };
+    }, [isMuted]);
 
     return (
         <section ref={sectionRef} className="relative py-20 bg-gradient-to-b from-background to-background/95">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
             <MaxWidthWrapper>
-                <div className="flex flex-col items-center justify-center mb-12">
-                    <ChipBanner text="TESTIMONIALS" />
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-center justify-center mb-12"
+                >
+                    <ChipBanner text="SUCCESS STORIES" />
                     <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold text-center">
-                        Trusted by <span className="text-[#fcba28]">Amazing</span> People
+                        Trusted by <span className="text-[#fcba28]">Industry Leaders</span>
                     </h2>
-                    <p className="mt-4 text-lg text-foreground/80 max-w-2xl mx-auto">
-                        Don&apos;t just take our word for it - hear from some of our satisfied users of InterviewMaster.site.
+                    <p className="mt-4 text-lg text-foreground/80 max-w-2xl mx-auto text-center">
+                        Join thousands of professionals who have transformed their careers with InterviewMaster.ai
                     </p>
-                </div>
+                </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Featured Video Card */}
@@ -185,20 +211,21 @@ export const Testimonials = () => {
                                 />
                                 <div className="mt-6">
                                     <StarRating rating={5} />
-                                    <blockquote className="my-4 text-lg italic">
-                                        &quot;InterviewMaster.site helped streamline our recruitment process, making it faster and more accurate.&quot;
+                                    <blockquote className="my-4 text-lg italic text-foreground/90">
+                                        &quot;InterviewMaster.ai's AI-powered mock interviews completely transformed our hiring process. The quality of candidates improved significantly.&quot;
                                     </blockquote>
                                     <div className="flex items-center">
-                                        <Image
-                                            width={40}
-                                            height={40}
-                                            alt="John Doe"
-                                            src="/avatar.png"
-                                            className="rounded-full"
-                                        />
+                                        <div className="relative w-10 h-10">
+                                            <Image
+                                                fill
+                                                alt="John Doe"
+                                                src="/avatar.png"
+                                                className="rounded-full object-cover"
+                                            />
+                                        </div>
                                         <div className="ml-3">
-                                            <p className="font-medium">John Doe</p>
-                                            <p className="text-sm text-foreground/70">CEO, Tech Innovators</p>
+                                            <p className="font-medium text-foreground">Alex Thompson</p>
+                                            <p className="text-sm text-foreground/70">Technical Director, Apple</p>
                                         </div>
                                     </div>
                                 </div>
@@ -209,10 +236,10 @@ export const Testimonials = () => {
                     {/* Text Testimonials */}
                     {testimonialData.map((testimonial, index) => (
                         <motion.div
-                            key={index}
+                            key={testimonial.name}
                             initial={{ opacity: 0, y: 20 }}
                             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                            transition={{ duration: 0.6, delay: 0.2 * (index + 1) }}
+                            transition={{ duration: 0.6, delay: 0.1 * (index + 1) }}
                         >
                             <TestimonialCard testimonial={testimonial} />
                         </motion.div>
