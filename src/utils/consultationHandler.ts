@@ -14,23 +14,43 @@ interface ConsultationData {
 }
 
 export const submitToGoogleForm = async (data: ConsultationData) => {
-  // Replace with your Google Form URL
-  const GOOGLE_FORM_URL = "YOUR_GOOGLE_FORM_URL";
+  const GOOGLE_FORM_URL = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL;
   
+  if (!GOOGLE_FORM_URL) {
+    console.error('Google Form URL not configured');
+    return false;
+  }
+
   try {
     const formData = new FormData();
+    
     // Map your form fields to Google Form fields
-    // You'll need to update these entry.X values based on your actual Google Form
-    formData.append('entry.1234567890', data.name);
-    formData.append('entry.0987654321', data.email);
-    formData.append('entry.1111111111', data.phone);
-    formData.append('entry.2222222222', data.consultationType);
-    formData.append('entry.3333333333', data.preferredDate);
-    formData.append('entry.4444444444', data.preferredTime);
-    formData.append('entry.5555555555', data.message);
-    formData.append('entry.6666666666', data.experience);
-    formData.append('entry.7777777777', data.goals.join(', '));
-    formData.append('entry.8888888888', data.heardFrom);
+    // These IDs should match your actual Google Form field IDs
+    const fieldMapping = {
+      name: process.env.NEXT_PUBLIC_FORM_NAME_ID,
+      email: process.env.NEXT_PUBLIC_FORM_EMAIL_ID,
+      phone: process.env.NEXT_PUBLIC_FORM_PHONE_ID,
+      company: process.env.NEXT_PUBLIC_FORM_COMPANY_ID,
+      jobTitle: process.env.NEXT_PUBLIC_FORM_JOB_TITLE_ID,
+      consultationType: process.env.NEXT_PUBLIC_FORM_CONSULTATION_TYPE_ID,
+      preferredDate: process.env.NEXT_PUBLIC_FORM_DATE_ID,
+      preferredTime: process.env.NEXT_PUBLIC_FORM_TIME_ID,
+      message: process.env.NEXT_PUBLIC_FORM_MESSAGE_ID,
+      experience: process.env.NEXT_PUBLIC_FORM_EXPERIENCE_ID,
+      goals: process.env.NEXT_PUBLIC_FORM_GOALS_ID,
+      heardFrom: process.env.NEXT_PUBLIC_FORM_HEARD_FROM_ID,
+    };
+
+    // Append form data with environment variables
+    Object.entries(fieldMapping).forEach(([key, formId]) => {
+      if (formId && data[key as keyof ConsultationData]) {
+        const value = data[key as keyof ConsultationData];
+        formData.append(
+          `entry.${formId}`,
+          Array.isArray(value) ? value.join(', ') : value
+        );
+      }
+    });
 
     const response = await fetch(GOOGLE_FORM_URL, {
       method: 'POST',
@@ -52,16 +72,17 @@ export const sendEmailNotification = async (data: ConsultationData) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        to: 'humeshdeshmukh0@gmail.com',
-        subject: `New Consultation Request from ${data.name}`,
-        data: data
-      }),
+      body: JSON.stringify(data),
     });
 
-    return response.ok;
+    if (!response.ok) {
+      throw new Error('Failed to send email notification');
+    }
+
+    const result = await response.json();
+    return result.success;
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email notification:', error);
     return false;
   }
 };
