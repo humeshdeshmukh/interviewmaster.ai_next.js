@@ -3,8 +3,43 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa6';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { 
+  FaTwitter, 
+  FaLinkedin, 
+  FaFacebook, 
+  FaInstagram, 
+  FaGithub,
+  FaBars,
+  FaTimes,
+  FaCode,
+  FaEnvelope,
+  FaInfo,
+  FaBriefcase,
+  FaChartLine,
+  FaUsers,
+  FaBuilding,
+  FaCalendarAlt,
+  FaTrophy,
+  FaUserGraduate,
+  FaComments,
+  FaVideo,
+  FaRobot,
+  FaClipboardCheck,
+  FaUserTie,
+  FaFileAlt,
+  FaQuestionCircle,
+  FaCog,
+  FaEdit,
+  FaTasks,
+  FaChalkboardTeacher,
+  FaUserCircle,
+  FaHandshake,
+  FaBookOpen,
+  FaNewspaper,
+  FaBook,
+  FaDesktop,
+  FaCubes
+} from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { createPortal } from 'react-dom';
@@ -28,7 +63,7 @@ const navigationMenus = [
       { href: '/products/resume-builder', label: 'Resume Builder', icon: FaFileAlt, description: 'Create professional resumes with AI assistance' },
       { href: '/products/mock-interviews', label: 'Mock Interviews', icon: FaUserTie, description: 'Practice with AI-powered interview simulations' },
       { href: '/products/ai-feedback', label: 'AI Feedback', icon: FaRobot, description: 'Get instant feedback on your interview responses' },
-      { href: '/products/skills-analyzer', label: 'Skills Analyzer', icon: FaChartBar, description: 'Analyze and improve your technical skills' },
+      { href: '/products/skills-analyzer', label: 'Skills Analyzer', icon: FaChartLine, description: 'Analyze and improve your technical skills' },
       { href: '/products/interview-questions', label: 'Interview Questions', icon: FaQuestionCircle, description: 'Access curated interview questions' },
       { href: '/products/Practice-Tests', label: 'Practice Tests', icon: FaClipboardCheck, description: 'Take industry-specific practice tests' },
     ],
@@ -50,7 +85,7 @@ const navigationMenus = [
     icon: FaBookOpen,
     links: [
       { href: '/resources/blog', label: 'Blog', icon: FaNewspaper, description: 'Latest articles and insights' },
-      { href: '/resources/faq', label: 'FAQ', icon: FaQuestionCircle2, description: 'Frequently asked questions' },
+      { href: '/resources/faq', label: 'FAQ', icon: FaQuestionCircle, description: 'Frequently asked questions' },
       { href: '/resources/ebooks', label: 'Ebooks & Guides', icon: FaBook, description: 'In-depth learning materials' },
       { href: '/resources/tutorials', label: 'Tutorials', icon: FaVideo, description: 'Step-by-step video guides' },
       { href: '/resources/webinars', label: 'Webinars', icon: FaDesktop, description: 'Live and recorded sessions' },
@@ -61,11 +96,11 @@ const navigationMenus = [
     title: 'Community',
     icon: FaUsers,
     links: [
-      { href: '/community/forums', label: 'Forums', icon: FaComments2, description: 'Join the discussion' },
+      { href: '/community/forums', label: 'Forums', icon: FaComments, description: 'Join the discussion' },
       { href: '/community/events', label: 'Events', icon: FaCalendarAlt, description: 'Upcoming community events' },
       { href: '/community/mentorship', label: 'Mentorship', icon: FaUserGraduate, description: 'Connect with mentors' },
       { href: '/community/success-stories', label: 'Success Stories', icon: FaTrophy, description: 'Community achievements' },
-      { href: '/community/meetups', label: 'Meetups', icon: FaHandshake2, description: 'Local community gatherings' },
+      { href: '/community/meetups', label: 'Meetups', icon: FaHandshake, description: 'Local community gatherings' },
       { href: '/community/hackathons', label: 'Hackathons', icon: FaCode, description: 'Coding competitions' },
     ],
   },
@@ -75,7 +110,7 @@ const navigationMenus = [
     links: [
       { href: '/company/about', label: 'About Us', icon: FaInfo, description: 'Our story and mission' },
       { href: '/company/careers', label: 'Careers', icon: FaBriefcase, description: 'Join our team' },
-      { href: '/company/partners', label: 'Partners', icon: FaHandshake2, description: 'Our trusted partners' },
+      { href: '/company/partners', label: 'Partners', icon: FaHandshake, description: 'Our trusted partners' },
       { href: '/company/contact', label: 'Contact Us', icon: FaEnvelope, description: 'Get in touch' },
       { href: '/company/press', label: 'Press', icon: FaNewspaper, description: 'Media coverage' },
       { href: '/company/investors', label: 'Investors', icon: FaChartLine, description: 'Investment opportunities' },
@@ -146,14 +181,18 @@ export const MobileMenu = () => {
           <div className="flex flex-col gap-6 mt-12">
             {navigationMenus.map((menu, idx) => (
               <div key={idx} className="flex flex-col gap-4">
-                <h2 className="text-lg font-semibold text-foreground transition-all duration-300">{menu.title}</h2>
+                <h2 className="text-lg font-semibold text-foreground transition-all duration-300">
+                  <menu.icon className="inline-block mr-2 h-5 w-5" />
+                  {menu.title}
+                </h2>
                 {menu.links.map((link, linkIdx) => (
                   <Link
                     key={linkIdx}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-sm text-muted-foreground hover:text-primary transition-all duration-300"
+                    className="flex items-center text-sm text-muted-foreground hover:text-primary transition-all duration-300"
                   >
+                    <link.icon className="mr-2 h-4 w-4" />
                     {link.label}
                   </Link>
                 ))}
