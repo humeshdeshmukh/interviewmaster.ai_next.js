@@ -1,32 +1,12 @@
 "use client";
 
 import { useState } from 'react';
-import { PageContainer, Card, Button } from '../../components/ui';
-import { UserCog, Star, Calendar, Clock, CheckCircle2, Award } from 'lucide-react';
+import { PageContainer } from '../../components/ui';
+import { UserCog, Star, Calendar, Clock, CheckCircle2, Award, Search, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { WriterProfile } from './components/WriterProfile';
 import ScheduleModal from './components/ScheduleModal';
-
-interface Writer {
-  id: string;
-  name: string;
-  title: string;
-  experience: string;
-  specialties: string[];
-  rating: number;
-  reviews: number;
-  availability: 'Available' | 'Limited' | 'Busy';
-  description: string;
-  certifications: string[];
-  languages: string[];
-  packages: {
-    [key: string]: {
-      name: string;
-      price: number;
-      turnaround: string;
-      isPopular: boolean;
-    };
-  };
-}
+import type { Writer } from './types';
 
 const writers: Writer[] = [
   {
@@ -38,10 +18,11 @@ const writers: Writer[] = [
     rating: 4.9,
     reviews: 324,
     availability: 'Available',
-    description: 'Highly experienced resume consultant with a proven track record of success.',
+    description: 'Expert in crafting compelling resumes for tech and finance professionals. Certified resume writer with a proven track record.',
     certifications: [
-      'Certified Professional Resume Writer',
-      'Certified Career Coach',
+      'Certified Professional Resume Writer (CPRW)',
+      'Certified Career Management Coach (CCMC)',
+      'LinkedIn Profile Optimization Specialist'
     ],
     languages: ['English', 'Spanish'],
     packages: {
@@ -50,27 +31,122 @@ const writers: Writer[] = [
         price: 99,
         turnaround: '3-5 business days',
         isPopular: false,
+        features: [
+          'Professional Resume Writing',
+          'ATS Optimization',
+          'One Revision Round',
+          'Digital Delivery'
+        ]
       },
       premium: {
         name: 'Premium',
         price: 199,
-        turnaround: '1-3 business days',
+        turnaround: '2-3 business days',
         isPopular: true,
+        features: [
+          'Everything in Basic',
+          'Cover Letter',
+          'LinkedIn Profile Update',
+          'Unlimited Revisions',
+          'Priority Support'
+        ]
       },
       executive: {
         name: 'Executive',
         price: 299,
-        turnaround: '1 business day',
+        turnaround: '1-2 business days',
         isPopular: false,
-      },
-    },
+        features: [
+          'Everything in Premium',
+          'Executive Bio',
+          'Interview Preparation',
+          'Career Strategy Session',
+          'Job Search Strategy'
+        ]
+      }
+    }
   },
-  // Add more writers here
+  {
+    id: 'w2',
+    name: 'Michael Chen',
+    title: 'Tech Industry Specialist',
+    experience: '6+ years',
+    specialties: ['Software', 'Data Science', 'Startups'],
+    rating: 4.8,
+    reviews: 256,
+    availability: 'Limited',
+    description: 'Former tech recruiter turned resume writer. Specializes in helping software engineers and data scientists land their dream jobs.',
+    certifications: [
+      'Certified Professional Resume Writer (CPRW)',
+      'Technical Resume Specialist',
+      'Career Transition Coach'
+    ],
+    languages: ['English', 'Mandarin'],
+    packages: {
+      basic: {
+        name: 'Basic',
+        price: 89,
+        turnaround: '3-5 business days',
+        isPopular: false,
+        features: [
+          'Technical Resume Writing',
+          'ATS Optimization',
+          'One Revision Round',
+          'Digital Delivery'
+        ]
+      },
+      premium: {
+        name: 'Premium',
+        price: 179,
+        turnaround: '2-3 business days',
+        isPopular: true,
+        features: [
+          'Everything in Basic',
+          'GitHub Profile Review',
+          'LinkedIn Optimization',
+          'Unlimited Revisions',
+          'Technical Interview Tips'
+        ]
+      },
+      executive: {
+        name: 'Executive',
+        price: 279,
+        turnaround: '1-2 business days',
+        isPopular: false,
+        features: [
+          'Everything in Premium',
+          'Portfolio Review',
+          'Technical Interview Prep',
+          'Salary Negotiation Tips',
+          'Career Strategy Session'
+        ]
+      }
+    }
+  }
 ];
 
 export default function ProfessionalWriterPage() {
   const [selectedWriter, setSelectedWriter] = useState<Writer | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
+
+  // Get unique specialties from all writers
+  const allSpecialties = Array.from(
+    new Set(writers.flatMap(writer => writer.specialties))
+  );
+
+  // Filter writers based on search and specialties
+  const filteredWriters = writers.filter(writer => {
+    const matchesSearch = writer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      writer.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      writer.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesSpecialties = selectedSpecialties.length === 0 ||
+      selectedSpecialties.some(specialty => writer.specialties.includes(specialty));
+
+    return matchesSearch && matchesSpecialties;
+  });
 
   return (
     <PageContainer
@@ -86,94 +162,69 @@ export default function ProfessionalWriterPage() {
       description="Get personalized guidance from certified professional resume writers"
     >
       <div className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {writers.map((writer, index) => (
-            <motion.div
+        {/* Search and Filter */}
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+              <input
+                type="text"
+                placeholder="Search by name, title, or expertise..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-white/5 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+              />
+            </div>
+          </div>
+          <div className="relative group">
+            <button className="flex items-center gap-2 px-4 py-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+              <Filter className="w-5 h-5" />
+              <span>Specialties</span>
+            </button>
+            <div className="absolute right-0 mt-2 w-64 bg-gray-900 rounded-lg shadow-xl border border-white/10 p-4 hidden group-hover:block">
+              <div className="space-y-2">
+                {allSpecialties.map((specialty) => (
+                  <label key={specialty} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedSpecialties.includes(specialty)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedSpecialties([...selectedSpecialties, specialty]);
+                        } else {
+                          setSelectedSpecialties(selectedSpecialties.filter(s => s !== specialty));
+                        }
+                      }}
+                      className="form-checkbox text-[#fcba28] rounded"
+                    />
+                    <span>{specialty}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Writers Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filteredWriters.map((writer, index) => (
+            <WriterProfile
               key={writer.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className="p-6 h-full flex flex-col">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="text-xl font-semibold">{writer.name}</h3>
-                    <p className="text-[#fcba28] text-sm">{writer.title}</p>
-                  </div>
-                  <span className={`
-                    px-2 py-1 rounded-full text-xs
-                    ${writer.availability === 'Available' ? 'bg-green-500/20 text-green-500' :
-                      writer.availability === 'Limited' ? 'bg-yellow-500/20 text-yellow-500' :
-                      'bg-red-500/20 text-red-500'}
-                  `}>
-                    {writer.availability}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-[#fcba28]" />
-                    <span className="font-medium">{writer.rating}</span>
-                    <span className="text-sm text-white/60">({writer.reviews})</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4 text-[#fcba28]" />
-                    <span className="text-sm">{writer.experience}</span>
-                  </div>
-                </div>
-
-                <p className="text-white/80 mb-4">{writer.description}</p>
-
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <h4 className="font-medium mb-2 flex items-center gap-2">
-                      <Award className="w-4 h-4 text-[#fcba28]" />
-                      Specialties
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {writer.specialties.map((specialty) => (
-                        <span
-                          key={specialty}
-                          className="px-2 py-1 bg-white/10 rounded-full text-xs"
-                        >
-                          {specialty}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium mb-2 flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#fcba28]" />
-                      Certifications
-                    </h4>
-                    <ul className="space-y-1">
-                      {writer.certifications.map((cert) => (
-                        <li key={cert} className="text-sm text-white/60">
-                          {cert}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="mt-auto">
-                  <Button
-                    variant="primary"
-                    className="w-full"
-                    onClick={() => {
-                      setSelectedWriter(writer);
-                      setIsModalOpen(true);
-                    }}
-                  >
-                    <Calendar className="w-4 h-4" />
-                    Schedule Consultation
-                  </Button>
-                </div>
-              </Card>
-            </motion.div>
+              writer={writer}
+              onSchedule={() => {
+                setSelectedWriter(writer);
+                setIsModalOpen(true);
+              }}
+            />
           ))}
         </div>
+
+        {/* No Results */}
+        {filteredWriters.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-lg text-white/60">No writers found matching your criteria.</p>
+          </div>
+        )}
       </div>
 
       {selectedWriter && (
