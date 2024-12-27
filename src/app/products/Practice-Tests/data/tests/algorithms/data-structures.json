@@ -1,0 +1,143 @@
+{
+  "id": "data-structures",
+  "title": "Data Structures Fundamentals",
+  "description": "Test your knowledge of fundamental data structures including arrays, linked lists, trees, and graphs",
+  "category": "algorithms",
+  "subcategory": "data-structures",
+  "difficulty": "Intermediate",
+  "timeLimit": 35,
+  "totalQuestions": 10,
+  "questions": [
+    {
+      "id": "ds-1",
+      "question": "What is the time complexity of accessing an element in an array by index?",
+      "options": [
+        "O(n)",
+        "O(1)",
+        "O(log n)",
+        "O(n²)"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Array access by index is O(1) because the memory address can be calculated directly from the index, regardless of array size."
+    },
+    {
+      "id": "ds-2",
+      "question": "What is the main advantage of a linked list over an array?",
+      "options": [
+        "Faster access to elements",
+        "Dynamic size and efficient insertion/deletion",
+        "Less memory usage",
+        "Better cache performance"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Linked lists allow for efficient insertion and deletion of elements and can grow or shrink dynamically, unlike arrays which have a fixed size in many languages."
+    },
+    {
+      "id": "ds-3",
+      "question": "What is a binary search tree?",
+      "options": [
+        "A tree with exactly two nodes",
+        "A tree where each node has at most two children and left subtree values are less than the node",
+        "A tree used only for searching",
+        "A tree with binary data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A binary search tree is a binary tree where for each node, all values in the left subtree are less than the node's value, and all values in the right subtree are greater."
+    },
+    {
+      "id": "ds-4",
+      "question": "What is the time complexity of inserting an element into a hash table?",
+      "options": [
+        "O(n)",
+        "O(1) average case",
+        "O(log n)",
+        "O(n²)"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Hash table insertion is O(1) on average because the hash function directly computes the storage location. However, it can be O(n) in worst case due to collisions."
+    },
+    {
+      "id": "ds-5",
+      "question": "What is a stack data structure?",
+      "options": [
+        "A random access data structure",
+        "A Last-In-First-Out (LIFO) data structure",
+        "A First-In-First-Out (FIFO) data structure",
+        "A tree-based data structure"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A stack is a LIFO data structure where elements are added and removed from the same end, like a stack of plates."
+    },
+    {
+      "id": "ds-6",
+      "question": "What is the difference between a queue and a stack?",
+      "options": [
+        "There is no difference",
+        "Queue is FIFO, Stack is LIFO",
+        "Stack is faster than Queue",
+        "Queue uses less memory"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A queue follows First-In-First-Out (FIFO) principle where elements are removed in the order they were added, while a stack follows Last-In-First-Out (LIFO)."
+    },
+    {
+      "id": "ds-7",
+      "question": "What is a graph data structure?",
+      "options": [
+        "A type of chart",
+        "A collection of nodes connected by edges",
+        "A type of tree",
+        "A mathematical function"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A graph is a data structure consisting of vertices (nodes) and edges that connect these vertices, representing relationships between objects."
+    },
+    {
+      "id": "ds-8",
+      "question": "What is the purpose of a heap data structure?",
+      "options": [
+        "To store memory allocations",
+        "To maintain a partially ordered tree where parent nodes compare specifically to children",
+        "To implement hash tables",
+        "To store strings efficiently"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A heap is a specialized tree-based data structure that satisfies the heap property, commonly used to implement priority queues and for heap sort."
+    },
+    {
+      "id": "ds-9",
+      "question": "What is the time complexity of binary search?",
+      "options": [
+        "O(n)",
+        "O(log n)",
+        "O(1)",
+        "O(n²)"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Binary search has O(log n) time complexity because it repeatedly divides the search interval in half, making it very efficient for large sorted datasets."
+    },
+    {
+      "id": "ds-10",
+      "question": "What is a trie data structure used for?",
+      "options": [
+        "Sorting numbers",
+        "Efficient storage and retrieval of strings",
+        "Graph traversal",
+        "Mathematical calculations"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A trie (prefix tree) is an efficient data structure for storing and retrieving strings, commonly used in applications like autocomplete and spell checkers."
+    }
+  ],
+  "resources": [
+    {
+      "title": "Introduction to Algorithms",
+      "url": "https://mitpress.mit.edu/books/introduction-algorithms"
+    },
+    {
+      "title": "Data Structures and Algorithms Visualization",
+      "url": "https://visualgo.net/"
+    }
+  ],
+  "tags": ["data-structures", "algorithms", "computer-science", "interview-prep"]
+}

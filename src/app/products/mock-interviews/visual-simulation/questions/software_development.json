@@ -1,0 +1,96 @@
+{
+  "frontend": {
+    "beginner": [
+      {
+        "id": "fe_b_1",
+        "question": "Tell me about your experience with React.js",
+        "keyPoints": [
+          "Component lifecycle",
+          "State management",
+          "Props handling",
+          "Hooks usage"
+        ],
+        "expectedDuration": 180,
+        "difficulty": "beginner",
+        "followUpQuestions": [
+          "How do you manage state in React?",
+          "What are the key differences between class and functional components?"
+        ],
+        "technicalConcepts": [
+          "Virtual DOM",
+          "JSX",
+          "Component Architecture"
+        ]
+      },
+      {
+        "id": "fe_b_2",
+        "question": "How do you ensure responsive design in your applications?",
+        "keyPoints": [
+          "Media queries",
+          "Flexbox/Grid usage",
+          "Mobile-first approach",
+          "Viewport considerations"
+        ],
+        "expectedDuration": 180,
+        "difficulty": "beginner",
+        "followUpQuestions": [
+          "What breakpoints do you typically use?",
+          "How do you handle images in responsive design?"
+        ],
+        "technicalConcepts": [
+          "CSS Grid",
+          "Flexbox",
+          "Media Queries"
+        ]
+      }
+    ],
+    "intermediate": [
+      {
+        "id": "fe_i_1",
+        "question": "Explain your experience with state management solutions",
+        "keyPoints": [
+          "Redux architecture",
+          "Context API usage",
+          "State persistence",
+          "Performance optimization"
+        ],
+        "expectedDuration": 240,
+        "difficulty": "intermediate",
+        "followUpQuestions": [
+          "When would you choose Redux over Context API?",
+          "How do you handle side effects in Redux?"
+        ],
+        "technicalConcepts": [
+          "Redux Middleware",
+          "Action Creators",
+          "Reducers"
+        ]
+      }
+    ]
+  },
+  "backend": {
+    "beginner": [
+      {
+        "id": "be_b_1",
+        "question": "Explain RESTful API design principles",
+        "keyPoints": [
+          "HTTP methods",
+          "Resource naming",
+          "Status codes",
+          "API versioning"
+        ],
+        "expectedDuration": 180,
+        "difficulty": "beginner",
+        "followUpQuestions": [
+          "How do you handle API versioning?",
+          "What status codes would you use for different scenarios?"
+        ],
+        "technicalConcepts": [
+          "REST Architecture",
+          "HTTP Protocol",
+          "API Design"
+        ]
+      }
+    ]
+  }
+}

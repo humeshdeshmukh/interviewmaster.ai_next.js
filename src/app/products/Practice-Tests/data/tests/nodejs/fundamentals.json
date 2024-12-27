@@ -1,0 +1,143 @@
+{
+  "id": "nodejs-fundamentals",
+  "title": "Node.js Fundamentals",
+  "description": "Test your understanding of core Node.js concepts and basics",
+  "category": "nodejs",
+  "subcategory": "fundamentals",
+  "difficulty": "Beginner",
+  "timeLimit": 30,
+  "totalQuestions": 10,
+  "questions": [
+    {
+      "id": "nodejs-fundamentals-1",
+      "question": "What is Node.js?",
+      "options": [
+        "A web browser",
+        "A runtime environment for executing JavaScript outside the browser",
+        "A programming language",
+        "A database management system"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Node.js is a runtime environment that allows you to run JavaScript code outside of a web browser, particularly on the server side."
+    },
+    {
+      "id": "nodejs-fundamentals-2",
+      "question": "What is the Event Loop in Node.js?",
+      "options": [
+        "A UI component",
+        "A mechanism that handles asynchronous operations",
+        "A type of database",
+        "A testing framework"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The Event Loop is a mechanism that allows Node.js to perform non-blocking I/O operations despite JavaScript being single-threaded."
+    },
+    {
+      "id": "nodejs-fundamentals-3",
+      "question": "What is npm?",
+      "options": [
+        "Node Package Manager",
+        "Node Programming Method",
+        "New Project Module",
+        "Node Process Manager"
+      ],
+      "correctAnswer": 0,
+      "explanation": "npm (Node Package Manager) is the default package manager for Node.js and is used to install and manage project dependencies."
+    },
+    {
+      "id": "nodejs-fundamentals-4",
+      "question": "What is the purpose of package.json?",
+      "options": [
+        "To store JavaScript code",
+        "To manage project metadata and dependencies",
+        "To handle routing",
+        "To store database credentials"
+      ],
+      "correctAnswer": 1,
+      "explanation": "package.json is a file that contains metadata about your project and lists its dependencies, scripts, and other configuration details."
+    },
+    {
+      "id": "nodejs-fundamentals-5",
+      "question": "What is a callback in Node.js?",
+      "options": [
+        "A type of database",
+        "A function passed as an argument to another function",
+        "A built-in module",
+        "A type of error"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A callback is a function that is passed as an argument to another function and is executed after the main function has finished its execution."
+    },
+    {
+      "id": "nodejs-fundamentals-6",
+      "question": "What is the purpose of module.exports?",
+      "options": [
+        "To import modules",
+        "To export functionality from a module",
+        "To create new modules",
+        "To delete modules"
+      ],
+      "correctAnswer": 1,
+      "explanation": "module.exports is used to expose functionality (variables, functions, objects, etc.) from one module to be used in other modules."
+    },
+    {
+      "id": "nodejs-fundamentals-7",
+      "question": "What is middleware in Node.js?",
+      "options": [
+        "A database",
+        "Functions that have access to request and response objects",
+        "A type of error",
+        "A testing framework"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Middleware functions are functions that have access to the request and response objects and can modify them or perform operations before the final request handler."
+    },
+    {
+      "id": "nodejs-fundamentals-8",
+      "question": "What is the purpose of the 'fs' module?",
+      "options": [
+        "To handle form submissions",
+        "To interact with the file system",
+        "To create servers",
+        "To manage databases"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The 'fs' (File System) module provides functionality to interact with the file system, allowing you to read, write, and manipulate files."
+    },
+    {
+      "id": "nodejs-fundamentals-9",
+      "question": "What is the purpose of process.env?",
+      "options": [
+        "To run processes",
+        "To access environment variables",
+        "To manage memory",
+        "To handle errors"
+      ],
+      "correctAnswer": 1,
+      "explanation": "process.env is an object that contains the user environment variables, commonly used for configuration and sensitive data."
+    },
+    {
+      "id": "nodejs-fundamentals-10",
+      "question": "What is the purpose of the 'http' module?",
+      "options": [
+        "To handle databases",
+        "To create HTTP servers and make HTTP requests",
+        "To handle file operations",
+        "To manage processes"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The 'http' module allows you to create HTTP servers and make HTTP requests, which is fundamental for web development in Node.js."
+    }
+  ],
+  "resources": [
+    {
+      "title": "Node.js Documentation",
+      "url": "https://nodejs.org/docs/latest/api/"
+    },
+    {
+      "title": "Node.js Getting Started Guide",
+      "url": "https://nodejs.org/en/learn"
+    }
+  ],
+  "tags": ["nodejs", "javascript", "server-side", "runtime", "fundamentals"]
+}

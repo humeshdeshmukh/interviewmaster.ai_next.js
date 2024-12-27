@@ -15,7 +15,7 @@ const Tips = () => {
         className="max-w-screen-xl mx-auto"
       >
         <motion.h1
-          className="text-4xl font-extrabold text-center mb-12 text-[#fcba28]"
+          className="text-4xl md:text-6xl font-extrabold text-center mb-12 text-[#fcba28]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
@@ -30,11 +30,11 @@ const Tips = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <h2 className="text-2xl font-semibold text-[#fcba28]">Key Tips for a Successful Interview</h2>
+          <h2 className="text-2xl md:text-4xl font-semibold text-[#fcba28] text-center">Key Tips for a Successful Interview</h2>
           
           {/* Tip List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div className="flex flex-col space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-col space-y-4 p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
               <div className="flex items-center">
                 <span className="text-3xl text-[#fcba28]">🔍</span>
                 <h3 className="ml-4 text-xl font-medium">Research the Company</h3>
@@ -44,7 +44,7 @@ const Tips = () => {
               </p>
             </div>
 
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
               <div className="flex items-center">
                 <span className="text-3xl text-[#fcba28]">💬</span>
                 <h3 className="ml-4 text-xl font-medium">Practice Common Questions</h3>
@@ -54,7 +54,7 @@ const Tips = () => {
               </p>
             </div>
 
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
               <div className="flex items-center">
                 <span className="text-3xl text-[#fcba28]">👗</span>
                 <h3 className="ml-4 text-xl font-medium">Dress Professionally</h3>
@@ -64,7 +64,7 @@ const Tips = () => {
               </p>
             </div>
 
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
               <div className="flex items-center">
                 <span className="text-3xl text-[#fcba28]">⏰</span>
                 <h3 className="ml-4 text-xl font-medium">Be Punctual</h3>
@@ -83,7 +83,7 @@ const Tips = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
         >
-          <h2 className="text-2xl font-semibold text-[#fcba28]">Advanced Tips for a Winning Interview</h2>
+          <h2 className="text-2xl md:text-4xl font-semibold text-[#fcba28] text-center">Advanced Tips for a Winning Interview</h2>
           <ul className="list-disc pl-6 space-y-4 text-sm md:text-base">
             <li>Be prepared to explain your past achievements with clear examples and metrics.</li>
             <li>Keep your answers concise but impactful, staying focused on the question.</li>
@@ -101,7 +101,7 @@ const Tips = () => {
           transition={{ duration: 1, delay: 1.5 }}
         >
           <Link href="/products/mock-interviews/schedule">
-            <button className="bg-[#fcba28] text-black py-3 px-8 rounded-full shadow-lg hover:bg-[#e29f1e] transition duration-300">
+            <button className="bg-gradient-to-r from-[#fcba28] to-amber-600 text-black py-3 px-8 rounded-full shadow-lg hover:from-amber-600 hover:to-[#fcba28] transition duration-300">
               Schedule a Mock Interview
             </button>
           </Link>

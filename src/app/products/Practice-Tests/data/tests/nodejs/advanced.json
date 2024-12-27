@@ -1,0 +1,143 @@
+{
+  "id": "nodejs-advanced",
+  "title": "Node.js Advanced Concepts",
+  "description": "Test your knowledge of advanced Node.js concepts including streams, clustering, and performance optimization",
+  "category": "nodejs",
+  "subcategory": "advanced",
+  "difficulty": "Advanced",
+  "timeLimit": 45,
+  "totalQuestions": 10,
+  "questions": [
+    {
+      "id": "node-adv-1",
+      "question": "What is the purpose of the Node.js cluster module?",
+      "options": [
+        "To create child processes for parallel processing",
+        "To manage database clusters",
+        "To organize code into modules",
+        "To handle HTTP clustering"
+      ],
+      "correctAnswer": 0,
+      "explanation": "The cluster module allows you to create child processes that share server ports, enabling better use of multi-core systems for improved performance."
+    },
+    {
+      "id": "node-adv-2",
+      "question": "What is a Stream in Node.js?",
+      "options": [
+        "A way to store data in memory",
+        "A sequence of data that can be read or written continuously",
+        "A type of database",
+        "A method to handle HTTP requests"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Streams are objects that let you read data from a source or write data to a destination in continuous fashion, perfect for handling large amounts of data."
+    },
+    {
+      "id": "node-adv-3",
+      "question": "What is the purpose of process.nextTick()?",
+      "options": [
+        "To pause execution for one tick",
+        "To schedule a callback to execute in the next iteration of the event loop",
+        "To move to the next process in the cluster",
+        "To restart the Node.js process"
+      ],
+      "correctAnswer": 1,
+      "explanation": "process.nextTick() defers the execution of a callback function until the next iteration of the Node.js event loop, but before other I/O events."
+    },
+    {
+      "id": "node-adv-4",
+      "question": "What is the difference between Worker Threads and Child Processes in Node.js?",
+      "options": [
+        "There is no difference",
+        "Worker Threads share memory, Child Processes don't",
+        "Child Processes are faster than Worker Threads",
+        "Worker Threads can only be used in clusters"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Worker Threads share memory space and can share memory with the main thread, while Child Processes run in separate memory spaces and communicate through IPC."
+    },
+    {
+      "id": "node-adv-5",
+      "question": "What is the purpose of the Buffer class in Node.js?",
+      "options": [
+        "To store temporary data",
+        "To handle binary data directly",
+        "To buffer network requests",
+        "To cache database queries"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The Buffer class is used to handle binary data directly. It provides a way of handling streams of binary data and was introduced because JavaScript traditionally hasn't been good with binary data."
+    },
+    {
+      "id": "node-adv-6",
+      "question": "What is the Event Emitter pattern in Node.js?",
+      "options": [
+        "A way to emit light signals",
+        "A pattern for handling asynchronous events",
+        "A method to emit HTTP requests",
+        "A way to emit database queries"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The Event Emitter pattern is a core concept in Node.js that allows objects to emit named events that cause listeners to be called. Many built-in modules inherit from EventEmitter."
+    },
+    {
+      "id": "node-adv-7",
+      "question": "What is the purpose of the V8 engine's --max-old-space-size flag?",
+      "options": [
+        "To limit the application's total memory usage",
+        "To set the maximum size of old generation space in garbage collection",
+        "To limit the number of old files in storage",
+        "To set the maximum age of cached files"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The --max-old-space-size flag sets the maximum size of the old generation space in V8's garbage collection. This is useful when dealing with large datasets that require more memory."
+    },
+    {
+      "id": "node-adv-8",
+      "question": "What is the purpose of the process.env object?",
+      "options": [
+        "To store environment variables",
+        "To manage process execution",
+        "To handle process errors",
+        "To store process metadata"
+      ],
+      "correctAnswer": 0,
+      "explanation": "process.env is an object containing the user environment. It's commonly used to store configuration values and sensitive information like API keys outside of the code."
+    },
+    {
+      "id": "node-adv-9",
+      "question": "What is middleware in Express.js?",
+      "options": [
+        "Software that connects to databases",
+        "Functions that have access to the request and response objects",
+        "A type of database",
+        "A way to handle static files"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Middleware functions are functions that have access to the request object (req), the response object (res), and the next middleware function in the application's request-response cycle."
+    },
+    {
+      "id": "node-adv-10",
+      "question": "What is the purpose of the Node.js debugger?",
+      "options": [
+        "To find and fix bugs in code",
+        "To optimize code performance",
+        "To format code",
+        "To compile code"
+      ],
+      "correctAnswer": 0,
+      "explanation": "The Node.js debugger is a built-in debugging utility that can be used to debug Node.js applications. It provides various commands to inspect code, set breakpoints, and step through code execution."
+    }
+  ],
+  "resources": [
+    {
+      "title": "Node.js Documentation",
+      "url": "https://nodejs.org/docs/latest/api/"
+    },
+    {
+      "title": "Node.js Design Patterns",
+      "url": "https://www.nodejsdesignpatterns.com/"
+    }
+  ],
+  "tags": ["nodejs", "advanced", "streams", "clustering", "performance", "express"]
+}

@@ -1,0 +1,99 @@
+{
+  "architecture": {
+    "intermediate": [
+      {
+        "id": "sd_i_1",
+        "question": "Design a scalable social media feed system",
+        "keyPoints": [
+          "System requirements",
+          "Architecture components",
+          "Data model",
+          "Scaling strategy"
+        ],
+        "expectedDuration": 300,
+        "difficulty": "intermediate",
+        "systemComponents": [
+          "Load balancers",
+          "Caching layers",
+          "Database sharding",
+          "Message queues"
+        ],
+        "followUpQuestions": [
+          "How would you handle hot posts?",
+          "What's your caching strategy?"
+        ],
+        "technicalConcepts": [
+          "Distributed systems",
+          "CAP theorem",
+          "Eventual consistency"
+        ],
+        "evaluationCriteria": [
+          "System scalability",
+          "Performance optimization",
+          "Fault tolerance",
+          "Data consistency"
+        ]
+      }
+    ],
+    "advanced": [
+      {
+        "id": "sd_a_1",
+        "question": "Design a real-time notification system",
+        "keyPoints": [
+          "Push notifications",
+          "WebSocket implementation",
+          "Message queuing",
+          "Scaling considerations"
+        ],
+        "expectedDuration": 360,
+        "difficulty": "advanced",
+        "systemComponents": [
+          "WebSocket servers",
+          "Message brokers",
+          "Notification services",
+          "Monitoring systems"
+        ],
+        "followUpQuestions": [
+          "How do you handle device token management?",
+          "What's your strategy for handling notification failures?"
+        ],
+        "technicalConcepts": [
+          "WebSocket protocol",
+          "Pub/Sub pattern",
+          "Back-pressure handling"
+        ]
+      }
+    ]
+  },
+  "databases": {
+    "intermediate": [
+      {
+        "id": "db_i_1",
+        "question": "Design a database system for an e-commerce platform",
+        "keyPoints": [
+          "Data modeling",
+          "Transaction handling",
+          "Indexing strategy",
+          "Backup solutions"
+        ],
+        "expectedDuration": 300,
+        "difficulty": "intermediate",
+        "systemComponents": [
+          "RDBMS",
+          "Caching layer",
+          "Search engine",
+          "Analytics store"
+        ],
+        "followUpQuestions": [
+          "How would you handle inventory management?",
+          "What's your strategy for data partitioning?"
+        ],
+        "technicalConcepts": [
+          "ACID properties",
+          "Normalization",
+          "Indexing"
+        ]
+      }
+    ]
+  }
+}

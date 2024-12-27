@@ -1,0 +1,143 @@
+{
+  "id": "react-core",
+  "title": "React Core Concepts",
+  "description": "Test your knowledge of fundamental React concepts including components, props, state, and hooks",
+  "category": "react",
+  "subcategory": "core",
+  "difficulty": "Beginner",
+  "timeLimit": 30,
+  "totalQuestions": 10,
+  "questions": [
+    {
+      "id": "react-core-1",
+      "question": "What is a React component?",
+      "options": [
+        "A JavaScript function that returns HTML code",
+        "A reusable piece of UI that returns JSX",
+        "A CSS class",
+        "A HTML template"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A React component is a reusable piece of UI that can contain both logic and presentation. It returns JSX, which is a syntax extension for JavaScript that looks similar to HTML."
+    },
+    {
+      "id": "react-core-2",
+      "question": "What is the purpose of useState hook?",
+      "options": [
+        "To make API calls",
+        "To manage component state",
+        "To handle routing",
+        "To style components"
+      ],
+      "correctAnswer": 1,
+      "explanation": "useState is a React Hook that allows you to add state to functional components. It returns an array with the current state value and a function to update it."
+    },
+    {
+      "id": "react-core-3",
+      "question": "What is JSX?",
+      "options": [
+        "A JavaScript XML syntax extension",
+        "A new programming language",
+        "A CSS framework",
+        "A database query language"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSX is a syntax extension for JavaScript that allows you to write HTML-like code within JavaScript. It makes React code more readable and writing templates more intuitive."
+    },
+    {
+      "id": "react-core-4",
+      "question": "What are props in React?",
+      "options": [
+        "Internal component state",
+        "Properties passed to components",
+        "CSS properties",
+        "JavaScript operators"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Props (properties) are read-only components that are passed to components as arguments. They help make components reusable by allowing them to receive data from their parent component."
+    },
+    {
+      "id": "react-core-5",
+      "question": "What is the virtual DOM?",
+      "options": [
+        "A copy of the real DOM in memory",
+        "A new web browser",
+        "A JavaScript library",
+        "A CSS framework"
+      ],
+      "correctAnswer": 0,
+      "explanation": "The virtual DOM is a lightweight copy of the real DOM kept in memory. React uses it to improve performance by minimizing direct manipulation of the actual DOM."
+    },
+    {
+      "id": "react-core-6",
+      "question": "What is the useEffect hook used for?",
+      "options": [
+        "To style components",
+        "To handle side effects in components",
+        "To create new components",
+        "To define routes"
+      ],
+      "correctAnswer": 1,
+      "explanation": "useEffect is used to handle side effects in functional components, such as data fetching, subscriptions, or manually changing the DOM."
+    },
+    {
+      "id": "react-core-7",
+      "question": "What is the purpose of key prop in lists?",
+      "options": [
+        "To style list items",
+        "To help React track list items efficiently",
+        "To create numbered lists",
+        "To sort list items"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The key prop helps React identify which items have changed, been added, or been removed in lists, improving performance and preventing bugs."
+    },
+    {
+      "id": "react-core-8",
+      "question": "What is conditional rendering in React?",
+      "options": [
+        "Using CSS conditions",
+        "Showing different content based on conditions",
+        "Creating conditional routes",
+        "Writing conditional CSS"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Conditional rendering is the process of showing different content based on certain conditions or state in React components."
+    },
+    {
+      "id": "react-core-9",
+      "question": "What is the purpose of React fragments?",
+      "options": [
+        "To style components",
+        "To group elements without adding extra nodes",
+        "To create routes",
+        "To handle state"
+      ],
+      "correctAnswer": 1,
+      "explanation": "React fragments let you group multiple children elements without adding extra nodes to the DOM, helping keep the DOM tree clean."
+    },
+    {
+      "id": "react-core-10",
+      "question": "What is the difference between controlled and uncontrolled components?",
+      "options": [
+        "There is no difference",
+        "Controlled components have their state managed by React",
+        "Uncontrolled components are faster",
+        "Controlled components are deprecated"
+      ],
+      "correctAnswer": 1,
+      "explanation": "In controlled components, form data is controlled by React state, while uncontrolled components maintain their own internal state using the DOM."
+    }
+  ],
+  "resources": [
+    {
+      "title": "React Documentation",
+      "url": "https://reactjs.org/docs/getting-started.html"
+    },
+    {
+      "title": "React Hooks Documentation",
+      "url": "https://reactjs.org/docs/hooks-intro.html"
+    }
+  ],
+  "tags": ["react", "components", "hooks", "jsx", "props", "state"]
+}

@@ -1,0 +1,143 @@
+{
+  "id": "js-fundamentals",
+  "title": "JavaScript Fundamentals",
+  "description": "Test your knowledge of JavaScript basics including variables, functions, and core concepts",
+  "category": "javascript",
+  "subcategory": "fundamentals",
+  "difficulty": "Beginner",
+  "timeLimit": 30,
+  "totalQuestions": 10,
+  "questions": [
+    {
+      "id": "js-fund-1",
+      "question": "What is the output of: console.log(typeof null)?",
+      "options": [
+        "null",
+        "undefined",
+        "object",
+        "number"
+      ],
+      "correctAnswer": 2,
+      "explanation": "In JavaScript, typeof null returns 'object'. This is a known quirk that has existed since the first version of JavaScript and is maintained for legacy reasons."
+    },
+    {
+      "id": "js-fund-2",
+      "question": "Which of these is a valid way to declare a variable in JavaScript?",
+      "options": [
+        "variable x = 5;",
+        "var x = 5;",
+        "int x = 5;",
+        "x := 5;"
+      ],
+      "correctAnswer": 1,
+      "explanation": "In JavaScript, variables can be declared using 'var', 'let', or 'const'. The 'var' keyword is the original way to declare variables in JavaScript."
+    },
+    {
+      "id": "js-fund-3",
+      "question": "What is the result of '2' + 2 in JavaScript?",
+      "options": [
+        "4",
+        "22",
+        "NaN",
+        "TypeError"
+      ],
+      "correctAnswer": 1,
+      "explanation": "When using the + operator with a string and a number, JavaScript converts the number to a string and performs string concatenation."
+    },
+    {
+      "id": "js-fund-4",
+      "question": "What is hoisting in JavaScript?",
+      "options": [
+        "Moving all variable declarations to the bottom of the code",
+        "Moving all function declarations to the top of their scope",
+        "Moving all variable and function declarations to the top of their scope",
+        "Moving all variable declarations to the global scope"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Hoisting is JavaScript's default behavior of moving declarations to the top of their scope before code execution. Both variable and function declarations are hoisted."
+    },
+    {
+      "id": "js-fund-5",
+      "question": "What is the scope of a variable declared with 'let'?",
+      "options": [
+        "Global scope only",
+        "Function scope only",
+        "Block scope",
+        "Module scope"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Variables declared with 'let' have block scope, meaning they are only accessible within the block they are declared in (like within if statements or loops)."
+    },
+    {
+      "id": "js-fund-6",
+      "question": "Which method is used to remove the last element from an array?",
+      "options": [
+        "pop()",
+        "push()",
+        "shift()",
+        "unshift()"
+      ],
+      "correctAnswer": 0,
+      "explanation": "The pop() method removes the last element from an array and returns that element. This method changes the length of the array."
+    },
+    {
+      "id": "js-fund-7",
+      "question": "What is the difference between == and === in JavaScript?",
+      "options": [
+        "They are exactly the same",
+        "== checks value only, === checks both value and type",
+        "=== checks value only, == checks both value and type",
+        "== is deprecated, === is the modern way"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The == operator performs type coercion before comparison, while === compares both value and type without type coercion."
+    },
+    {
+      "id": "js-fund-8",
+      "question": "What is the output of: console.log(0.1 + 0.2 === 0.3)?",
+      "options": [
+        "true",
+        "false",
+        "undefined",
+        "NaN"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Due to how floating-point numbers are stored in JavaScript, 0.1 + 0.2 actually equals 0.30000000000000004, not exactly 0.3."
+    },
+    {
+      "id": "js-fund-9",
+      "question": "What is a closure in JavaScript?",
+      "options": [
+        "A way to close browser windows",
+        "A function that has access to variables in its outer scope",
+        "A method to close database connections",
+        "A way to end JavaScript code execution"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A closure is a function that has access to variables in its outer (enclosing) lexical scope, even after the outer function has returned."
+    },
+    {
+      "id": "js-fund-10",
+      "question": "What is the event loop in JavaScript?",
+      "options": [
+        "A for loop that runs forever",
+        "A mechanism to handle DOM events",
+        "A mechanism that handles asynchronous callbacks",
+        "A special type of while loop"
+      ],
+      "correctAnswer": 2,
+      "explanation": "The event loop is a mechanism that allows JavaScript to perform non-blocking operations despite being single-threaded. It handles asynchronous callbacks and manages the execution of code."
+    }
+  ],
+  "resources": [
+    {
+      "title": "MDN JavaScript Guide",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+    },
+    {
+      "title": "JavaScript.info",
+      "url": "https://javascript.info/"
+    }
+  ],
+  "tags": ["javascript", "fundamentals", "beginner", "variables", "functions", "arrays"]
+}

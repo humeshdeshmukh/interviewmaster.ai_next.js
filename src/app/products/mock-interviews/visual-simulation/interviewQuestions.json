@@ -1,0 +1,155 @@
+{
+  "software_development": {
+    "frontend": {
+      "beginner": [
+        {
+          "question": "Tell me about your experience with React.js",
+          "keyPoints": [
+            "Component lifecycle",
+            "State management",
+            "Props handling",
+            "Hooks usage"
+          ],
+          "expectedDuration": 180,
+          "difficulty": "beginner"
+        },
+        {
+          "question": "How do you handle responsive design?",
+          "keyPoints": [
+            "Media queries",
+            "Flexbox/Grid",
+            "Mobile-first approach",
+            "Viewport considerations"
+          ],
+          "expectedDuration": 180,
+          "difficulty": "beginner"
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "Explain your experience with state management solutions",
+          "keyPoints": [
+            "Redux/Context API",
+            "State persistence",
+            "Performance optimization",
+            "Global state patterns"
+          ],
+          "expectedDuration": 240,
+          "difficulty": "intermediate"
+        },
+        {
+          "question": "How do you optimize React applications?",
+          "keyPoints": [
+            "Code splitting",
+            "Lazy loading",
+            "Memoization",
+            "Bundle optimization"
+          ],
+          "expectedDuration": 240,
+          "difficulty": "intermediate"
+        }
+      ],
+      "advanced": [
+        {
+          "question": "Describe a complex technical challenge you solved",
+          "keyPoints": [
+            "Problem identification",
+            "Solution architecture",
+            "Implementation strategy",
+            "Results and impact"
+          ],
+          "expectedDuration": 300,
+          "difficulty": "advanced"
+        }
+      ]
+    },
+    "backend": {
+      "beginner": [
+        {
+          "question": "Explain RESTful API design principles",
+          "keyPoints": [
+            "HTTP methods",
+            "Resource naming",
+            "Status codes",
+            "API versioning"
+          ],
+          "expectedDuration": 180,
+          "difficulty": "beginner"
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "How do you handle database optimization?",
+          "keyPoints": [
+            "Indexing strategies",
+            "Query optimization",
+            "Caching layers",
+            "Performance monitoring"
+          ],
+          "expectedDuration": 240,
+          "difficulty": "intermediate"
+        }
+      ]
+    }
+  },
+  "system_design": {
+    "architecture": {
+      "intermediate": [
+        {
+          "question": "Design a scalable microservices architecture",
+          "keyPoints": [
+            "Service boundaries",
+            "Communication patterns",
+            "Data consistency",
+            "Deployment strategy"
+          ],
+          "expectedDuration": 300,
+          "difficulty": "intermediate"
+        }
+      ],
+      "advanced": [
+        {
+          "question": "Design a real-time notification system",
+          "keyPoints": [
+            "Push notifications",
+            "WebSocket implementation",
+            "Message queuing",
+            "Scaling considerations"
+          ],
+          "expectedDuration": 360,
+          "difficulty": "advanced"
+        }
+      ]
+    }
+  },
+  "behavioral": {
+    "leadership": {
+      "beginner": [
+        {
+          "question": "Describe a situation where you demonstrated leadership",
+          "keyPoints": [
+            "Situation context",
+            "Actions taken",
+            "Team management",
+            "Results achieved"
+          ],
+          "expectedDuration": 180,
+          "difficulty": "beginner"
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "How do you handle conflicts in a team?",
+          "keyPoints": [
+            "Conflict identification",
+            "Resolution approach",
+            "Communication strategy",
+            "Lessons learned"
+          ],
+          "expectedDuration": 240,
+          "difficulty": "intermediate"
+        }
+      ]
+    }
+  }
+}

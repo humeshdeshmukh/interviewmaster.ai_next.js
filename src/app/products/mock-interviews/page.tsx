@@ -1,141 +1,143 @@
-"use client"; // For Next.js 13+ to enable client-side rendering
+"use client";
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Video, Brain, Target, ChevronRight, Sparkles, ArrowRight, MessageSquare, BarChart, Shield, UserCheck } from "lucide-react";
 
 export default function MockInterviewLanding() {
   return (
-    <div className="min-h-screen bg-background text-white pt-20 px-8 flex flex-col justify-between">
-      {/* Main Container */}
-      <motion.div
+    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background/90">
+      {/* Hero Section */}
+      <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="max-w-screen-xl mx-auto"
+        transition={{ duration: 0.8 }}
+        className="relative pt-20 pb-16 text-center"
       >
-        {/* Heading Section */}
-        <motion.h1
-          className="text-4xl font-extrabold text-center mb-12 text-[#fcba28]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          Mock Interview Preparation
-        </motion.h1>
-
-        {/* Zig-Zag Layout Section */}
-        <div className="space-y-16">
-          {/* Section 1 */}
-          <motion.section
-            className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            <div className="md:w-1/2">
-              <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#fcba28]">
-                How to Give a Mock Interview
-              </h2>
-              <ul className="list-decimal pl-6 space-y-3 text-sm md:text-base">
-                <li>Research the role and understand the key skills.</li>
-                <li>Practice common interview questions and answers.</li>
-                <li>Record your responses for review.</li>
-                <li>Maintain good posture and speak clearly during the interview.</li>
-                <li>Request feedback for improvement after the interview.</li>
-              </ul>
-            </div>
-            <div className="md:w-1/2">
-              <img
-                src="/images/mock-interview-1.png"
-                alt="Mock Interview Tips"
-                className="w-full rounded-lg shadow-lg transition-transform transform hover:scale-105"
-              />
-            </div>
-          </motion.section>
-
-          {/* Visual Mock Interview Simulation */}
-          <motion.section
-            className="flex flex-col-reverse md:flex-row items-center space-y-6 md:space-y-0 md:space-x-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.5 }}
-          >
-            <div className="md:w-1/2">
-              <img
-                src="/images/visual-mock-interview.png"
-                alt="Visual Mock Interview Simulation"
-                className="w-full rounded-lg shadow-lg transition-transform transform hover:scale-105"
-              />
-            </div>
-            <div className="md:w-1/2">
-              <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#fcba28]">
-                Visual Mock Interview Simulation
-              </h2>
-              <p className="mb-4 text-sm md:text-base">
-                Experience a virtual interview simulation with an AI-powered interviewer.
-                Respond to dynamic questions and receive instant feedback on your performance.
-              </p>
-              <ul className="list-disc pl-6 space-y-3 text-sm md:text-base">
-                <li>Real-time AI-based interview simulation.</li>
-                <li>Tailored questions for your desired job role.</li>
-                <li>Detailed performance metrics and feedback.</li>
-              </ul>
-              
-            </div>
-          </motion.section>
-
-          {/* Section 3: Left-aligned */}
-          <motion.section
-            className="flex flex-col items-start space-y-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2 }}
-          >
-            <h2 className="text-xl md:text-2xl font-semibold text-[#fcba28]">
-              Why Mock Interviews Matter
-            </h2>
-            <ul className="list-disc pl-6 space-y-3 text-sm md:text-base">
-              <li>Helps you overcome nervousness and gain confidence.</li>
-              <li>Provides you with an opportunity to practice answering questions.</li>
-              <li>Enhances your communication and presentation skills.</li>
-              <li>Prepares you for real-life job interviews.</li>
-              <li>Improves feedback delivery and listening skills.</li>
-            </ul>
-            <div className="flex gap-6">
-              
-            </div>
-          </motion.section>
-
-          {/* Section 4: Centered Buttons */}
-          <motion.section
-            className="flex flex-col items-center space-y-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2.5 }}
-          >
-            <h2 className="text-xl md:text-2xl font-semibold text-[#fcba28] text-center">
-              Ready to Begin Your Mock Interview Journey?
-            </h2>
-            <div className="flex flex-wrap justify-center gap-6">
-              <Link href="/products/mock-interviews/schedule">
-                <button className="bg-[#fcba28] text-black py-3 px-8 rounded-full shadow-lg hover:bg-[#e29f1e] transition duration-300">
-                  Schedule Your Mock Interview
-                </button>
-              </Link>
-              <Link href="/products/mock-interviews/visual-simulation">
-                <button className="bg-[#b2be10] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#2c3648] transition duration-300">
-                  Start the Simulation
-                </button>
-              </Link>
-              <Link href="/products/mock-interviews/tips">
-                <button className="bg-[#1c6bff] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#155bb5] transition duration-300">
-                  Interview Tips
-                </button>
-              </Link>
-            </div>
-          </motion.section>
-        </div>
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+          Master Your Interview Skills
+        </h1>
+        <p className="text-lg text-white/60 max-w-2xl mx-auto mb-12">
+          Practice with our AI-powered platform and get real-time feedback
+        </p>
       </motion.div>
+
+      {/* Navigation Section */}
+      <motion.nav 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="bg-black/20 backdrop-blur-lg border-y border-white/10 mb-16"
+      >
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
+            <div className="flex gap-8 items-center">
+              <Link href="/products/mock-interviews/schedule">
+                <button className="group relative px-4 py-2 overflow-hidden rounded-lg">
+                  <div className="absolute inset-0 w-3 bg-[#fcba28] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                  <span className="relative text-sm font-medium text-white group-hover:text-black">Schedule Interview</span>
+                </button>
+              </Link>
+              
+              <Link href="/products/mock-interviews/visual-simulation">
+                <button className="group relative px-4 py-2 overflow-hidden rounded-lg">
+                  <div className="absolute inset-0 w-3 bg-[#b2be10] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                  <span className="relative text-sm font-medium text-white group-hover:text-black">Start Simulation</span>
+                </button>
+              </Link>
+              
+              <Link href="/products/mock-interviews/tips">
+                <button className="group relative px-4 py-2 overflow-hidden rounded-lg">
+                  <div className="absolute inset-0 w-3 bg-[#1c6bff] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                  <span className="relative text-sm font-medium text-white group-hover:text-black">Interview Tips</span>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Main Content */}
+      <div className="pt-24 px-4 md:px-6 max-w-7xl mx-auto">
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all group"
+            >
+              <feature.icon className="w-8 h-8 text-[#fcba28] mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
+              <p className="text-white/60">{feature.description}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-2xl md:text-4xl font-bold mb-8 text-[#fcba28]">
+            Ready to Begin Your Interview Journey?
+          </h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/products/mock-interviews/schedule">
+              <button className="px-8 py-3 bg-gradient-to-r from-[#fcba28] to-amber-600 text-black rounded-full font-medium hover:shadow-lg hover:shadow-amber-500/20 transition-all duration-300">
+                Schedule Interview
+              </button>
+            </Link>
+            <Link href="/products/mock-interviews/visual-simulation">
+              <button className="px-8 py-3 bg-gradient-to-r from-[#b2be10] to-green-600 text-white rounded-full font-medium hover:shadow-lg hover:shadow-green-500/20 transition-all duration-300">
+                Start Simulation
+              </button>
+            </Link>
+            <Link href="/products/mock-interviews/tips">
+              <button className="px-8 py-3 bg-gradient-to-r from-[#1c6bff] to-blue-600 text-white rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+                Interview Tips
+              </button>
+            </Link>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }
+
+const features = [
+  {
+    title: "AI-Powered Analysis",
+    description: "Get instant feedback on your responses and body language",
+    icon: Brain
+  },
+  {
+    title: "Real-time Simulation",
+    description: "Practice with realistic interview scenarios",
+    icon: Video
+  },
+  {
+    title: "Performance Tracking",
+    description: "Monitor your progress and improvements",
+    icon: Target
+  },
+  {
+    title: "Smart Questions",
+    description: "Dynamic questions based on your experience",
+    icon: MessageSquare
+  },
+  {
+    title: "Detailed Analytics",
+    description: "Comprehensive performance insights",
+    icon: BarChart
+  },
+  {
+    title: "Expert Guidance",
+    description: "Learn from industry best practices",
+    icon: Shield
+  }
+];

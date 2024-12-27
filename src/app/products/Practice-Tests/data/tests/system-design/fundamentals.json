@@ -1,0 +1,143 @@
+{
+  "id": "system-design-fundamentals",
+  "title": "System Design Fundamentals",
+  "description": "Test your knowledge of fundamental system design concepts including scalability, load balancing, and caching",
+  "category": "system-design",
+  "subcategory": "fundamentals",
+  "difficulty": "Intermediate",
+  "timeLimit": 40,
+  "totalQuestions": 10,
+  "questions": [
+    {
+      "id": "sys-design-1",
+      "question": "What is horizontal scaling?",
+      "options": [
+        "Adding more power (CPU, RAM) to existing machines",
+        "Adding more machines to handle the load",
+        "Increasing database size",
+        "Optimizing code performance"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Horizontal scaling (scaling out) means adding more machines to your pool of resources, as opposed to vertical scaling which means adding more power to existing machines."
+    },
+    {
+      "id": "sys-design-2",
+      "question": "What is the primary purpose of a load balancer?",
+      "options": [
+        "To increase database performance",
+        "To distribute incoming traffic across multiple servers",
+        "To cache frequently accessed data",
+        "To compress data for storage"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A load balancer distributes incoming application traffic across multiple servers to ensure no single server bears too much load, improving responsiveness and availability."
+    },
+    {
+      "id": "sys-design-3",
+      "question": "What is the CAP theorem?",
+      "options": [
+        "A theorem about CPU performance",
+        "A theorem stating you can only have two of: Consistency, Availability, and Partition tolerance",
+        "A theorem about network security",
+        "A theorem about database indexing"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The CAP theorem states that in a distributed system, you can only guarantee two of the three properties: Consistency, Availability, and Partition tolerance."
+    },
+    {
+      "id": "sys-design-4",
+      "question": "What is the purpose of caching in system design?",
+      "options": [
+        "To permanently store data",
+        "To temporarily store frequently accessed data for faster retrieval",
+        "To compress data",
+        "To encrypt data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Caching improves system performance by storing frequently accessed data in a faster storage layer, reducing the need to fetch data from slower storage systems."
+    },
+    {
+      "id": "sys-design-5",
+      "question": "What is a message queue used for?",
+      "options": [
+        "To store permanent data",
+        "To handle asynchronous communication between services",
+        "To encrypt messages",
+        "To compress data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Message queues enable asynchronous communication between services, allowing them to communicate without needing to be running simultaneously."
+    },
+    {
+      "id": "sys-design-6",
+      "question": "What is database sharding?",
+      "options": [
+        "A method of database backup",
+        "Splitting a database into smaller parts across multiple machines",
+        "A type of database encryption",
+        "A method of database compression"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sharding is a type of database partitioning that separates large databases into smaller, faster, more easily managed parts called shards across multiple machines."
+    },
+    {
+      "id": "sys-design-7",
+      "question": "What is the purpose of a CDN (Content Delivery Network)?",
+      "options": [
+        "To manage databases",
+        "To deliver content to users from the closest server",
+        "To encrypt data transmission",
+        "To compress website data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A CDN improves website performance by delivering content to users from servers geographically closer to them, reducing latency and improving load times."
+    },
+    {
+      "id": "sys-design-8",
+      "question": "What is the difference between synchronous and asynchronous communication?",
+      "options": [
+        "There is no difference",
+        "Synchronous blocks until receiving a response, asynchronous doesn't",
+        "Asynchronous is always faster",
+        "Synchronous is always more reliable"
+      ],
+      "correctAnswer": 1,
+      "explanation": "In synchronous communication, the sender waits for a response before continuing. In asynchronous communication, the sender can continue processing while waiting for a response."
+    },
+    {
+      "id": "sys-design-9",
+      "question": "What is the purpose of a reverse proxy?",
+      "options": [
+        "To block malicious traffic",
+        "To sit between clients and servers, forwarding client requests to appropriate servers",
+        "To optimize database queries",
+        "To manage server backups"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A reverse proxy sits between clients and servers, forwarding client requests to appropriate backend servers. It can provide load balancing, caching, and security benefits."
+    },
+    {
+      "id": "sys-design-10",
+      "question": "What is eventual consistency in distributed systems?",
+      "options": [
+        "Data is always consistent",
+        "Data will become consistent over time if no new updates are made",
+        "Data is never consistent",
+        "Data is only consistent during updates"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Eventual consistency means that given enough time without updates, all replicas in a distributed system will contain the same data. This model provides better availability but may temporarily return stale data."
+    }
+  ],
+  "resources": [
+    {
+      "title": "System Design Primer",
+      "url": "https://github.com/donnemartin/system-design-primer"
+    },
+    {
+      "title": "Designing Data-Intensive Applications",
+      "url": "https://dataintensive.net/"
+    }
+  ],
+  "tags": ["system-design", "architecture", "scalability", "performance", "distributed-systems"]
+}

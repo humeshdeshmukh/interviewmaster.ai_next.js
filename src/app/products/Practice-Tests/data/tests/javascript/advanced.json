@@ -1,0 +1,55 @@
+{
+  "category": "JavaScript",
+  "subcategory": "Advanced",
+  "tests": [
+    {
+      "id": "js-adv-1",
+      "title": "JavaScript Advanced Concepts",
+      "description": "Test your knowledge of advanced JavaScript concepts including closures, prototypes, and async programming",
+      "difficulty": "Advanced",
+      "timeLimit": 45,
+      "totalQuestions": 30,
+      "passingScore": 75,
+      "tags": ["closures", "prototypes", "async", "memory-management"],
+      "questions": [
+        {
+          "id": "js-adv-1-q1",
+          "question": "What is the output of this code?\n```javascript\nconst proto = { x: 10 };\nconst obj = Object.create(proto);\nobj.y = 20;\nobj.x = 30;\ndelete obj.x;\nconsole.log(obj.x);\n```",
+          "options": [
+            "undefined",
+            "10",
+            "30",
+            "Error"
+          ],
+          "correctAnswer": 1,
+          "explanation": "When we delete obj.x, we only delete the property from obj itself, not from its prototype. So when we access obj.x, it falls back to the prototype chain and returns 10 from proto.",
+          "difficulty": "Advanced",
+          "category": "Prototypes"
+        },
+        {
+          "id": "js-adv-1-q2",
+          "question": "What is a memory leak in JavaScript?",
+          "options": [
+            "When variables are not properly declared",
+            "When memory is allocated but never released when it's no longer needed",
+            "When too many variables are declared",
+            "When using too many global variables"
+          ],
+          "correctAnswer": 1,
+          "explanation": "A memory leak occurs when memory that is no longer needed is not released back to the system. Common causes include forgotten event listeners, closures holding references, and circular references.",
+          "difficulty": "Advanced",
+          "category": "Memory Management"
+        }
+      ],
+      "resources": {
+        "documentation": ["MDN Web Docs", "JavaScript.info"],
+        "readingMaterials": [
+          {
+            "title": "Understanding Prototypes",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "category": "JavaScript",
+  "subcategory": "ES6+",
+  "tests": [
+    {
+      "id": "js-es6-1",
+      "title": "Modern JavaScript Features",
+      "description": "Test your knowledge of ES6+ features including arrow functions, destructuring, and modules",
+      "difficulty": "Intermediate",
+      "timeLimit": 45,
+      "totalQuestions": 30,
+      "passingScore": 70,
+      "tags": ["es6", "es2015", "modern-javascript", "features"],
+      "questions": [
+        {
+          "id": "js-es6-1-q1",
+          "question": "What is the output of this destructuring assignment?\n```javascript\nconst { x: y = 3 } = { x: 5 };\nconsole.log(y);\n```",
+          "options": [
+            "undefined",
+            "3",
+            "5",
+            "{ x: 5 }"
+          ],
+          "correctAnswer": 2,
+          "explanation": "The destructuring pattern { x: y = 3 } means: look for a property x and assign its value to a variable y, with a default value of 3. Since x exists and is 5, y gets assigned 5.",
+          "difficulty": "Intermediate",
+          "category": "Destructuring"
+        },
+        {
+          "id": "js-es6-1-q2",
+          "question": "What's the difference between let and const?",
+          "options": [
+            "let is block-scoped, const is function-scoped",
+            "const is block-scoped, let is function-scoped",
+            "let allows reassignment, const doesn't",
+            "There is no difference"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Both let and const are block-scoped, but let allows reassignment of the variable while const doesn't. Note that const still allows mutation of objects and arrays.",
+          "difficulty": "Beginner",
+          "category": "Variables"
+        }
+      ],
+      "resources": {
+        "documentation": ["MDN Web Docs", "JavaScript.info"],
+        "readingMaterials": [
+          {
+            "title": "ES6 Features",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_2015_support_in_Mozilla"
+          }
+        ]
+      }
+    }
+  ]
+}

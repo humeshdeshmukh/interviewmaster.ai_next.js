@@ -1,179 +1,198 @@
 "use client";
-import React, { useEffect, useState } from "react";
 
-interface Question {
-  id: number;
-  question: string;
-  answer: string;
-}
+import { Suspense, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaCode, FaRobot } from 'react-icons/fa';
+import { useTest } from './context/TestContext';
+import AITestForm from './components/AITestGenerator/AITestForm';
+import { TestLoader } from './utils/testLoader';
+import LoadingSpinner from './components/LoadingSpinner';
+import TestContainer from './components/TestInterface/TestContainer';
+import TestSearch from './components/TestSearch';
+import { Category, Test } from './utils/types';
 
-interface PracticeTest {
-  id: number;
-  title: string;
-  description: string;
-  questions: Question[];
-}
-
-const PracticeTests: React.FC = () => {
-  const [tests, setTests] = useState<PracticeTest[]>([]);
-  const [selectedTest, setSelectedTest] = useState<PracticeTest | null>(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswer, setUserAnswer] = useState("");
-  const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [showTestModal, setShowTestModal] = useState(false);
-  const [showAnswer, setShowAnswer] = useState(false);
+function PracticeTestsContent() {
+  const { state, dispatch } = useTest();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [tests, setTests] = useState<Test[]>([]);
 
   useEffect(() => {
-    const fetchTests = async () => {
-      try {
-        const response = await fetch("/products/questions.json");
-        if (!response.ok) throw new Error("Failed to fetch data");
-        const data: PracticeTest[] = await response.json();
-        setTests(data);
-      } catch (error) {
-        console.error("Error fetching tests:", error);
-      }
-    };
-    fetchTests();
+    loadCategories();
   }, []);
 
   useEffect(() => {
-    if (showTestModal) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-      }, 1000);
-      if (timeLeft === 0) handleNext();
-
-      return () => clearInterval(timer);
+    if (selectedCategory && selectedSubcategory) {
+      loadTests(selectedCategory, selectedSubcategory);
     }
-  }, [timeLeft, showTestModal]);
+  }, [selectedCategory, selectedSubcategory]);
 
-  const handleTestSelection = (test: PracticeTest) => {
-    setSelectedTest(test);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setUserAnswer("");
-    setTimeLeft(30);
-    setShowTestModal(true);
-    setShowAnswer(false);
-  };
-
-  const handleNext = () => {
-    if (currentQuestionIndex < selectedTest!.questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
-      resetState();
-    } else {
-      setShowTestModal(false);
-      alert(`Test Completed! Your final score is ${score}/${selectedTest?.questions.length}.`);
+  const loadCategories = async () => {
+    try {
+      const testLoader = TestLoader.getInstance();
+      const cats = await testLoader.getCategories();
+      setCategories(cats);
+      setLoading(false);
+    } catch (error) {
+      setError('Failed to load test categories');
+      setLoading(false);
     }
   };
 
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((prev) => prev - 1);
-      resetState();
+  const loadTests = async (categoryId: string, subcategoryId: string) => {
+    try {
+      setLoading(true);
+      const testLoader = TestLoader.getInstance();
+      const testCategory = await testLoader.loadTestsForCategory(categoryId, subcategoryId);
+      if (testCategory) {
+        setTests(testCategory.tests);
+        dispatch({ type: 'SET_TESTS', payload: testCategory.tests });
+      } else {
+        setTests([]);
+        setError('No tests found for this category');
+      }
+    } catch (error) {
+      console.error('Error loading tests:', error);
+      setError('Failed to load tests');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleAnswerSubmission = () => {
-    const correctAnswer = selectedTest?.questions[currentQuestionIndex].answer.trim().toLowerCase();
-    if (userAnswer.trim().toLowerCase() === correctAnswer) setScore((prev) => prev + 1);
-    setShowAnswer(false);
-    handleNext();
+  const handleCategorySelect = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    // Find the first subcategory of the selected category
+    const category = categories.find(c => c.id === categoryId);
+    if (category && category.subcategories.length > 0) {
+      setSelectedSubcategory(category.subcategories[0].id);
+    }
+    dispatch({ type: 'CLEAR_SELECTED_TEST' });
   };
 
-  const resetState = () => {
-    setUserAnswer("");
-    setTimeLeft(30);
-    setShowAnswer(false);
+  const handleTestSelect = (test: Test) => {
+    dispatch({ type: 'SELECT_TEST', payload: test });
+    dispatch({ type: 'SET_MODE', payload: 'question' });
   };
+
+  if (state.selectedTest) {
+    return <TestContainer />;
+  }
 
   return (
-    <div className="min-h-screen bg-background text-black pt-[80px] py-8">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-center mb-10 text-[#adb0b5]">Practice Tests</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tests.map((test) => (
-            <div
-              key={test.id}
-              className="bg-[#dcf2f1] p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
-            >
-              <h2 className="text-2xl font-semibold mb-2 text-[#1d3557]">{test.title}</h2>
-              <p className="text-[#457b9d] mb-4">{test.description}</p>
-              <button
-                className="w-full bg-[#80cfd1] text-white py-2 px-4 rounded-lg hover:bg-[#457b9d] transition"
-                onClick={() => handleTestSelection(test)}
-              >
-                Start Test
-              </button>
-            </div>
-          ))}
-        </div>
+    <div className="min-h-screen pt-20 pb-12 px-4 md:px-8">
+      <div className="max-w-6xl mx-auto relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-4xl mx-auto text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#fcba28] via-[#fcd978] to-[#fcba28] text-transparent bg-clip-text">
+            Practice Tests
+          </h1>
+          <p className="text-xl text-gray-300">
+            Master your skills with our comprehensive collection of tests
+          </p>
+        </motion.div>
 
-        {showTestModal && selectedTest && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4">
-            <div className="bg-white p-8 rounded-lg max-w-3xl w-full text-[#1d3557] relative">
-              <h2 className="text-3xl font-bold mb-6">{selectedTest.title}</h2>
-              <h4 className="text-xl font-semibold mb-4">
-                {selectedTest.questions[currentQuestionIndex].question}
-              </h4>
-              <div className="mb-4 text-right">
-                <span className="text-sm font-medium">Time Left: {timeLeft}s</span>
-              </div>
-              <input
-                type="text"
-                value={userAnswer}
-                onChange={(e) => setUserAnswer(e.target.value)}
-                placeholder="Type your answer..."
-                className="w-full p-3 rounded-lg bg-[#dcf2f1] text-black mb-4 focus:outline-none focus:ring-2 focus:ring-[#1d3557]"
-              />
-              {showAnswer && (
-                <div className="text-green-600 font-bold mb-4">
-                  Correct Answer: {selectedTest.questions[currentQuestionIndex].answer}
+        {/* Search Bar */}
+        <TestSearch tests={tests} onTestSelect={handleTestSelect} />
+
+        {/* Main Content */}
+        <AnimatePresence mode="wait">
+          {loading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex justify-center py-12"
+            >
+              <LoadingSpinner />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            >
+              {/* Static Tests Section */}
+              <div className="space-y-6">
+                <div className="bg-white/5 p-6 rounded-xl border border-white/10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-3 rounded-lg bg-[#fcba28]/20">
+                      <FaCode className="w-6 h-6 text-[#fcba28]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-[#fcba28]">Practice Tests</h3>
+                      <p className="text-gray-300">Choose from our curated collection of tests</p>
+                    </div>
+                  </div>
+
+                  {/* Category Selection */}
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    {categories.map((category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => handleCategorySelect(category.id)}
+                        className={`p-4 rounded-xl text-center transition-all duration-300 ${
+                          selectedCategory === category.id
+                            ? 'bg-[#fcba28] text-black'
+                            : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                        }`}
+                      >
+                        {category.name}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Test List */}
+                  {selectedCategory && tests.length > 0 && (
+                    <div className="space-y-3">
+                      {tests.map((test) => (
+                        <motion.button
+                          key={test.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          onClick={() => handleTestSelect(test)}
+                          className="w-full p-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-all text-left group"
+                        >
+                          <h4 className="font-medium text-white group-hover:text-[#fcba28] transition-colors">
+                            {test.title}
+                          </h4>
+                          <p className="text-sm text-gray-300 mt-1">{test.description}</p>
+                          <div className="flex items-center gap-4 mt-2 text-sm">
+                            <span className="text-[#fcba28]">{test.difficulty}</span>
+                            <span className="text-gray-300">{test.totalQuestions} questions</span>
+                            <span className="text-gray-300">{test.timeLimit} minutes</span>
+                          </div>
+                        </motion.button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
-              <div className="flex justify-between mt-4">
-                <button
-                  className="bg-[#457b9d] text-white py-2 px-4 rounded-lg hover:bg-[#1d3557] transition"
-                  onClick={handlePrevious}
-                  disabled={currentQuestionIndex === 0}
-                >
-                  Previous
-                </button>
-                <button
-                  className="bg-[#80cfd1] text-white py-2 px-4 rounded-lg hover:bg-[#457b9d] transition"
-                  onClick={() => setShowAnswer(true)}
-                >
-                  Show Answer
-                </button>
-                <button
-                  className="bg-[#457b9d] text-white py-2 px-4 rounded-lg hover:bg-[#1d3557] transition"
-                  onClick={handleNext}
-                  disabled={currentQuestionIndex === selectedTest.questions.length - 1}
-                >
-                  Next
-                </button>
               </div>
-              <button
-                className="w-full mt-6 bg-[#1d3557] text-white py-3 px-6 rounded-lg hover:bg-[#1a2e45]"
-                onClick={handleAnswerSubmission}
-              >
-                Submit Answer
-              </button>
-              <div className="mt-6 text-center">
-                <p className="text-lg font-bold">
-                  Questions Attempted: {currentQuestionIndex + 1}/
-                  {selectedTest.questions.length}
-                </p>
-                <p className="text-lg font-bold">Score: {score}</p>
+
+              {/* AI Test Generator Section */}
+              <div>
+                <AITestForm />
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
-};
+}
 
-export default PracticeTests;
+export default function PracticeTests() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <PracticeTestsContent />
+    </Suspense>
+  );
+}

@@ -1,0 +1,150 @@
+{
+  "category": "React",
+  "subcategory": "Hooks",
+  "tests": [
+    {
+      "id": "react-hooks",
+      "title": "React Hooks Mastery",
+      "description": "Test your knowledge of React Hooks including built-in hooks, custom hooks, and best practices",
+      "category": "react",
+      "subcategory": "hooks",
+      "difficulty": "Intermediate",
+      "timeLimit": 35,
+      "totalQuestions": 10,
+      "passingScore": 75,
+      "tags": ["react", "hooks", "useEffect", "useState", "custom-hooks", "performance"],
+      "questions": [
+        {
+          "id": "react-hooks-1",
+          "question": "What is the main purpose of useMemo?",
+          "options": [
+            "To memoize function definitions",
+            "To memoize expensive computations",
+            "To handle side effects",
+            "To manage state"
+          ],
+          "correctAnswer": 1,
+          "explanation": "useMemo is used to memoize expensive computations so they are only recalculated when their dependencies change, improving performance."
+        },
+        {
+          "id": "react-hooks-2",
+          "question": "When should you use useCallback?",
+          "options": [
+            "For all functions in a component",
+            "When passing functions as props to optimized child components",
+            "For state management",
+            "For API calls"
+          ],
+          "correctAnswer": 1,
+          "explanation": "useCallback should be used when passing functions as props to optimized child components (using React.memo) to prevent unnecessary re-renders."
+        },
+        {
+          "id": "react-hooks-3",
+          "question": "What is the difference between useEffect and useLayoutEffect?",
+          "options": [
+            "There is no difference",
+            "useLayoutEffect runs synchronously after DOM mutations",
+            "useEffect is deprecated",
+            "useLayoutEffect is for styling only"
+          ],
+          "correctAnswer": 1,
+          "explanation": "useLayoutEffect runs synchronously after DOM mutations but before the browser repaints, while useEffect runs asynchronously after the browser repaints."
+        },
+        {
+          "id": "react-hooks-4",
+          "question": "What is the purpose of useRef?",
+          "options": [
+            "To store state that persists between renders",
+            "To reference DOM elements directly",
+            "Both A and B",
+            "To handle form validation"
+          ],
+          "correctAnswer": 2,
+          "explanation": "useRef can be used both to store mutable values that persist between renders without causing re-renders, and to get direct access to DOM elements."
+        },
+        {
+          "id": "react-hooks-5",
+          "question": "When does useEffect's cleanup function run?",
+          "options": [
+            "Before every re-render",
+            "After every re-render",
+            "Before the component unmounts",
+            "Before the next effect runs and when unmounting"
+          ],
+          "correctAnswer": 3,
+          "explanation": "The cleanup function runs before the next effect execution and when the component unmounts, helping prevent memory leaks and clean up subscriptions."
+        },
+        {
+          "id": "react-hooks-6",
+          "question": "What is a custom hook?",
+          "options": [
+            "A built-in React hook",
+            "A JavaScript function that uses other hooks",
+            "A CSS class",
+            "A React component"
+          ],
+          "correctAnswer": 1,
+          "explanation": "A custom hook is a JavaScript function that starts with 'use' and can call other hooks, allowing you to extract component logic into reusable functions."
+        },
+        {
+          "id": "react-hooks-7",
+          "question": "What is the Rules of Hooks?",
+          "options": [
+            "Hooks can be called anywhere",
+            "Only call hooks at the top level and from React functions",
+            "Hooks must be named use*",
+            "Hooks must use TypeScript"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The Rules of Hooks state that hooks must be called at the top level (not inside loops or conditions) and only from React function components or custom hooks."
+        },
+        {
+          "id": "react-hooks-8",
+          "question": "What does useReducer do?",
+          "options": [
+            "Manages simple state",
+            "Manages complex state logic with a reducer function",
+            "Reduces component size",
+            "Optimizes performance"
+          ],
+          "correctAnswer": 1,
+          "explanation": "useReducer is used for managing complex state logic in components using a reducer function, similar to how Redux works."
+        },
+        {
+          "id": "react-hooks-9",
+          "question": "What is the purpose of useContext?",
+          "options": [
+            "To create context",
+            "To consume context values without nesting",
+            "To style components",
+            "To manage local state"
+          ],
+          "correctAnswer": 1,
+          "explanation": "useContext is used to consume context values in components without requiring context consumer components or nesting, making the code cleaner."
+        },
+        {
+          "id": "react-hooks-10",
+          "question": "When should you use useState vs useReducer?",
+          "options": [
+            "Always use useState",
+            "Always use useReducer",
+            "Use useReducer for complex state logic, useState for simple state",
+            "They are interchangeable"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Use useState for simple state management and useReducer when you have complex state logic or when state updates depend on multiple factors."
+        }
+      ],
+      "resources": [
+        {
+          "title": "React Hooks Documentation",
+          "url": "https://reactjs.org/docs/hooks-intro.html"
+        },
+        {
+          "title": "React Hooks FAQ",
+          "url": "https://reactjs.org/docs/hooks-faq.html"
+        }
+      ]
+    }
+  ]
+}
