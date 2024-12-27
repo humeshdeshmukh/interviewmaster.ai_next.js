@@ -1,136 +1,189 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaSearch, FaFilter, FaCalendarAlt, FaUsers, FaClock, FaGraduationCap } from "react-icons/fa";
+import { webinars, webinarCategories } from "./data";
+import { WebinarCard } from "./components/WebinarCard";
+import { FilterSection } from "./components/FilterSection";
+import { isUpcoming } from "./utils";
 
 export default function Webinars() {
-  const webinars = [
-    {
-      title: "Mastering Coding Interviews",
-      description:
-        "Join our expert-led session to tackle coding interview challenges with confidence.",
-      date: "2024-12-15",
-      speaker: "John Doe, Senior Engineer at TechCo",
-      level: "Intermediate",
-      link: "/resources/webinars/mastering-coding-interviews",
-    },
-    {
-      title: "Behavioral Interviewing 101",
-      description:
-        "Learn strategies to excel in behavioral interviews and stand out to recruiters.",
-      date: "2024-12-20",
-      speaker: "Jane Smith, HR Lead at InnovateTech",
-      level: "Beginner",
-      link: "/resources/webinars/behavioral-interviewing",
-    },
-    {
-      title: "Ace Your Technical Interviews",
-      description:
-        "Gain insights into mastering technical interviews from top engineers in the industry.",
-      date: "2024-12-22",
-      speaker: "Robert Lee, Lead Developer at CodeCraft",
-      level: "Advanced",
-      link: "/resources/webinars/ace-technical-interviews",
-    },
-    {
-      title: "Data Structures and Algorithms Deep Dive",
-      description:
-        "Get an in-depth look at the key data structures and algorithms you need to ace technical interviews.",
-      date: "2025-01-10",
-      speaker: "Emily Brown, Software Engineer at DataFlow",
-      level: "Advanced",
-      link: "/resources/webinars/data-structures-algorithms",
-    },
-  ];
-
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [showUpcomingOnly, setShowUpcomingOnly] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const handleClearFilters = () => {
+    setSelectedCategory("");
+    setSelectedLevel("");
+    setSearchQuery("");
+    setShowUpcomingOnly(false);
+  };
 
   const filteredWebinars = webinars.filter((webinar) => {
     const matchesSearch =
       webinar.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      webinar.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesLevel =
-      selectedLevel === "" || webinar.level === selectedLevel;
-    return matchesSearch && matchesLevel;
+      webinar.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      webinar.speaker.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = !selectedCategory || webinar.category === selectedCategory;
+    const matchesLevel = !selectedLevel || webinar.level === selectedLevel;
+    const matchesUpcoming = !showUpcomingOnly || isUpcoming(webinar.date);
+    return matchesSearch && matchesCategory && matchesLevel && matchesUpcoming;
   });
 
-  const clearSearch = () => {
-    setSearchQuery("");
-    setSelectedLevel("");
-  };
+  const levels = [...new Set(webinars.map(webinar => webinar.level))];
 
   return (
-    <div className="container mx-auto px-6 py-12 bg-background text-gray-800">
-      <h1 className="text-4xl font-extrabold text-center mb-8 text-[#457b9d]">
-        Upcoming Webinars
-      </h1>
-      <p className="text-lg text-center text-gray-700 mb-8">
-        Explore expert-led webinars designed to boost your skills and career.
-      </p>
-
-      <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
-        <div className="relative w-full md:w-1/2">
-          <input
-            type="text"
-            placeholder="Search webinars..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#80cfd1] text-gray-700"
-          />
-          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
-          {searchQuery && (
-            <button
-              onClick={clearSearch}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#1d3557] hover:text-[#457b9d]"
-            >
-              Clear
-            </button>
-          )}
-        </div>
-
-        <select
-          className="p-4 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-[#80cfd1] text-gray-700"
-          value={selectedLevel}
-          onChange={(e) => setSelectedLevel(e.target.value)}
-        >
-          <option value="">All Levels</option>
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-        </select>
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+      {/* Background gradient effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#fcba2810_0%,transparent_65%)] blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,#fcba2815_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,#fcba2815_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {filteredWebinars.length > 0 ? (
-          filteredWebinars.map((webinar, index) => (
-            <div
+      <div className="max-w-7xl mx-auto relative">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#fcba28] via-[#fcd978] to-[#fcba28] text-transparent bg-clip-text"
+          >
+            Expert-Led Interview Prep
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-xl text-gray-400 max-w-2xl mx-auto mb-4"
+          >
+            Join live webinars with industry experts from top tech companies to master technical interviews and advance your career
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center space-x-2 text-sm text-[#fcba28]"
+          >
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#fcba28] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#fcba28]"></span>
+            </span>
+            <span>New webinars coming soon in January 2024</span>
+          </motion.div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+          {[
+            { icon: FaCalendarAlt, label: 'Upcoming Webinars', value: webinars.length },
+            { icon: FaUsers, label: 'Expert Speakers', value: '20+' },
+            { icon: FaClock, label: 'Hours of Content', value: '40+' },
+            { icon: FaGraduationCap, label: 'Success Rate', value: '95%' }
+          ].map((stat, index) => (
+            <motion.div
               key={index}
-              className="bg-white border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-xl transition duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="relative overflow-hidden group p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-lg"
             >
-              <h2 className="text-2xl font-bold text-[#1d3557] mb-4">
-                {webinar.title}
-              </h2>
-              <p className="text-gray-600 mb-4">{webinar.description}</p>
-              <div className="text-sm text-gray-500 space-y-2">
-                <p>Speaker: {webinar.speaker}</p>
-                <p>Date: {webinar.date}</p>
-                <p>Level: {webinar.level}</p>
+              {/* Background effects */}
+              <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <Link
-                href={webinar.link}
-                className="inline-block mt-6 text-[#80cfd1] font-medium hover:text-[#457b9d]"
-              >
-                Learn More &rarr;
-              </Link>
+
+              {/* Content */}
+              <div className="relative">
+                <stat.icon className="w-8 h-8 text-[#fcba28] mb-4" />
+                <p className="text-2xl font-bold text-white mb-1">{stat.value}</p>
+                <p className="text-sm text-gray-400">{stat.label}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Search and Filters */}
+        <div className="mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                placeholder="Search webinars..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-12 text-white focus:border-[#fcba28] focus:outline-none transition-colors"
+              />
+              <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-500">
-            No webinars match your search criteria.
-          </p>
-        )}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="px-6 py-3 bg-white/5 text-white rounded-xl border border-white/10 hover:border-[#fcba28]/50 transition-all duration-300 flex items-center justify-center gap-2 md:w-auto"
+            >
+              <FaFilter /> {showFilters ? 'Hide Filters' : 'Show Filters'}
+            </button>
+          </div>
+
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="py-4">
+                  <FilterSection
+                    categories={webinarCategories}
+                    levels={levels}
+                    selectedCategory={selectedCategory}
+                    selectedLevel={selectedLevel}
+                    searchQuery={searchQuery}
+                    showUpcomingOnly={showUpcomingOnly}
+                    onCategoryChange={setSelectedCategory}
+                    onLevelChange={setSelectedLevel}
+                    onSearchChange={setSearchQuery}
+                    onUpcomingChange={setShowUpcomingOnly}
+                    onClearFilters={handleClearFilters}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Webinars Grid */}
+        <AnimatePresence mode="wait">
+          {filteredWebinars.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-center py-12"
+            >
+              <p className="text-xl text-gray-400">No webinars found matching your criteria</p>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {filteredWebinars.map((webinar) => (
+                <WebinarCard
+                  key={webinar.id}
+                  webinar={webinar}
+                  onClick={() => window.open(webinar.registrationUrl, '_blank')}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
