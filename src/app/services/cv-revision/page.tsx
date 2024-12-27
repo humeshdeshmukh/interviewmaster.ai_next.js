@@ -1,363 +1,214 @@
 "use client";
 
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaUpload, FaFileAlt, FaCheck, FaTimes, FaSpinner, FaDownload, FaChartBar, FaLightbulb, FaStar } from 'react-icons/fa';
-
-interface Analysis {
-  score: number;
-  feedback: {
-    strengths: string[];
-    improvements: string[];
-    keywords: string[];
-    formatting: string[];
-    content: string[];
-  };
-  recommendations: {
-    skills: string[];
-    experience: string[];
-    education: string[];
-    overall: string[];
-  };
-}
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { FaRobot, FaUserTie, FaArrowRight, FaStar, FaUsers, FaRocket, FaCheck, FaFileAlt, FaSearch, FaMedal, FaChartLine } from 'react-icons/fa';
 
 export default function CVRevisionPage() {
-  const [file, setFile] = useState<File | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysis, setAnalysis] = useState<Analysis | null>(null);
-  const [activeTab, setActiveTab] = useState('overview');
-  const [error, setError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const stats = [
+    { icon: FaFileAlt, value: '15,000+', label: 'CVs Optimized' },
+    { icon: FaStar, value: '98%', label: 'Success Rate' },
+    { icon: FaUsers, value: '2000+', label: 'Job Offers Received' },
+  ];
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile?.type === 'application/pdf' || droppedFile?.type === 'application/msword' || 
-        droppedFile?.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-      setFile(droppedFile);
-      await analyzeCV(droppedFile);
-    } else {
-      setError('Please upload a PDF or Word document');
+  const revisionOptions = [
+    {
+      icon: FaRobot,
+      title: 'AI CV Analysis',
+      description: 'Get instant feedback and suggestions to improve your CV using our advanced AI technology.',
+      features: [
+        'Instant CV analysis',
+        'ATS optimization check',
+        'Keyword optimization',
+        'Format suggestions'
+      ],
+      price: 'Free',
+      link: './cv-revision/ai',
+      gradient: 'from-purple-600/20 to-blue-600/20'
+    },
+    {
+      icon: FaUserTie,
+      title: 'Professional CV Review',
+      description: 'Get a comprehensive review and optimization from our expert CV consultants.',
+      features: [
+        'Detailed expert review',
+        'One-on-one consultation',
+        'Industry-specific optimization',
+        'Two revision rounds'
+      ],
+      price: '$49',
+      link: './cv-revision/professional',
+      gradient: 'from-amber-600/20 to-orange-600/20'
     }
-  };
+  ];
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      await analyzeCV(selectedFile);
+  const benefits = [
+    {
+      icon: FaSearch,
+      title: 'ATS-Optimized',
+      description: 'Ensure your CV passes Applicant Tracking Systems and reaches human recruiters'
+    },
+    {
+      icon: FaMedal,
+      title: 'Industry Standards',
+      description: 'Format and content aligned with current industry best practices'
+    },
+    {
+      icon: FaChartLine,
+      title: 'Higher Response Rate',
+      description: 'Significantly improve your chances of getting interview calls'
     }
-  };
-
-  const analyzeCV = async (cvFile: File) => {
-    setIsAnalyzing(true);
-    setError('');
-    
-    try {
-      const formData = new FormData();
-      formData.append('file', cvFile);
-
-      const response = await fetch('/api/cv-analysis', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to analyze CV');
-      }
-
-      const data = await response.json();
-      setAnalysis(data.analysis);
-    } catch (err) {
-      setError('Failed to analyze CV. Please try again.');
-      console.error(err);
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
-  const renderScoreCard = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white/5 p-6 rounded-xl border border-white/10"
-    >
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold text-[#fcba28]">CV Score</h3>
-        <div className="text-3xl font-bold text-[#fcba28]">{analysis?.score}%</div>
-      </div>
-      <div className="h-3 bg-white/10 rounded-full overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${analysis?.score}%` }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="h-full bg-[#fcba28]"
-        />
-      </div>
-    </motion.div>
-  );
-
-  const renderFeedbackSection = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-white/5 p-6 rounded-xl border border-white/10"
-      >
-        <h3 className="text-xl font-semibold text-[#fcba28] mb-4">Strengths</h3>
-        <ul className="space-y-2">
-          {analysis?.feedback.strengths.map((strength, index) => (
-            <li key={index} className="flex items-center gap-2 text-green-400">
-              <FaCheck className="flex-shrink-0" />
-              <span className="text-gray-300">{strength}</span>
-            </li>
-          ))}
-        </ul>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-white/5 p-6 rounded-xl border border-white/10"
-      >
-        <h3 className="text-xl font-semibold text-[#fcba28] mb-4">Improvements</h3>
-        <ul className="space-y-2">
-          {analysis?.feedback.improvements.map((improvement, index) => (
-            <li key={index} className="flex items-center gap-2 text-yellow-400">
-              <FaLightbulb className="flex-shrink-0" />
-              <span className="text-gray-300">{improvement}</span>
-            </li>
-          ))}
-        </ul>
-      </motion.div>
-    </div>
-  );
-
-  const renderRecommendations = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {Object.entries(analysis?.recommendations || {}).map(([category, items]) => (
-        <motion.div
-          key={category}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white/5 p-6 rounded-xl border border-white/10"
-        >
-          <h3 className="text-lg font-semibold text-[#fcba28] mb-4 capitalize">{category}</h3>
-          <ul className="space-y-2">
-            {items.map((item, index) => (
-              <li key={index} className="flex items-start gap-2 text-gray-300">
-                <FaStar className="flex-shrink-0 text-yellow-400 mt-1" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      ))}
-    </div>
-  );
+  ];
 
   return (
-    <div className="min-h-screen bg-background text-white pt-20 px-4 md:px-8">
-      {/* Background gradients */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-purple-500/10 to-transparent rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-[#fcba28]/10 to-transparent rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+      {/* Background Effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#fcba2810_0%,transparent_65%)] blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,#fcba2815_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,#fcba2815_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
 
-      <div className="max-w-6xl mx-auto relative">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#fcba28] via-[#fcd978] to-[#fcba28] text-transparent bg-clip-text">
-            CV Revision & Analysis
-          </h1>
-          <p className="text-xl text-gray-300">
-            Get expert analysis and recommendations to improve your CV
-          </p>
-        </div>
-
-        {!file && !isAnalyzing && (
+      <div className="relative max-w-7xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
           <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-block p-4 rounded-full bg-[#fcba28]/20 mb-6"
+          >
+            <FaFileAlt className="w-8 h-8 text-[#fcba28]" />
+          </motion.div>
+          <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 ${
-              isDragging
-                ? 'border-[#fcba28] bg-[#fcba28]/10'
-                : 'border-white/10 bg-white/5 hover:bg-white/10'
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
+            className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 text-transparent bg-clip-text"
           >
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileSelect}
-              accept=".pdf,.doc,.docx"
-              className="hidden"
-            />
-            
-            <FaUpload className="text-4xl text-[#fcba28] mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Drop your CV here</h3>
-            <p className="text-gray-400 mb-6">or</p>
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="px-6 py-3 bg-[#fcba28] text-black rounded-xl hover:bg-[#e29f1e] transition-all duration-300"
+            Make Your CV Stand Out
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-xl text-gray-400 max-w-3xl mx-auto"
+          >
+            Choose between instant AI analysis or expert review to create an impactful CV
+          </motion.p>
+        </div>
+
+        {/* Stats Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+        >
+          {stats.map((stat, index) => (
+            <div 
+              key={index}
+              className="flex flex-col items-center p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-lg hover:bg-white/10 transition-all duration-300"
             >
-              Browse Files
-            </button>
-            <p className="text-sm text-gray-400 mt-4">
-              Supported formats: PDF, DOC, DOCX
-            </p>
-          </motion.div>
-        )}
-
-        {isAnalyzing && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <FaSpinner className="text-4xl text-[#fcba28] mx-auto mb-4 animate-spin" />
-            <h3 className="text-xl font-semibold">Analyzing your CV...</h3>
-            <p className="text-gray-400 mt-2">This may take a few moments</p>
-          </motion.div>
-        )}
-
-        {error && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="p-4 bg-red-500/20 border border-red-500/50 rounded-xl text-red-500 text-center mt-6"
-          >
-            {error}
-          </motion.div>
-        )}
-
-        {analysis && !isAnalyzing && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="space-y-8"
-          >
-            {/* Tabs */}
-            <div className="flex justify-center gap-4 mb-8">
-              {['overview', 'recommendations', 'detailed analysis'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-3 rounded-xl transition-all duration-300 ${
-                    activeTab === tab
-                      ? 'bg-[#fcba28] text-black'
-                      : 'bg-white/5 text-gray-300 hover:bg-white/10'
-                  }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              ))}
+              <stat.icon className="w-8 h-8 text-[#fcba28] mb-4" />
+              <span className="text-3xl font-bold text-white mb-2">{stat.value}</span>
+              <span className="text-gray-400">{stat.label}</span>
             </div>
+          ))}
+        </motion.div>
 
-            <AnimatePresence mode="wait">
-              {activeTab === 'overview' && (
-                <motion.div
-                  key="overview"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="space-y-8"
-                >
-                  {renderScoreCard()}
-                  {renderFeedbackSection()}
-                </motion.div>
-              )}
+        {/* Revision Options */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          {revisionOptions.map((option, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+              className={`relative overflow-hidden rounded-2xl border border-white/10 backdrop-blur-lg bg-gradient-to-br ${option.gradient} p-8 group hover:scale-[1.02] transition-all duration-300`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              
+              {/* Icon and Title */}
+              <div className="flex items-center gap-4 mb-6">
+                <option.icon className="w-10 h-10 text-[#fcba28]" />
+                <h3 className="text-2xl font-bold text-white">{option.title}</h3>
+              </div>
 
-              {activeTab === 'recommendations' && (
-                <motion.div
-                  key="recommendations"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                >
-                  {renderRecommendations()}
-                </motion.div>
-              )}
+              {/* Description */}
+              <p className="text-gray-300 mb-6">{option.description}</p>
 
-              {activeTab === 'detailed analysis' && (
-                <motion.div
-                  key="detailed"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                >
-                  <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h3 className="text-lg font-semibold text-[#fcba28] mb-4">Keywords</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {analysis.feedback.keywords.map((keyword, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-white/10 rounded-full text-sm text-gray-300"
-                        >
-                          {keyword}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+              {/* Features */}
+              <ul className="space-y-3 mb-8">
+                {option.features.map((feature, featureIndex) => (
+                  <li key={featureIndex} className="flex items-center gap-3 text-gray-300">
+                    <FaCheck className="w-5 h-5 text-[#fcba28]" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
 
-                  <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h3 className="text-lg font-semibold text-[#fcba28] mb-4">Formatting</h3>
-                    <ul className="space-y-2">
-                      {analysis.feedback.formatting.map((item, index) => (
-                        <li key={index} className="flex items-center gap-2 text-gray-300">
-                          <FaCheck className="text-green-400" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              {/* Price and CTA */}
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-white">{option.price}</span>
+                <Link href={option.link}>
+                  <button className="px-6 py-3 bg-[#fcba28] text-black rounded-lg hover:bg-[#fcd978] transition-colors duration-200 flex items-center gap-2 group">
+                    Get Started
+                    <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />
+                  </button>
+                </Link>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-                  <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h3 className="text-lg font-semibold text-[#fcba28] mb-4">Content</h3>
-                    <ul className="space-y-2">
-                      {analysis.feedback.content.map((item, index) => (
-                        <li key={index} className="flex items-center gap-2 text-gray-300">
-                          <FaCheck className="text-green-400" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div className="flex justify-center gap-4 mt-12">
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="px-6 py-3 bg-white/5 text-gray-300 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center gap-2"
+        {/* Benefits Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mb-16"
+        >
+          <h2 className="text-3xl font-bold mb-8 text-center">Why Optimize Your CV With Us?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {benefits.map((benefit, index) => (
+              <div
+                key={index}
+                className="p-6 bg-white/5 border border-white/10 rounded-xl backdrop-blur-lg hover:bg-white/10 transition-all duration-300"
               >
-                <FaUpload /> Upload New CV
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-lg bg-[#fcba28]/20">
+                    <benefit.icon className="w-6 h-6 text-[#fcba28]" />
+                  </div>
+                  <h3 className="text-xl font-semibold">{benefit.title}</h3>
+                </div>
+                <p className="text-gray-400">{benefit.description}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="text-center bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-lg"
+        >
+          <h2 className="text-2xl font-bold mb-4">Ready to Upgrade Your CV?</h2>
+          <p className="text-gray-400 mb-6">Choose your preferred review method and get started</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="./cv-revision/ai">
+              <button className="px-8 py-3 bg-[#fcba28] text-black rounded-lg hover:bg-[#fcd978] transition-colors duration-200">
+                Try AI Analysis
               </button>
-              <button
-                onClick={() => window.print()}
-                className="px-6 py-3 bg-[#fcba28] text-black rounded-xl hover:bg-[#e29f1e] transition-all duration-300 flex items-center gap-2"
-              >
-                <FaDownload /> Download Analysis
+            </Link>
+            <Link href="./cv-revision/professional">
+              <button className="px-8 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors duration-200">
+                Get Expert Review
               </button>
-            </div>
-          </motion.div>
-        )}
+            </Link>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
