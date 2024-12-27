@@ -125,12 +125,12 @@ const navigationMenus = [
 const dropdownClasses = cn(
   'absolute hidden group-hover:flex flex-col mt-4 w-[480px] py-6 px-4 rounded-2xl shadow-2xl',
   'backdrop-blur-2xl bg-background/80 border border-border/10',
-  'transition-all duration-300 transform scale-98 group-hover:scale-100 opacity-0 group-hover:opacity-100 z-50',
+  'transition-all duration-350 transform scale-98 group-hover:scale-100 opacity-0 group-hover:opacity-100 z-50',
   'before:content-[""] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/5 before:to-white/5 before:backdrop-blur-xl before:-z-10'
 );
 
 const menuItemClasses = cn(
-  'relative flex items-start gap-4 p-4 rounded-xl transition-all duration-300',
+  'relative flex items-start gap-4 p-4 rounded-xl transition-all duration-350',
   'hover:bg-[#fcba28]/5 hover:backdrop-blur-lg',
   'before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-b before:from-[#fcba28]/5 before:to-transparent before:opacity-0 before:transition-opacity before:duration-300',
   'hover:before:opacity-100'
