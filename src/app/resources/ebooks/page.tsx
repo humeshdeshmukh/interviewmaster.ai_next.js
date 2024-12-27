@@ -21,10 +21,11 @@ import { ebookCategories, ebooks } from './data';
 import type { Ebook } from './data';
 
 interface EbooksPageProps {
-  className?: string;
+  params?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export default function EbooksPage({ className = '' }: EbooksPageProps) {
+export default function EbooksPage(props: EbooksPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedEbook, setSelectedEbook] = useState<Ebook | null>(null);
@@ -59,7 +60,7 @@ export default function EbooksPage({ className = '' }: EbooksPageProps) {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        className={`bg-background-paper p-6 rounded-xl border border-white/10 hover:border-[#fcba28]/50 transition-all cursor-pointer hover:shadow-lg ${className}`}
+        className={`bg-background-paper p-6 rounded-xl border border-white/10 hover:border-[#fcba28]/50 transition-all cursor-pointer hover:shadow-lg`}
         onClick={() => setSelectedEbook(ebook)}
       >
         <div className="flex items-start gap-6">
@@ -212,7 +213,7 @@ export default function EbooksPage({ className = '' }: EbooksPageProps) {
   };
 
   return (
-    <div className={`min-h-screen bg-background-default text-white pt-20 px-4 md:px-8 ${className}`}>
+    <div className="min-h-screen bg-background-default text-white pt-20 px-4 md:px-8">
       {/* Background gradients */}
       <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-purple-500/10 to-transparent rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>

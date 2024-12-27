@@ -29,9 +29,12 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import cn from 'classnames';
 
-interface ForumPageProps extends React.ComponentProps<'div'> {}
+interface ForumPageProps {
+  params?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
 
-export default function ForumsPage({ className = '', ...props }: ForumPageProps) {
+export default function ForumsPage(props: ForumPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'latest' | 'trending' | 'top'>('latest');

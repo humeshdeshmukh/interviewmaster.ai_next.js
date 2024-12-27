@@ -24,10 +24,11 @@ import { tutorialCategories, tutorials } from './data';
 import type { Tutorial } from './data';
 
 interface TutorialsPageProps {
-  className?: string;
+  params?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export default function TutorialsPage({ className = '' }: TutorialsPageProps) {
+export default function TutorialsPage(props: TutorialsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
@@ -64,7 +65,7 @@ export default function TutorialsPage({ className = '' }: TutorialsPageProps) {
   });
 
   return (
-    <div className={`min-h-screen bg-background-default text-white ${className}`}>
+    <div className={`min-h-screen bg-background-default text-white ${props.className}`}>
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-background-paper py-20 px-4">
         <div className="absolute inset-0 overflow-hidden">
