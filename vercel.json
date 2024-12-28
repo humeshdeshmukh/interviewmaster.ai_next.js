@@ -19,8 +19,5 @@
     "GA_ID": "@ga_id",
     "MC_ID": "@mc_id",
     "NEXT_PUBLIC_VERCEL_ENV": "production"
-  },
-  "typescript": {
-    "ignoreBuildErrors": false
   }
 }
