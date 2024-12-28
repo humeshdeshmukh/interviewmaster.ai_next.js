@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from 'react';
-import { Button, Card, PageContainer, FeatureCard, StatCard } from './components/ui';
+import { Button } from './ui/Button';
+import { Card } from './ui/Card';
+import { PageContainer } from './ui/PageContainer';
+import { FeatureCard } from './ui/FeatureCard';
+import { StatCard } from './ui/StatCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     ArrowRight, FileText, UserCog, LightbulbIcon, CheckCircle2, 

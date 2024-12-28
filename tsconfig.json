@@ -24,6 +24,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@interview-types": [
+        "./src/app/products/interview-questions/types.ts"
       ]
     },
     "target": "ES2020",             // Target more modern ECMAScript version

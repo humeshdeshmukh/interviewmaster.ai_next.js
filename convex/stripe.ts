@@ -3,11 +3,9 @@
 import Stripe from "stripe";
 import { v } from "convex/values";
 import { PRODUCT_TYPE } from "./schema";
-import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { action, internalAction } from "./_generated/server";
-
 
 // Here's an example of using One-Time Payment
 export const pay = action({
@@ -27,7 +25,6 @@ export const pay = action({
     const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
       apiVersion: "2024-11-20.acacia"
     });
-
 
     // Define prices (in cents, no decimals)
     const amount = productType === "Starter Kit" ? 9900 : 14900;
