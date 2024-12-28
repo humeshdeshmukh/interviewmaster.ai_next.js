@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_CONVEX_URL": "@convex_url",
+    "CONVEX_DEPLOYMENT": "@convex_deployment",
+    "STRIPE_URL_ENDPOINT": "@stripe_url_endpoint",
+    "GA_ID": "@ga_id",
+    "MC_ID": "@mc_id"
+  }
+}
