@@ -58,6 +58,7 @@
     "react-intersection-observer": "^9.13.1",
     "react-to-pdf": "^1.0.1",
     "react-to-print": "^3.0.2",
+    "react-type-animation": "^3.2.0",
     "react-use-measure": "^2.1.1",
     "react-video-recorder": "^3.19.4",
     "resend": "^4.0.0",

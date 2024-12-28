@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Trophy, Target, Brain, Users, Sparkles } from "lucide-react";
+import { TypeAnimation } from 'react-type-animation';
 
 const FeatureCard = ({ icon: Icon, title, description, delay = 0 }) => (
     <motion.div
@@ -78,9 +79,28 @@ export const LeftHero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-5xl font-bold leading-tight mb-4"
                 >
-                    Master Your Tech
-                    <span className="text-[#fcba28]"> Interview </span>
-                    Journey with AI
+                    Master Your{' '}
+                    <TypeAnimation
+                        sequence={[
+                            'Technical',
+                            1500,
+                            'Non-Technical',
+                            1500,
+                            'Behavioral',
+                            1500,
+                            'Leadership',
+                            1500,
+                            'Project Management',
+                            1500,
+                            'General',
+                            1500,
+                        ]}
+                        wrapper="span"
+                        speed={50}
+                        className="text-[#fcba28]"
+                        repeat={Infinity}
+                    />{' '}
+                    Interview Journey with AI
                 </motion.h1>
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}

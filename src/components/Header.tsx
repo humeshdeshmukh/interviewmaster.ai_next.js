@@ -147,7 +147,7 @@ export const Header = () => {
   const [isNavigating, setIsNavigating] = useState(false);
 
   // Increased timeout duration
-  const HOVER_TIMEOUT = 300; // 300ms for smoother interaction
+  const HOVER_TIMEOUT = 400; // 300ms for smoother interaction
 
   // Mount check with increased timeout
   useEffect(() => {
