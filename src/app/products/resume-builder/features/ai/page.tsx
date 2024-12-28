@@ -74,26 +74,50 @@ const mockAnalysis: AIAnalysisType = {
   ],
   keywordMatch: {
     found: ['project management', 'leadership', 'agile', 'stakeholder management'],
-    missing: ['scrum', 'budget management', 'risk assessment']
+    missing: ['scrum', 'budget management', 'risk assessment'],
+    relevance: 0.75
   },
   suggestions: [
     {
       section: 'Professional Summary',
+      priority: 'high',
       suggestions: [
         'Start with a strong action verb',
         'Mention years of experience',
         'Include key achievements'
       ]
-    },
-    {
-      section: 'Work Experience',
-      suggestions: [
-        'Add more quantifiable results',
-        'Use action verbs to start bullet points',
-        'Include relevant technologies and methodologies'
-      ]
     }
-  ]
+  ],
+  industryFit: {
+    score: 78,
+    targetIndustry: 'Technology',
+    matchingSkills: ['project management', 'leadership', 'agile'],
+    missingSkills: ['cloud computing', 'DevOps']
+  },
+  atsOptimization: {
+    score: 82,
+    format: {
+      issues: ['Inconsistent bullet point formatting'],
+      suggestions: ['Use consistent bullet point symbols']
+    },
+    content: {
+      issues: ['Missing key technical skills'],
+      suggestions: ['Add more industry-specific keywords']
+    }
+  },
+  readability: {
+    score: 90,
+    issues: ['Some sentences are too long'],
+    suggestions: ['Break down complex sentences']
+  },
+  impact: {
+    score: 85,
+    weakPhrases: ['responsible for', 'worked on'],
+    strongPhrases: ['led', 'implemented', 'achieved'],
+    suggestions: ['Replace passive voice with active voice']
+  },
+  lastUpdated: new Date().toISOString(),
+  version: '1.0.0'
 };
 
 export default function AIResumeBuilder() {
@@ -122,6 +146,54 @@ export default function AIResumeBuilder() {
     setTimeout(() => setIsAnalyzing(false), 1500);
   };
 
+  const handleBack = () => {
+    setStep('template');
+  };
+
+  const renderContent = () => {
+    if (step === 'template') {
+      return (
+        <div className="w-full">
+          <TemplateSelector
+            onSelect={handleTemplateSelect}
+            selectedId={template}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="w-full">
+        <div className="flex items-center gap-4 mb-8">
+          <Button
+            variant="secondary"
+            onClick={handleBack}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Templates
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <SectionEditor
+              sections={sections}
+              onUpdate={handleSectionUpdate}
+              onAIAssist={handleAIAssist}
+            />
+          </div>
+          <div className="lg:col-span-1">
+            <AIAnalysis
+              analysis={mockAnalysis}
+              onRefresh={handleRefreshAnalysis}
+              isLoading={isAnalyzing}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <PageContainer
       badge={{
@@ -136,43 +208,7 @@ export default function AIResumeBuilder() {
       description="Let our AI guide you through creating a powerful, ATS-optimized resume"
     >
       <div className="space-y-8">
-        {step === 'template' && (
-          <TemplateSelector
-            onSelect={handleTemplateSelect}
-            selectedId={template}
-          />
-        )}
-
-        {step === 'content' && (
-          <>
-            <div className="flex items-center gap-4">
-              <Button
-                variant="secondary"
-                onClick={() => setStep('template')}
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Templates
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <SectionEditor
-                  sections={sections}
-                  onUpdate={handleSectionUpdate}
-                  onAIAssist={handleAIAssist}
-                />
-              </div>
-              <div className="lg:col-span-1">
-                <AIAnalysis
-                  analysis={mockAnalysis}
-                  onRefresh={handleRefreshAnalysis}
-                  isLoading={isAnalyzing}
-                />
-              </div>
-            </div>
-          </>
-        )}
+        {renderContent()}
       </div>
     </PageContainer>
   );

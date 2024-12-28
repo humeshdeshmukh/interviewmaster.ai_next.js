@@ -1,28 +1,52 @@
 "use client";
 
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Trash2, GripVertical, ChevronDown, ChevronUp,
-  Sparkles, AlertCircle
+  Sparkles, AlertCircle, Settings, Eye, EyeOff, 
+  ArrowUp, ArrowDown
 } from 'lucide-react';
 import { Button } from '../../../components/ui';
-import type { ResumeSection } from '../types';
+import { AISuggestions } from './AISuggestions';
+import { ContentAnalyzer } from './ContentAnalyzer';
+import type { ResumeSection, AIAssistResponse } from '../types';
 
-interface SectionEditorProps {
+interface SectionManagerProps {
   sections: ResumeSection[];
   onUpdate: (sections: ResumeSection[]) => void;
-  onAIAssist?: (sectionId: string) => void;
+  onAIAssist?: (sectionId: string) => Promise<AIAssistResponse>;
 }
 
-export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorProps) => {
+export const SectionManager = ({
+  sections,
+  onUpdate,
+  onAIAssist
+}: SectionManagerProps) => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [draggedSection, setDraggedSection] = useState<string | null>(null);
+  const [showAISuggestions, setShowAISuggestions] = useState(false);
+  const [currentSuggestions, setCurrentSuggestions] = useState<AIAssistResponse | null>(null);
+  const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => {
+      setExpandedSection(null);
+      setDraggedSection(null);
+      setShowAISuggestions(false);
+      setCurrentSuggestions(null);
+      setActiveSectionId(null);
+      setMounted(false);
+    };
+  }, []);
 
   const handleSectionChange = useCallback((sectionId: string, content: any) => {
-    onUpdate(sections.map(section =>
+    const updatedSections = sections.map(section =>
       section.id === sectionId ? { ...section, content } : section
-    ));
+    );
+    onUpdate(updatedSections);
   }, [sections, onUpdate]);
 
   const handleAddSection = useCallback((type: ResumeSection['type']) => {
@@ -32,7 +56,8 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
       title: type.charAt(0).toUpperCase() + type.slice(1),
       content: type === 'experience' || type === 'education' ? [] : '',
       order: sections.length,
-      isVisible: true
+      isVisible: true,
+      aiAssisted: false
     };
     onUpdate([...sections, newSection]);
     setExpandedSection(newSection.id);
@@ -40,38 +65,68 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
 
   const handleDeleteSection = useCallback((sectionId: string) => {
     onUpdate(sections.filter(section => section.id !== sectionId));
-    if (expandedSection === sectionId) {
-      setExpandedSection(null);
+  }, [sections, onUpdate]);
+
+  const handleMoveSection = useCallback((sectionId: string, direction: 'up' | 'down') => {
+    const sectionIndex = sections.findIndex(s => s.id === sectionId);
+    if (
+      (direction === 'up' && sectionIndex === 0) ||
+      (direction === 'down' && sectionIndex === sections.length - 1)
+    ) {
+      return;
     }
-  }, [sections, onUpdate, expandedSection]);
 
-  const handleDragStart = useCallback((sectionId: string) => {
-    setDraggedSection(sectionId);
-  }, []);
+    const newSections = [...sections];
+    const targetIndex = direction === 'up' ? sectionIndex - 1 : sectionIndex + 1;
+    [newSections[sectionIndex], newSections[targetIndex]] = 
+    [newSections[targetIndex], newSections[sectionIndex]];
 
-  const handleDragOver = useCallback((e: React.DragEvent, targetId: string) => {
-    e.preventDefault();
-    if (!draggedSection || draggedSection === targetId) return;
-
-    const updatedSections = [...sections];
-    const draggedIndex = sections.findIndex(s => s.id === draggedSection);
-    const targetIndex = sections.findIndex(s => s.id === targetId);
-
-    const [draggedItem] = updatedSections.splice(draggedIndex, 1);
-    updatedSections.splice(targetIndex, 0, draggedItem);
-
-    updatedSections.forEach((section, index) => {
+    newSections.forEach((section, index) => {
       section.order = index;
     });
 
-    onUpdate(updatedSections);
-  }, [draggedSection, sections, onUpdate]);
+    onUpdate(newSections);
+  }, [sections, onUpdate]);
 
-  const handleDragEnd = useCallback(() => {
-    setDraggedSection(null);
-  }, []);
+  const handleToggleVisibility = useCallback((sectionId: string) => {
+    const updatedSections = sections.map(section =>
+      section.id === sectionId 
+        ? { ...section, isVisible: !section.isVisible }
+        : section
+    );
+    onUpdate(updatedSections);
+  }, [sections, onUpdate]);
+
+  const handleAIAssistRequest = useCallback(async (sectionId: string) => {
+    if (!onAIAssist) return;
+
+    try {
+      const suggestions = await onAIAssist(sectionId);
+      setCurrentSuggestions(suggestions);
+      setShowAISuggestions(true);
+      setActiveSectionId(sectionId);
+    } catch (error) {
+      console.error('Error getting AI suggestions:', error);
+    }
+  }, [onAIAssist]);
+
+  const handleApplySuggestions = useCallback((content: any) => {
+    if (!activeSectionId) return;
+
+    const updatedSections = sections.map(section =>
+      section.id === activeSectionId
+        ? { ...section, content, aiAssisted: true, lastUpdated: new Date().toISOString() }
+        : section
+    );
+    onUpdate(updatedSections);
+    setShowAISuggestions(false);
+    setCurrentSuggestions(null);
+    setActiveSectionId(null);
+  }, [sections, onUpdate, activeSectionId]);
 
   const renderSectionContent = useCallback((section: ResumeSection) => {
+    const commonClasses = "w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#fcba28]";
+
     switch (section.type) {
       case 'personal':
         return (
@@ -85,8 +140,21 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                   ...section.content,
                   name: e.target.value
                 })}
-                className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                className={commonClasses}
                 placeholder="Your full name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Title</label>
+              <input
+                type="text"
+                value={section.content.title || ''}
+                onChange={(e) => handleSectionChange(section.id, {
+                  ...section.content,
+                  title: e.target.value
+                })}
+                className={commonClasses}
+                placeholder="Your professional title"
               />
             </div>
             <div>
@@ -98,7 +166,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                   ...section.content,
                   email: e.target.value
                 })}
-                className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                className={commonClasses}
                 placeholder="your@email.com"
               />
             </div>
@@ -111,7 +179,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                   ...section.content,
                   phone: e.target.value
                 })}
-                className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                className={commonClasses}
                 placeholder="Your phone number"
               />
             </div>
@@ -124,8 +192,21 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                   ...section.content,
                   location: e.target.value
                 })}
-                className="w-full bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                className={commonClasses}
                 placeholder="City, Country"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">LinkedIn</label>
+              <input
+                type="url"
+                value={section.content.linkedin || ''}
+                onChange={(e) => handleSectionChange(section.id, {
+                  ...section.content,
+                  linkedin: e.target.value
+                })}
+                className={commonClasses}
+                placeholder="LinkedIn profile URL"
               />
             </div>
           </div>
@@ -137,7 +218,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
             <div className="flex justify-end">
               <Button
                 variant="secondary"
-                onClick={() => onAIAssist?.(section.id)}
+                onClick={() => handleAIAssistRequest(section.id)}
                 className="!p-2"
               >
                 <Sparkles className="w-4 h-4" />
@@ -147,18 +228,19 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
             <textarea
               value={section.content || ''}
               onChange={(e) => handleSectionChange(section.id, e.target.value)}
-              className="w-full h-32 bg-white/5 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#fcba28] resize-none"
+              className={`${commonClasses} h-32 resize-none`}
               placeholder="Write a brief summary of your professional background and goals..."
             />
-            <div className="flex items-center gap-2 text-sm text-white/60">
-              <AlertCircle className="w-4 h-4" />
-              <span>Aim for 3-4 sentences highlighting your key strengths and career objectives.</span>
-            </div>
+            <ContentAnalyzer
+              content={section.content || ''}
+              onSuggestions={(suggestions) => {
+                // Handle content analysis suggestions
+              }}
+            />
           </div>
         );
 
       case 'experience':
-      case 'education':
         return (
           <div className="space-y-4">
             {section.content.map((item: any, index: number) => (
@@ -166,39 +248,35 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                 <div className="flex justify-between items-start">
                   <div className="flex-1 grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {section.type === 'experience' ? 'Company' : 'Institution'}
-                      </label>
+                      <label className="block text-sm font-medium mb-2">Company</label>
                       <input
                         type="text"
-                        value={item[section.type === 'experience' ? 'company' : 'institution'] || ''}
+                        value={item.company || ''}
                         onChange={(e) => {
                           const updatedContent = [...section.content];
                           updatedContent[index] = {
                             ...item,
-                            [section.type === 'experience' ? 'company' : 'institution']: e.target.value
+                            company: e.target.value
                           };
                           handleSectionChange(section.id, updatedContent);
                         }}
-                        className="w-full bg-white/10 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                        className={commonClasses}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {section.type === 'experience' ? 'Position' : 'Degree'}
-                      </label>
+                      <label className="block text-sm font-medium mb-2">Position</label>
                       <input
                         type="text"
-                        value={item[section.type === 'experience' ? 'position' : 'degree'] || ''}
+                        value={item.position || ''}
                         onChange={(e) => {
                           const updatedContent = [...section.content];
                           updatedContent[index] = {
                             ...item,
-                            [section.type === 'experience' ? 'position' : 'degree']: e.target.value
+                            position: e.target.value
                           };
                           handleSectionChange(section.id, updatedContent);
                         }}
-                        className="w-full bg-white/10 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                        className={commonClasses}
                       />
                     </div>
                   </div>
@@ -227,7 +305,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                         };
                         handleSectionChange(section.id, updatedContent);
                       }}
-                      className="w-full bg-white/10 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                      className={commonClasses}
                     />
                   </div>
                   <div>
@@ -244,7 +322,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                         };
                         handleSectionChange(section.id, updatedContent);
                       }}
-                      className="w-full bg-white/10 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                      className={commonClasses}
                     />
                     <label className="flex items-center gap-2 mt-2">
                       <input
@@ -261,7 +339,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                         }}
                         className="form-checkbox text-[#fcba28] rounded"
                       />
-                      <span className="text-sm">Current</span>
+                      <span className="text-sm">Current Position</span>
                     </label>
                   </div>
                 </div>
@@ -284,7 +362,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
                             };
                             handleSectionChange(section.id, updatedContent);
                           }}
-                          className="flex-1 bg-white/10 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28]"
+                          className={commonClasses}
                           placeholder="Add a highlight..."
                         />
                         <button
@@ -326,8 +404,8 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
               onClick={() => {
                 const newItem = {
                   id: Date.now().toString(),
-                  [section.type === 'experience' ? 'company' : 'institution']: '',
-                  [section.type === 'experience' ? 'position' : 'degree']: '',
+                  company: '',
+                  position: '',
                   startDate: '',
                   endDate: '',
                   current: false,
@@ -338,7 +416,7 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
               className="w-full"
             >
               <Plus className="w-4 h-4" />
-              Add {section.type === 'experience' ? 'Experience' : 'Education'}
+              Add Experience
             </Button>
           </div>
         );
@@ -348,87 +426,113 @@ export const SectionEditor = ({ sections, onUpdate, onAIAssist }: SectionEditorP
     }
   }, [handleSectionChange]);
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div className="space-y-6">
-      <AnimatePresence>
-        {sections
-          .sort((a, b) => a.order - b.order)
-          .map((section) => (
-            <motion.div
-              key={section.id}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-white/5 rounded-xl overflow-hidden"
-              draggable
-              onDragStart={() => handleDragStart(section.id)}
-              onDragOver={(e) => handleDragOver(e, section.id)}
-              onDragEnd={handleDragEnd}
-            >
-              <div className="p-4">
-                <div className="flex items-center gap-4">
-                  <GripVertical className="w-5 h-5 text-white/40 cursor-move" />
-                  <h3 className="text-lg font-medium flex-1">{section.title}</h3>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleDeleteSection(section.id)}
-                      className="!p-2 hover:bg-red-500/20"
-                    >
-                      <Trash2 className="w-4 h-4 text-red-500" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      onClick={() => setExpandedSection(
-                        expandedSection === section.id ? null : section.id
-                      )}
-                      className="!p-2"
-                    >
-                      {expandedSection === section.id ? (
-                        <ChevronUp className="w-4 h-4" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
-                {expandedSection === section.id && (
-                  <div className="mt-4">
-                    {renderSectionContent(section)}
-                  </div>
+      {sections
+        .sort((a, b) => a.order - b.order)
+        .map((section) => (
+          <motion.div
+            key={section.id}
+            layout
+            className="bg-white/5 rounded-xl overflow-hidden"
+          >
+            <div className="flex items-center gap-4 p-4">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleMoveSection(section.id, 'up')}
+                  disabled={section.order === 0}
+                  className="p-1 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  <ArrowUp className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleMoveSection(section.id, 'down')}
+                  disabled={section.order === sections.length - 1}
+                  className="p-1 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  <ArrowDown className="w-4 h-4" />
+                </button>
+              </div>
+              <div
+                className="flex-1 cursor-pointer"
+                onClick={() => setExpandedSection(
+                  expandedSection === section.id ? null : section.id
+                )}
+              >
+                <h3 className="font-medium">{section.title}</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleToggleVisibility(section.id)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  {section.isVisible ? (
+                    <Eye className="w-4 h-4" />
+                  ) : (
+                    <EyeOff className="w-4 h-4" />
+                  )}
+                </button>
+                {section.type !== 'personal' && (
+                  <button
+                    onClick={() => handleDeleteSection(section.id)}
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4 text-red-500" />
+                  </button>
+                )}
+                {expandedSection === section.id ? (
+                  <ChevronUp className="w-5 h-5" />
+                ) : (
+                  <ChevronDown className="w-5 h-5" />
                 )}
               </div>
-            </motion.div>
-          ))}
-      </AnimatePresence>
+            </div>
+            {expandedSection === section.id && (
+              <div className="p-4 border-t border-white/10">
+                {renderSectionContent(section)}
+              </div>
+            )}
+          </motion.div>
+        ))}
 
-      <div className="flex flex-wrap gap-2">
-        <Button
-          variant="secondary"
-          onClick={() => handleAddSection('experience')}
-          className="!py-2"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Experience
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => handleAddSection('education')}
-          className="!py-2"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Education
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => handleAddSection('skills')}
-          className="!py-2"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Skills
-        </Button>
+      {/* Add Section Button */}
+      <div className="flex justify-center">
+        <div className="relative group">
+          <Button variant="secondary">
+            <Plus className="w-4 h-4" />
+            Add Section
+          </Button>
+          <div className="absolute right-0 mt-2 w-48 bg-gray-900 rounded-lg shadow-xl border border-white/10 hidden group-hover:block">
+            {['experience', 'education', 'skills', 'projects', 'certifications', 'languages', 'awards', 'publications', 'volunteer', 'references', 'custom'].map((type) => (
+              <button
+                key={type}
+                onClick={() => handleAddSection(type as ResumeSection['type'])}
+                className="w-full px-4 py-2 text-left hover:bg-white/5 first:rounded-t-lg last:rounded-b-lg"
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* AI Suggestions Modal */}
+      {currentSuggestions && (
+        <AISuggestions
+          suggestions={currentSuggestions}
+          onApply={handleApplySuggestions}
+          onDismiss={() => {
+            setShowAISuggestions(false);
+            setCurrentSuggestions(null);
+            setActiveSectionId(null);
+          }}
+          isVisible={showAISuggestions}
+        />
+      )}
     </div>
   );
 };
