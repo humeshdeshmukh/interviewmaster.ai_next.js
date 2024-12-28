@@ -2,9 +2,9 @@ import { Test } from '../../utils/types';
 
 export const leadershipTests: Test[] = [
   {
-    id: 'lead-beginner',
+    id: 'leadership-beginner',
     title: 'Leadership Fundamentals',
-    description: 'Learn basic leadership concepts and team management principles.',
+    description: 'Test your understanding of basic leadership principles and practices.',
     difficulty: 'beginner',
     timeLimit: 30,
     totalQuestions: 10,
@@ -12,126 +12,237 @@ export const leadershipTests: Test[] = [
     subcategory: 'leadership',
     questions: [
       {
-        id: 'lead-b-1',
-        text: 'A team member consistently delivers work late but with high quality. How would you address this situation?',
+        text: 'What is the most effective way to delegate tasks to team members?',
         options: [
-          'Immediately implement strict deadlines',
-          'Ignore the delays since quality is good',
-          'Have a discussion to understand the underlying causes',
-          'Reassign them to easier tasks'
+          'Assign tasks without explanation',
+          'Clearly communicate expectations and provide necessary resources',
+          'Let team members choose their own tasks',
+          'Micromanage every aspect of the task'
         ],
-        correctAnswer: 'Have a discussion to understand the underlying causes',
-        explanation: 'A good leader first seeks to understand the root cause of issues and works collaboratively with team members to find solutions.'
+        correctAnswer: 'Clearly communicate expectations and provide necessary resources',
+        explanation: 'Effective delegation requires clear communication of expectations and ensuring team members have the resources they need to succeed'
       },
       {
-        id: 'lead-b-2',
-        text: 'What is the most effective way to motivate a team?',
+        text: 'How should a leader handle a team member who consistently underperforms?',
         options: [
-          'Offer monetary rewards',
-          'Set clear goals and provide recognition',
-          'Implement strict policies',
-          'Increase supervision'
+          'Immediately terminate their employment',
+          'Ignore the problem to avoid confrontation',
+          'Have a private discussion to understand and address the issues',
+          'Publicly criticize their performance'
         ],
-        correctAnswer: 'Set clear goals and provide recognition',
-        explanation: 'Clear goals give direction while recognition fulfills psychological needs for appreciation and accomplishment.'
+        correctAnswer: 'Have a private discussion to understand and address the issues',
+        explanation: 'Leaders should address performance issues privately and constructively, seeking to understand root causes and develop improvement plans'
       },
       {
-        id: 'lead-b-3',
-        text: 'How should you handle disagreements between team members?',
+        text: 'When team members have conflicting ideas about a project direction, what should a leader do?',
         options: [
-          'Let them resolve it themselves',
-          'Take sides with the more senior member',
+          'Choose the idea from the most experienced team member',
+          'Implement all ideas simultaneously',
           'Facilitate a discussion to find common ground',
-          'Ignore the conflict'
+          'Ignore the conflict and proceed with their own idea'
         ],
         correctAnswer: 'Facilitate a discussion to find common ground',
-        explanation: 'Leaders should mediate conflicts constructively, helping team members understand each other's perspectives and find solutions.'
+        explanation: 'Leaders should mediate conflicts constructively, helping team members understand each others perspectives and find solutions'
       },
       {
-        id: 'lead-b-4',
-        text: 'What is the best approach to giving negative feedback?',
+        text: 'What is the best approach to introducing a major change in team processes?',
         options: [
-          'Be direct and harsh to make the point clear',
-          'Avoid giving negative feedback',
-          'Give it privately and constructively',
-          'Send it via email'
+          'Implement the change immediately without discussion',
+          'Communicate the change and gather feedback before implementation',
+          'Let team members figure it out on their own',
+          'Avoid making any changes'
         ],
-        correctAnswer: 'Give it privately and constructively',
-        explanation: 'Feedback should be given privately, focusing on specific behaviors and potential improvements rather than personal criticism.'
+        correctAnswer: 'Communicate the change and gather feedback before implementation',
+        explanation: 'Effective change management requires clear communication and involving team members in the process to ensure buy-in and success'
       },
       {
-        id: 'lead-b-5',
-        text: 'How do you handle a team member who is resistant to change?',
+        text: 'How should a leader respond to a mistake made by a team member?',
         options: [
-          'Force them to comply',
-          'Explain the benefits and address concerns',
-          'Ignore their resistance',
-          'Remove them from the project'
+          'Ignore it to maintain team morale',
+          'Use it as a learning opportunity and support improvement',
+          'Punish the team member to prevent future mistakes',
+          'Blame the team member publicly'
         ],
-        correctAnswer: 'Explain the benefits and address concerns',
-        explanation: 'Understanding and addressing concerns while clearly communicating benefits helps overcome resistance to change.'
+        correctAnswer: 'Use it as a learning opportunity and support improvement',
+        explanation: 'Leaders should create a culture where mistakes are viewed as learning opportunities rather than failures'
       },
       {
-        id: 'lead-b-6',
-        text: 'What is the most important quality of a leader?',
+        text: 'What is the most important factor in building trust within a team?',
         options: [
-          'Technical expertise',
-          'Emotional intelligence',
-          'Years of experience',
-          'Authority'
+          'Maintaining strict control',
+          'Being consistently honest and transparent',
+          'Avoiding all conflicts',
+          'Having frequent social events'
         ],
-        correctAnswer: 'Emotional intelligence',
-        explanation: 'Emotional intelligence enables leaders to understand and connect with team members, leading to better relationships and outcomes.'
+        correctAnswer: 'Being consistently honest and transparent',
+        explanation: 'Trust is built through consistent honesty, transparency, and following through on commitments'
       },
       {
-        id: 'lead-b-7',
-        text: 'How should you handle a mistake you made as a leader?',
+        text: 'How should a leader handle disagreement with upper management?',
         options: [
-          'Hide it to maintain authority',
-          'Blame external factors',
-          'Acknowledge it and learn from it',
-          'Minimize its importance'
+          'Always agree with management',
+          'Express concerns professionally with supporting evidence',
+          'Complain to team members',
+          'Ignore the disagreement'
         ],
-        correctAnswer: 'Acknowledge it and learn from it',
-        explanation: 'Leaders should model accountability by acknowledging mistakes, learning from them, and showing how to handle them professionally.'
+        correctAnswer: 'Express concerns professionally with supporting evidence',
+        explanation: 'Professional disagreement supported by evidence shows leadership maturity and commitment to organizational success'
       },
       {
-        id: 'lead-b-8',
-        text: 'What is the best way to delegate tasks?',
+        text: 'What is the best way to motivate team members?',
         options: [
-          'Assign based on availability only',
-          'Do everything yourself',
-          'Match tasks to skills and provide support',
-          'Give tasks to the most experienced'
+          'Offer monetary rewards only',
+          'Understand individual motivations and provide appropriate recognition',
+          'Use fear of punishment',
+          'Compare team members to each other'
         ],
-        correctAnswer: 'Match tasks to skills and provide support',
-        explanation: 'Effective delegation involves matching tasks to team members' skills while providing necessary support and guidance.'
+        correctAnswer: 'Understand individual motivations and provide appropriate recognition',
+        explanation: 'Different people are motivated by different factors, and effective leaders recognize and respond to these individual differences'
       },
       {
-        id: 'lead-b-9',
-        text: 'How do you build trust within a team?',
+        text: 'How should a leader handle a team conflict?',
         options: [
-          'Keep information confidential',
-          'Be consistent and transparent',
-          'Maintain strict control',
-          'Avoid personal connections'
+          'Let the team resolve it themselves',
+          'Address it immediately and facilitate resolution',
+          'Ignore it until it goes away',
+          'Take sides with one party'
         ],
-        correctAnswer: 'Be consistent and transparent',
-        explanation: 'Consistency in words and actions, combined with transparency, helps build and maintain trust within teams.'
+        correctAnswer: 'Address it immediately and facilitate resolution',
+        explanation: 'Prompt, fair conflict resolution maintains team harmony and demonstrates effective leadership'
       },
       {
-        id: 'lead-b-10',
-        text: 'What should you do when a team is underperforming?',
+        text: 'What is the most effective way to give feedback?',
         options: [
-          'Replace team members',
-          'Increase pressure and deadlines',
-          'Analyze root causes and address them',
-          'Lower expectations'
+          'Wait for annual reviews',
+          'Provide specific, timely, and constructive feedback regularly',
+          'Only give positive feedback',
+          'Avoid giving feedback'
         ],
-        correctAnswer: 'Analyze root causes and address them',
-        explanation: 'Understanding and addressing the root causes of underperformance is more effective than punitive measures.'
+        correctAnswer: 'Provide specific, timely, and constructive feedback regularly',
+        explanation: 'Regular, specific feedback helps team members grow and improve continuously'
+      }
+    ]
+  },
+  {
+    id: 'leadership-intermediate',
+    title: 'Advanced Leadership Scenarios',
+    description: 'Test your leadership skills with complex scenarios and strategic decision-making.',
+    difficulty: 'intermediate',
+    timeLimit: 45,
+    totalQuestions: 10,
+    category: 'behavioral',
+    subcategory: 'leadership',
+    questions: [
+      {
+        text: 'Your team is consistently missing sprint deadlines despite working overtime. What is the most effective long-term solution?',
+        options: [
+          'Add more team members immediately',
+          'Analyze sprint metrics and team capacity, then adjust planning accordingly',
+          'Reduce the scope of all future sprints',
+          'Mandate longer working hours'
+        ],
+        correctAnswer: 'Analyze sprint metrics and team capacity, then adjust planning accordingly',
+        explanation: 'Sustainable solutions require understanding root causes through data analysis and making informed adjustments to planning and processes'
+      },
+      {
+        text: 'How should you handle a high-performing team member who frequently undermines team morale?',
+        options: [
+          'Ignore the behavior since they deliver good results',
+          'Address the behavior privately and set clear expectations for team interaction',
+          'Reduce their workload as punishment',
+          'Transfer them to another team immediately'
+        ],
+        correctAnswer: 'Address the behavior privately and set clear expectations for team interaction',
+        explanation: 'Performance includes both technical delivery and team collaboration. Leaders must address behaviors that harm team dynamics'
+      },
+      {
+        text: 'Your team needs to choose between two technical approaches for a critical project. How do you facilitate the decision?',
+        options: [
+          'Choose the option preferred by senior team members',
+          'Create a decision matrix with objective criteria and evaluate options collaboratively',
+          'Let the team debate until someone gives in',
+          'Implement both approaches simultaneously'
+        ],
+        correctAnswer: 'Create a decision matrix with objective criteria and evaluate options collaboratively',
+        explanation: 'Using objective criteria and collaborative evaluation helps make better decisions and builds team buy-in'
+      },
+      {
+        text: 'How do you maintain team motivation during a long-term, challenging project with multiple setbacks?',
+        options: [
+          'Focus only on the end goal',
+          'Break down the project into smaller milestones and celebrate incremental progress',
+          'Hide setbacks from the team',
+          'Increase pressure to meet deadlines'
+        ],
+        correctAnswer: 'Break down the project into smaller milestones and celebrate incremental progress',
+        explanation: 'Small wins and recognition help maintain momentum and morale during challenging projects'
+      },
+      {
+        text: 'What is the best approach when inheriting a team with established but inefficient processes?',
+        options: [
+          'Immediately implement new processes based on best practices',
+          'Understand current processes, involve team in improvement discussions, and implement changes gradually',
+          'Continue with existing processes indefinitely',
+          'Let each team member choose their preferred process'
+        ],
+        correctAnswer: 'Understand current processes, involve team in improvement discussions, and implement changes gradually',
+        explanation: 'Successful process changes require understanding context, getting team buy-in, and managing change effectively'
+      },
+      {
+        text: 'How should you handle a situation where upper management decisions conflict with team needs?',
+        options: [
+          'Simply enforce management decisions',
+          'Advocate for team needs with data and propose alternative solutions',
+          'Let the team ignore management decisions',
+          'Complain about management to the team'
+        ],
+        correctAnswer: 'Advocate for team needs with data and propose alternative solutions',
+        explanation: 'Effective leaders bridge gaps between management and teams by advocating with data and proposing constructive solutions'
+      },
+      {
+        text: 'What is the best strategy for developing future leaders within your team?',
+        options: [
+          'Wait for them to ask for opportunities',
+          'Create structured development plans with increasing responsibilities and mentorship',
+          'Promote the most technically skilled members',
+          'Send them to leadership training courses only'
+        ],
+        correctAnswer: 'Create structured development plans with increasing responsibilities and mentorship',
+        explanation: 'Leadership development requires a combination of structured learning, practical experience, and ongoing mentorship'
+      },
+      {
+        text: 'How do you handle a situation where two high-performing team members refuse to work together?',
+        options: [
+          'Keep them on separate projects indefinitely',
+          'Identify root causes, mediate conflicts, and establish professional working agreements',
+          'Force them to work together without intervention',
+          'Ask one to transfer teams'
+        ],
+        correctAnswer: 'Identify root causes, mediate conflicts, and establish professional working agreements',
+        explanation: 'Professional conflicts require understanding underlying issues and establishing clear expectations for collaboration'
+      },
+      {
+        text: 'What approach should you take when team velocity consistently exceeds sprint commitments?',
+        options: [
+          'Increase sprint commitments immediately',
+          'Evaluate quality metrics and technical debt before adjusting commitments',
+          'Celebrate and maintain current velocity',
+          'Give the team more challenging tasks'
+        ],
+        correctAnswer: 'Evaluate quality metrics and technical debt before adjusting commitments',
+        explanation: 'High velocity should be balanced with quality and sustainability considerations'
+      },
+      {
+        text: 'How do you handle a team member who frequently comes up with innovative ideas but rarely completes their assigned tasks?',
+        options: [
+          'Focus them solely on innovation and ideation',
+          'Partner them with implementers and create accountability structures',
+          'Ignore their ideas until they complete tasks',
+          'Remove them from the team'
+        ],
+        correctAnswer: 'Partner them with implementers and create accountability structures',
+        explanation: 'Good leaders find ways to leverage individual strengths while ensuring accountability for core responsibilities'
       }
     ]
   }
-  // Add intermediate and advanced tests
 ];

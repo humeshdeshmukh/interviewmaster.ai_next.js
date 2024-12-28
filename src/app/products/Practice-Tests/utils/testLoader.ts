@@ -3,6 +3,7 @@ import { categories } from '../data/categories';
 import { algorithmTests } from '../data/technical/algorithms';
 import { systemDesignTests } from '../data/technical/system-design';
 import { leadershipTests } from '../data/behavioral/leadership';
+import { nonTechnicalTests } from '../data/non-technical';
 
 export class TestLoader {
   private static instance: TestLoader;
@@ -18,7 +19,7 @@ export class TestLoader {
       ...algorithmTests,
       ...systemDesignTests,
       ...leadershipTests,
-      // Add more test imports here
+      ...nonTechnicalTests
     ];
   }
 
