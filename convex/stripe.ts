@@ -5,7 +5,7 @@ import { v } from "convex/values";
 import { PRODUCT_TYPE } from "./schema";
 import { Id } from "./_generated/dataModel";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { action, internalAction } from "convex/server";
+import { action, internalAction } from "./_generated/server";
 
 // Here's an example of using One-Time Payment
 export const pay = action({

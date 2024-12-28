@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Question, QuestionCategory, QuestionType, QuestionDifficulty } from '@/types';
+import { Question, QuestionCategory, QuestionType, QuestionDifficulty } from '../types';
 import {
   getQuestionsByType,
   getQuestionsByCategory,

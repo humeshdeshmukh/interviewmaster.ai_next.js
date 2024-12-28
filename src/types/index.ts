@@ -36,3 +36,11 @@ export interface Question {
   createdAt: string;
   updatedAt: string;
 }
+
+// Explicitly export all types and interfaces
+export {
+  QuestionCategory,
+  QuestionDifficulty,
+  QuestionType,
+  Question
+};
