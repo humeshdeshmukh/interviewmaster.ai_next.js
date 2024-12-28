@@ -17,6 +17,10 @@
     "CONVEX_DEPLOYMENT": "@convex_deployment",
     "STRIPE_URL_ENDPOINT": "@stripe_url_endpoint",
     "GA_ID": "@ga_id",
-    "MC_ID": "@mc_id"
+    "MC_ID": "@mc_id",
+    "NEXT_PUBLIC_VERCEL_ENV": "production"
+  },
+  "typescript": {
+    "ignoreBuildErrors": false
   }
 }

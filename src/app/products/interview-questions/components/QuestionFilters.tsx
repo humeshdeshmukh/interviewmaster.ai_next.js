@@ -1,5 +1,5 @@
 import React from 'react';
-import { QuestionCategory, QuestionType, QuestionDifficulty } from '../types.ts';
+import { QuestionCategory, QuestionType, QuestionDifficulty } from '../types';
 
 interface QuestionFiltersProps {
   selectedType?: QuestionType;
@@ -12,6 +12,14 @@ interface QuestionFiltersProps {
   onSearchChange: (query: string) => void;
   onClearFilters: () => void;
 }
+
+const QUESTION_CATEGORIES: QuestionCategory[] = [
+  'Frontend', 'Backend', 'System Design', 'Data Structures', 
+  'Algorithms', 'DevOps', 'Security', 'Testing', 
+  'Database', 'Machine Learning', 'Leadership', 
+  'Problem Solving', 'Communication', 'Time Management', 
+  'Project Management', 'Innovation'
+];
 
 export const QuestionFilters: React.FC<QuestionFiltersProps> = ({
   selectedType,
@@ -31,7 +39,7 @@ export const QuestionFilters: React.FC<QuestionFiltersProps> = ({
         <input
           type="text"
           placeholder="Search questions..."
-          value={searchQuery}
+          value={searchQuery || ''}
           onChange={(e) => onSearchChange(e.target.value)}
           className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -64,8 +72,8 @@ export const QuestionFilters: React.FC<QuestionFiltersProps> = ({
           className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">All Categories</option>
-          {Object.values(QuestionCategory).map((category) => (
-            <option key={category} value={category}>
+          {QUESTION_CATEGORIES.map((category, index) => (
+            <option key={index} value={category}>
               {category}
             </option>
           ))}
