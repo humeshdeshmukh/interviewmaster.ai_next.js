@@ -11,11 +11,12 @@
     "noEmit": true,                 // Don't generate any output (no .js files)
     "esModuleInterop": true,        // Enable compatibility with CommonJS modules
     "module": "esnext",             // Use ESNext module resolution
-    "moduleResolution": "bundler",  // Use bundler-based module resolution
+    "moduleResolution": "node",     // Use node-based module resolution
     "resolveJsonModule": true,      // Allow importing JSON modules
     "isolatedModules": true,        // Ensure each file is treated as a module
     "jsx": "preserve",              // Preserve JSX syntax
     "incremental": true,            // Enable incremental compilation
+    "baseUrl": ".",                 // Base URL for resolving non-relative module names
     "plugins": [
       {
         "name": "next"
@@ -29,16 +30,17 @@
         "./src/app/products/interview-questions/types.ts"
       ]
     },
-    "target": "ES2020",             // Target more modern ECMAScript version
+    "target": "es5",             // Target more modern ECMAScript version
     "skipDefaultLibCheck": true,    // Skip type checking for default library files
-    "noEmitOnError": false          // Allow emitting files even when there are type errors
+    "noEmitOnError": false,          // Allow emitting files even when there are type errors
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "build/types/**/*.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

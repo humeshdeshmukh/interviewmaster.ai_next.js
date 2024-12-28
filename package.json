@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "lint": "next lint",
-    "build": "next build --ignore-warnings --ignore-errors",
+    "build": "next build",
     "start": "next start",
     "stripe:trigger": "stripe trigger payment_intent.succeeded",
     "stripe:listen": "stripe listen --forward-to https://energetic-sheep-707.convex.site/stripe"

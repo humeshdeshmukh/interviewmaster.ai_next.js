@@ -1,4 +1,4 @@
-import { Question, QuestionCategory, QuestionType, QuestionDifficulty } from '../types';
+import { Question, QuestionCategory, QuestionType, QuestionDifficulty } from '../types.ts';
 
 // Get all questions by type (Tech or Non-Tech)
 export const getQuestionsByType = (questions: Question[], type: QuestionType): Question[] => {

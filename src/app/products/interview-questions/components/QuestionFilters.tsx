@@ -1,5 +1,5 @@
 import React from 'react';
-import { QuestionCategory, QuestionType, QuestionDifficulty } from '../types';
+import { QuestionCategory, QuestionType, QuestionDifficulty } from '../types.ts';
 
 interface QuestionFiltersProps {
   selectedType?: QuestionType;

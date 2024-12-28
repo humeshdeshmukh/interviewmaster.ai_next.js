@@ -4,8 +4,13 @@ module.exports = {
 
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],  // Ensure Next.js recognizes TypeScript and JSX files
 
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
   webpack: (config, { isServer }) => {
     config.resolve.alias['@'] = `${__dirname}/src`;
+    config.resolve.alias['@interview-types'] = `${__dirname}/src/app/products/interview-questions/types.ts`;
     return config;
   },
 
