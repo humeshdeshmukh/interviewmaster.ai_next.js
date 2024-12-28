@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaRobot, FaCog, FaBrain, FaSpinner } from 'react-icons/fa';
+import { FaRobot, FaCog, FaBrain, FaSpinner, FaLightbulb, FaGraduationCap, FaClock, FaCode } from 'react-icons/fa';
 import { useTest } from '../../context/TestContext';
 
 const topics = [
@@ -32,6 +32,11 @@ export default function AITestForm() {
   };
 
   const handleGenerate = async () => {
+    if (!selectedTopic) {
+      setError('Please select a topic');
+      return;
+    }
+
     setIsGenerating(true);
     setError(null);
     dispatch({ type: 'SET_GENERATING', payload: true });
@@ -56,20 +61,11 @@ export default function AITestForm() {
       }
 
       const data = await response.json();
-      
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      dispatch({ type: 'SET_TESTS', payload: [data.test] });
-      dispatch({ type: 'SELECT_TEST', payload: data.test });
+      dispatch({ type: 'SET_AI_TEST', payload: data });
       dispatch({ type: 'SET_MODE', payload: 'question' });
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Failed to generate test');
-      dispatch({
-        type: 'SET_ERROR',
-        payload: 'Failed to generate test. Please try again.'
-      });
+      setError('Failed to generate test. Please try again.');
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to generate test' });
     } finally {
       setIsGenerating(false);
       dispatch({ type: 'SET_GENERATING', payload: false });
@@ -80,124 +76,159 @@ export default function AITestForm() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-8"
+      className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10"
     >
-      <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="p-3 rounded-lg bg-[#fcba28]/20">
-            <FaRobot className="w-6 h-6 text-[#fcba28]" />
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-8">
+        <div className="p-3 rounded-xl bg-gradient-to-r from-[#fcba28]/20 to-[#fcd978]/20">
+          <FaRobot className="w-6 h-6 text-[#fcba28]" />
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold text-[#fcba28]">AI Test Generator</h3>
+          <p className="text-gray-400">Create a custom test tailored to your needs</p>
+        </div>
+      </div>
+
+      <form onSubmit={(e) => { e.preventDefault(); handleGenerate(); }} className="space-y-6">
+        {/* Topic Selection */}
+        <div className="space-y-3">
+          <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <FaCode className="text-[#fcba28]" /> Select Topic
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {topics.map((topic) => (
+              <motion.button
+                key={topic.id}
+                type="button"
+                whileHover={{ scale: 1.02, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setSelectedTopic(topic.id);
+                  setSelectedConcepts([]);
+                }}
+                className={`p-3 rounded-xl text-sm text-center transition-all backdrop-blur-sm border ${
+                  selectedTopic === topic.id
+                    ? 'bg-gradient-to-r from-[#fcba28] to-[#fcd978] text-black font-medium border-transparent'
+                    : 'bg-white/5 text-gray-300 border-white/10 hover:border-[#fcba28]/30'
+                }`}
+              >
+                {topic.name}
+              </motion.button>
+            ))}
           </div>
-          <div>
-            <h3 className="text-xl font-semibold text-white">AI Test Generator</h3>
-            <p className="text-gray-400">Create a custom practice test tailored to your needs</p>
+        </div>
+
+        {/* Concepts */}
+        {selectedTopic && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="space-y-3"
+          >
+            <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+              <FaLightbulb className="text-[#fcba28]" /> Select Concepts
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {topics.find(t => t.id === selectedTopic)?.concepts.map((concept) => (
+                <motion.button
+                  key={concept}
+                  type="button"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleConceptToggle(concept)}
+                  className={`px-3 py-1 rounded-full text-sm transition-all backdrop-blur-sm border ${
+                    selectedConcepts.includes(concept)
+                      ? 'bg-[#fcba28]/20 text-[#fcba28] border-[#fcba28]/30'
+                      : 'bg-white/5 text-gray-300 border-white/10 hover:border-[#fcba28]/30'
+                  }`}
+                >
+                  {concept}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Difficulty */}
+        <div className="space-y-3">
+          <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <FaGraduationCap className="text-[#fcba28]" /> Difficulty Level
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {difficulties.map((difficulty) => (
+              <motion.button
+                key={difficulty}
+                type="button"
+                whileHover={{ scale: 1.02, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setSelectedDifficulty(difficulty)}
+                className={`p-3 rounded-xl text-sm text-center transition-all backdrop-blur-sm border ${
+                  selectedDifficulty === difficulty
+                    ? 'bg-gradient-to-r from-[#fcba28] to-[#fcd978] text-black font-medium border-transparent'
+                    : 'bg-white/5 text-gray-300 border-white/10 hover:border-[#fcba28]/30'
+                }`}
+              >
+                {difficulty}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Number of Questions */}
+        <div className="space-y-3">
+          <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <FaClock className="text-[#fcba28]" /> Number of Questions
+          </label>
+          <input
+            type="range"
+            min="5"
+            max="30"
+            step="5"
+            value={numberOfQuestions}
+            onChange={(e) => setNumberOfQuestions(parseInt(e.target.value))}
+            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#fcba28]"
+          />
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-400">5</span>
+            <span className="text-[#fcba28] font-medium">{numberOfQuestions} questions</span>
+            <span className="text-gray-400">30</span>
           </div>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm backdrop-blur-sm"
+          >
             {error}
-          </div>
+          </motion.div>
         )}
 
-        <div className="space-y-6">
-          {/* Topic Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Topic</label>
-            <select
-              value={selectedTopic}
-              onChange={(e) => setSelectedTopic(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-[#fcba28]"
-            >
-              <option value="">Select a topic</option>
-              {topics.map(topic => (
-                <option key={topic.id} value={topic.id}>{topic.name}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Difficulty Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Difficulty</label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {difficulties.map(difficulty => (
-                <button
-                  key={difficulty}
-                  onClick={() => setSelectedDifficulty(difficulty)}
-                  className={`p-3 rounded-lg border transition-all ${
-                    selectedDifficulty === difficulty
-                      ? 'bg-[#fcba28] text-black border-[#fcba28]'
-                      : 'bg-white/5 text-white border-white/10 hover:border-white/20'
-                  }`}
-                >
-                  {difficulty}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Number of Questions */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Number of Questions
-            </label>
-            <input
-              type="range"
-              min="5"
-              max="30"
-              step="5"
-              value={numberOfQuestions}
-              onChange={(e) => setNumberOfQuestions(Number(e.target.value))}
-              className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-            />
-            <div className="text-center mt-2 text-gray-400">{numberOfQuestions} questions</div>
-          </div>
-
-          {/* Specific Concepts */}
-          {selectedTopic && (
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Specific Concepts (Optional)
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {topics
-                  .find(t => t.id === selectedTopic)
-                  ?.concepts.map(concept => (
-                    <button
-                      key={concept}
-                      onClick={() => handleConceptToggle(concept)}
-                      className={`px-3 py-1 rounded-full text-sm transition-all ${
-                        selectedConcepts.includes(concept)
-                          ? 'bg-[#fcba28] text-black'
-                          : 'bg-white/5 text-white hover:bg-white/10'
-                      }`}
-                    >
-                      {concept}
-                    </button>
-                  ))}
-              </div>
-            </div>
+        <motion.button
+          type="submit"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          disabled={isGenerating || !selectedTopic}
+          className={`w-full py-3 px-4 rounded-xl font-medium transition-all backdrop-blur-sm ${
+            isGenerating || !selectedTopic
+              ? 'bg-gray-500/50 cursor-not-allowed text-gray-300'
+              : 'bg-gradient-to-r from-[#fcba28] to-[#fcd978] text-black hover:shadow-lg hover:shadow-[#fcba28]/20'
+          }`}
+        >
+          {isGenerating ? (
+            <span className="flex items-center justify-center gap-2">
+              <FaSpinner className="animate-spin" />
+              Generating Test...
+            </span>
+          ) : (
+            <span className="flex items-center justify-center gap-2">
+              <FaBrain />
+              Generate Test
+            </span>
           )}
-
-          {/* Generate Button */}
-          <button
-            onClick={handleGenerate}
-            disabled={!selectedTopic || isGenerating}
-            className="w-full py-3 bg-[#fcba28] text-black rounded-lg hover:bg-[#fcd978] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {isGenerating ? (
-              <>
-                <FaSpinner className="animate-spin" />
-                Generating Test...
-              </>
-            ) : (
-              <>
-                <FaBrain />
-                Generate Custom Test
-              </>
-            )}
-          </button>
-        </div>
-      </div>
+        </motion.button>
+      </form>
     </motion.div>
   );
 }

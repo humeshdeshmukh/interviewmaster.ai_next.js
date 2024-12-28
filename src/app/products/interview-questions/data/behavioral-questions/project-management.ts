@@ -78,76 +78,6 @@ class ProjectRiskManager implements RiskRegister {
 }
 \`\`\`
 
-2. Risk Assessment Matrix:
-\`\`\`
-Impact
-   ^
-H  | M H H
-M  | L M H
-L  | L L M
-   +---------> Probability
-    L M H
-\`\`\`
-
-3. Risk Monitoring System:
-\`\`\`typescript
-interface RiskMetrics {
-  totalRisks: number;
-  highPriorityRisks: number;
-  mitigatedRisks: number;
-  openRisks: number;
-  risksByCategory: Record<Risk['category'], number>;
-}
-
-class RiskMonitor {
-  private riskRegister: RiskRegister;
-
-  constructor(riskRegister: RiskRegister) {
-    this.riskRegister = riskRegister;
-  }
-
-  calculateMetrics(): RiskMetrics {
-    const risks = this.riskRegister.risks;
-    return {
-      totalRisks: risks.length,
-      highPriorityRisks: this.riskRegister.getHighPriorityRisks().length,
-      mitigatedRisks: risks.filter(r => r.status === 'Mitigated').length,
-      openRisks: risks.filter(r => r.status === 'Open').length,
-      risksByCategory: this.calculateRisksByCategory()
-    };
-  }
-
-  private calculateRisksByCategory(): Record<Risk['category'], number> {
-    const categories: Risk['category'][] = [
-      'Technical',
-      'Schedule',
-      'Resource',
-      'Scope'
-    ];
-    
-    return categories.reduce((acc, category) => ({
-      ...acc,
-      [category]: this.riskRegister.getRisksByCategory(category).length
-    }), {} as Record<Risk['category'], number>);
-  }
-
-  generateReport(metrics: RiskMetrics): string {
-    return \`Risk Summary Report
-------------------
-Total Risks: \${metrics.totalRisks}
-High Priority: \${metrics.highPriorityRisks}
-Mitigated: \${metrics.mitigatedRisks}
-Open: \${metrics.openRisks}
-
-Risks by Category:
-- Technical: \${metrics.risksByCategory.Technical}
-- Schedule: \${metrics.risksByCategory.Schedule}
-- Resource: \${metrics.risksByCategory.Resource}
-- Scope: \${metrics.risksByCategory.Scope}\`;
-  }
-}
-\`\`\`
-
 Example Answer:
 "I follow a systematic approach to risk management:
 
@@ -174,33 +104,6 @@ Example Answer:
    - Metric tracking
    - Status updates
    - Stakeholder communication
-
-Real Example:
-In my last project, we identified a high-risk dependency on a third-party API:
-
-1. Risk Details:
-   - Description: API provider announcing deprecation
-   - Impact: High (core functionality affected)
-   - Probability: High (confirmed timeline)
-   - Category: Technical
-
-2. Mitigation Strategy:
-   - Created API abstraction layer
-   - Researched alternative providers
-   - Developed migration plan
-   - Set up monitoring system
-
-3. Outcome:
-   - Successful migration to new API
-   - Zero downtime during transition
-   - Improved system resilience
-   - Documentation updated
-
-4. Lessons Learned:
-   - Early risk identification critical
-   - Regular vendor assessment needed
-   - Technical debt monitoring important
-   - Communication plan essential
 
 Best Practices:
 1. Regular risk reviews
@@ -276,45 +179,8 @@ class ScopeManager {
   }
 
   updateScope(approvedChange: ChangeRequest): void {
-    // Update scope based on approved change
     this.scope = this.applyChange(this.scope, approvedChange);
     this.notifyStakeholders(approvedChange);
-  }
-}
-\`\`\`
-
-2. Change Control Process:
-\`\`\`typescript
-interface ChangeRequest {
-  id: string;
-  type: 'Scope' | 'Schedule' | 'Budget' | 'Resources';
-  description: string;
-  justification: string;
-  requestedBy: string;
-  priority: 'Low' | 'Medium' | 'High';
-  status: 'Pending' | 'Approved' | 'Rejected';
-  submissionDate: Date;
-}
-
-interface ChangeImpact {
-  schedule: number; // Days added/removed
-  budget: number; // Cost impact
-  resources: ResourceRequirement[];
-  risk: Risk[];
-}
-
-class ChangeControlBoard {
-  private members: string[];
-  private threshold: number;
-
-  evaluateChange(change: ChangeRequest): boolean {
-    const votes = this.collectVotes(change);
-    return this.calculateApproval(votes);
-  }
-
-  documentDecision(change: ChangeRequest, approved: boolean): void {
-    change.status = approved ? 'Approved' : 'Rejected';
-    this.updateChangeLog(change);
   }
 }
 \`\`\`
@@ -340,33 +206,6 @@ Example Answer:
    - Expectation management
    - Progress tracking
 
-Real Example:
-In a recent web application project:
-
-1. Initial Scope:
-   - User authentication
-   - Basic CRUD operations
-   - Report generation
-   - Mobile responsiveness
-
-2. Change Requests:
-   - Real-time notifications
-   - Social media integration
-   - Advanced analytics
-   - Custom theming
-
-3. Management Approach:
-   - Documented each request
-   - Analyzed impacts
-   - Prioritized changes
-   - Adjusted timeline/budget
-
-4. Results:
-   - Core features delivered on time
-   - Critical changes incorporated
-   - Non-essential items phased
-   - Client satisfaction maintained
-
 Best Practices:
 1. Clear documentation
 2. Regular scope reviews
@@ -376,5 +215,388 @@ Best Practices:
 6. Priority management
 7. Communication plan
 8. Resource planning"`
+  },
+  {
+    id: 13003,
+    title: 'Agile Project Management',
+    description: 'How do you implement and manage Agile methodologies in your projects?',
+    type: 'Non-Tech',
+    category: 'Project Management',
+    difficulty: 'Medium',
+    company: 'Google',
+    isBookmarked: false,
+    tags: ['Agile', 'Scrum', 'Sprint Planning', 'Retrospectives'],
+    likes: 312,
+    views: 4521,
+    createdAt: '2024-01-03',
+    updatedAt: '2024-01-03',
+    details: `Agile Project Management Framework:
+
+1. Sprint Management:
+\`\`\`typescript
+interface SprintConfig {
+  duration: number; // in weeks
+  capacity: number; // in story points
+  team: TeamMember[];
+  goals: string[];
+}
+
+interface UserStory {
+  id: string;
+  title: string;
+  description: string;
+  points: number;
+  priority: 'High' | 'Medium' | 'Low';
+  status: 'Backlog' | 'Sprint' | 'In Progress' | 'Review' | 'Done';
+  assignee?: TeamMember;
+  acceptance_criteria: string[];
+}
+
+class SprintManager {
+  private backlog: UserStory[];
+  private currentSprint: Sprint;
+  private sprintHistory: Sprint[];
+
+  planSprint(stories: UserStory[], config: SprintConfig): Sprint {
+    const sprintCapacity = this.calculateCapacity(config);
+    const selectedStories = this.selectStories(stories, sprintCapacity);
+    return new Sprint(selectedStories, config);
+  }
+
+  trackProgress(): SprintMetrics {
+    return {
+      completedPoints: this.calculateCompletedPoints(),
+      remainingPoints: this.calculateRemainingPoints(),
+      burndownData: this.generateBurndownData(),
+      velocity: this.calculateVelocity()
+    };
+  }
+}
+\`\`\`
+
+2. Scrum Ceremonies:
+\`\`\`typescript
+interface ScrumMeeting {
+  type: 'Daily' | 'Planning' | 'Review' | 'Retrospective';
+  date: Date;
+  duration: number;
+  attendees: TeamMember[];
+  agenda: string[];
+  outcomes: string[];
+}
+
+class ScrumMaster {
+  facilitateDailyStandup(): DailyUpdate[] {
+    return this.team.map(member => ({
+      member,
+      yesterday: member.getYesterdayTasks(),
+      today: member.getTodayPlan(),
+      blockers: member.getBlockers()
+    }));
+  }
+
+  conductRetrospective(): RetroOutcome {
+    return {
+      went_well: this.collectFeedback('positive'),
+      to_improve: this.collectFeedback('negative'),
+      action_items: this.defineActionItems(),
+      metrics: this.calculateSprintMetrics()
+    };
+  }
+}
+\`\`\`
+
+Example Answer:
+"I implement Agile methodologies using these key practices:
+
+1. Sprint Planning
+   - Backlog grooming
+   - Story point estimation
+   - Capacity planning
+   - Goal setting
+
+2. Daily Execution
+   - Stand-up meetings
+   - Task board updates
+   - Blocker resolution
+   - Progress tracking
+
+3. Sprint Reviews
+   - Demo preparation
+   - Stakeholder feedback
+   - Acceptance testing
+   - Documentation
+
+4. Retrospectives
+   - Team feedback
+   - Process improvement
+   - Action items
+   - Metrics review
+
+Best Practices:
+1. Regular ceremonies
+2. Clear communication
+3. Visible progress
+4. Quick adaptation
+5. Team empowerment
+6. Continuous improvement"`
+  },
+  {
+    id: 13004,
+    title: 'Stakeholder Management',
+    description: 'How do you manage stakeholder expectations and communication in complex projects?',
+    type: 'Non-Tech',
+    category: 'Project Management',
+    difficulty: 'Hard',
+    company: 'Meta',
+    isBookmarked: false,
+    tags: ['Stakeholder Management', 'Communication', 'Leadership'],
+    likes: 278,
+    views: 3890,
+    createdAt: '2024-01-03',
+    updatedAt: '2024-01-03',
+    details: `Stakeholder Management Framework:
+
+1. Stakeholder Analysis:
+\`\`\`typescript
+interface Stakeholder {
+  id: string;
+  name: string;
+  role: string;
+  influence: 'High' | 'Medium' | 'Low';
+  interest: 'High' | 'Medium' | 'Low';
+  preferences: {
+    communicationFrequency: 'Daily' | 'Weekly' | 'Monthly';
+    reportingFormat: 'Detailed' | 'Summary' | 'Dashboard';
+    meetingPreference: 'One-on-One' | 'Group' | 'Email';
+  };
+  concerns: string[];
+}
+
+class StakeholderManager {
+  private stakeholders: Map<string, Stakeholder>;
+  private communicationPlan: CommunicationPlan;
+
+  analyzeStakeholders(): StakeholderMatrix {
+    return {
+      highInfluenceHighInterest: this.getStakeholdersByCategory('manage_closely'),
+      highInfluenceLowInterest: this.getStakeholdersByCategory('keep_satisfied'),
+      lowInfluenceHighInterest: this.getStakeholdersByCategory('keep_informed'),
+      lowInfluenceLowInterest: this.getStakeholdersByCategory('monitor')
+    };
+  }
+
+  createCommunicationPlan(): CommunicationPlan {
+    return this.stakeholders.reduce((plan, stakeholder) => ({
+      ...plan,
+      [stakeholder.id]: this.generateStakeholderStrategy(stakeholder)
+    }), {});
+  }
+}
+\`\`\`
+
+2. Communication Management:
+\`\`\`typescript
+interface CommunicationPlan {
+  stakeholderId: string;
+  frequency: 'Daily' | 'Weekly' | 'Monthly';
+  channel: 'Email' | 'Meeting' | 'Report' | 'Dashboard';
+  format: 'Detailed' | 'Summary';
+  owner: string;
+  nextScheduled: Date;
+}
+
+class CommunicationManager {
+  private plans: CommunicationPlan[];
+  private templates: Map<string, Template>;
+
+  generateReport(stakeholder: Stakeholder): Report {
+    const template = this.templates.get(stakeholder.preferences.reportingFormat);
+    return {
+      summary: this.generateExecutiveSummary(),
+      progress: this.calculateProgress(),
+      risks: this.identifyRisks(),
+      nextSteps: this.planNextSteps()
+    };
+  }
+
+  scheduleUpdates(): void {
+    this.plans.forEach(plan => {
+      this.scheduler.schedule({
+        type: plan.channel,
+        date: plan.nextScheduled,
+        stakeholder: plan.stakeholderId,
+        content: this.generateContent(plan)
+      });
+    });
+  }
+}
+\`\`\`
+
+Example Answer:
+"I manage stakeholders using a comprehensive approach:
+
+1. Stakeholder Identification
+   - Role analysis
+   - Influence mapping
+   - Interest assessment
+   - Preference gathering
+
+2. Communication Strategy
+   - Tailored approaches
+   - Regular updates
+   - Clear escalation paths
+   - Feedback loops
+
+3. Expectation Management
+   - Clear objectives
+   - Regular alignment
+   - Progress visibility
+   - Risk communication
+
+4. Relationship Building
+   - Trust development
+   - Active listening
+   - Proactive engagement
+   - Issue resolution
+
+Best Practices:
+1. Regular engagement
+2. Clear communication
+3. Expectation setting
+4. Proactive updates
+5. Issue transparency
+6. Feedback incorporation
+7. Relationship maintenance
+8. Documentation"`
+  },
+  {
+    id: 13005,
+    title: 'Project Resource Management',
+    description: 'How do you manage and optimize resource allocation in projects?',
+    type: 'Non-Tech',
+    category: 'Project Management',
+    difficulty: 'Medium',
+    company: 'Apple',
+    isBookmarked: false,
+    tags: ['Resource Management', 'Team Management', 'Capacity Planning'],
+    likes: 198,
+    views: 2987,
+    createdAt: '2024-01-03',
+    updatedAt: '2024-01-03',
+    details: `Resource Management Framework:
+
+1. Resource Planning:
+\`\`\`typescript
+interface Resource {
+  id: string;
+  name: string;
+  role: string;
+  skills: string[];
+  availability: number; // hours per week
+  cost: number; // per hour
+  assignments: Assignment[];
+}
+
+interface Assignment {
+  projectId: string;
+  taskId: string;
+  startDate: Date;
+  endDate: Date;
+  hoursPerWeek: number;
+  status: 'Planned' | 'Active' | 'Completed';
+}
+
+class ResourceManager {
+  private resources: Resource[];
+  private projects: Project[];
+
+  calculateUtilization(resource: Resource): Utilization {
+    return {
+      assigned: this.getAssignedHours(resource),
+      available: resource.availability,
+      utilizationRate: this.calculateRate(resource),
+      forecast: this.forecastUtilization(resource)
+    };
+  }
+
+  optimizeAllocation(): AllocationPlan {
+    return {
+      assignments: this.balanceWorkload(),
+      conflicts: this.identifyConflicts(),
+      recommendations: this.generateRecommendations()
+    };
+  }
+}
+\`\`\`
+
+2. Capacity Planning:
+\`\`\`typescript
+interface CapacityPlan {
+  period: 'Week' | 'Month' | 'Quarter';
+  teams: TeamCapacity[];
+  projects: ProjectDemand[];
+  gaps: ResourceGap[];
+}
+
+class CapacityPlanner {
+  private teams: Team[];
+  private demand: ProjectDemand[];
+
+  forecastCapacity(period: DateRange): CapacityForecast {
+    return {
+      available: this.calculateAvailableCapacity(period),
+      required: this.calculateRequiredCapacity(period),
+      gap: this.identifyCapacityGaps(period),
+      recommendations: this.generateRecommendations(period)
+    };
+  }
+
+  optimizeTeamStructure(): TeamOptimization {
+    return {
+      currentStructure: this.analyzeCurrentStructure(),
+      recommendations: this.recommendChanges(),
+      implementation: this.planImplementation()
+    };
+  }
+}
+\`\`\`
+
+Example Answer:
+"I manage resources using these key strategies:
+
+1. Resource Planning
+   - Skill mapping
+   - Availability tracking
+   - Cost optimization
+   - Allocation planning
+
+2. Capacity Management
+   - Workload analysis
+   - Utilization tracking
+   - Gap identification
+   - Forecast planning
+
+3. Team Optimization
+   - Skill development
+   - Cross-training
+   - Performance monitoring
+   - Career growth
+
+4. Resource Balancing
+   - Workload distribution
+   - Conflict resolution
+   - Priority management
+   - Efficiency improvement
+
+Best Practices:
+1. Regular monitoring
+2. Clear allocation
+3. Skill development
+4. Conflict resolution
+5. Performance tracking
+6. Cost optimization
+7. Team satisfaction
+8. Documentation"`
   }
 ];
