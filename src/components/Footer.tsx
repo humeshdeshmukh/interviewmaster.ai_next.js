@@ -24,7 +24,6 @@ const footerLinks = {
     ],
     legal: [
         { name: "Privacy Policy", href: "/privacy-policy" },
-        { name: "Terms", href: "/terms" },
         { name: "Disclosure", href: "/disclosure" }
     ],
     social: [

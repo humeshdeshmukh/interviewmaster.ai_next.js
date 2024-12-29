@@ -1,16 +1,11 @@
-import {
-    createRouteMatcher,
-    isAuthenticatedNextjs,
-    nextjsMiddlewareRedirect,
-    convexAuthNextjsMiddleware,
-} from "@convex-dev/auth/nextjs/server";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-const isPublicRoute = createRouteMatcher(["/auth", "/"])
+export default function middleware(req: NextRequest) {
+  // Allow all routes without authentication
+  return NextResponse.next();
+}
 
-export default convexAuthNextjsMiddleware((req) => {
-    if (!isPublicRoute(req) && !isAuthenticatedNextjs()) {
-        return nextjsMiddlewareRedirect(req, "/auth");
-    }
-});
-
-export const config = { matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"] };
+export const config = { 
+  matcher: ['/((?!.*\\..*|_next).*)', "/", "/(api|trpc)(.*)"] 
+};
